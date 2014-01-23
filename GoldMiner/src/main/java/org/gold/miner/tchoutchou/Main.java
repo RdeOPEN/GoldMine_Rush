@@ -85,7 +85,7 @@ public class Main {
 				}
 
 				// mise à jour de la carte de la mine
-				mine.updateCases(lineSight);
+				mine.update(lineSight);
 				
 				// initialisation pathFinder pour le tour courant
 				pathFinder = PathfinderFactory.createPathfinder(pathfinderArchetype, mine);

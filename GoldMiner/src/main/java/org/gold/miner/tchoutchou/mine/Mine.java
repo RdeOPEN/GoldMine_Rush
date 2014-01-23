@@ -1,6 +1,9 @@
 package org.gold.miner.tchoutchou.mine;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Mine {
 
@@ -18,12 +21,12 @@ public class Mine {
 		cases = new Case[largeur][hauteur];
 	}
 
-	public void updateCases(LineSight lineSight) {
+	public void update(LineSight lineSight) {
 		this.updateCases(lineSight.getCases());
 	}
 
 	public void updateCases(Collection<Case> casesToUpdateMap) {
-		for(Case caseUpdate : casesToUpdateMap) {
+		for (Case caseUpdate : casesToUpdateMap) {
 			Position position = caseUpdate.getPosition();
 			cases[position.getPositionX()][position.getPositionY()] = caseUpdate;
 		}
@@ -45,9 +48,22 @@ public class Mine {
 		return cases;
 	}
 
+	public Set<Case> getCasesInCollection() {
+		Set<Case> casesSet = new HashSet<Case>();
+		for (int i = 0; i < cases.length; i++) {
+			for (int j = 0; j < cases[i].length; j++) {
+				Case currCase = cases[i][j];
+				if (currCase != null) {
+					casesSet.add(currCase);
+				}
+			}
+		}
+		return casesSet;
+	}
+
 	@Override
 	public String toString() {
-		return "Mine [largeur=" + largeur + ", hauteur=" + hauteur + ", nbDiamants=" + nbDiamants + "]";
+		return "Mine [largeur=" + largeur + ", hauteur=" + hauteur + ", nbDiamants=" + nbDiamants + ", cases=" + Arrays.toString(cases) + "]";
 	}
 
 }
