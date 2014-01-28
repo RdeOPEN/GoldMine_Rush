@@ -4,7 +4,6 @@ import org.gold.miner.tchoutchou.mine.Case;
 
 public class Noeud extends NoeudArbre {
 
-	private static final int INTEGER_DISTANCE_INITIALE = 9999;
 	private Case pere = null;
 
 	public Noeud(NoeudArbre pere, Case caseNoeud) {
@@ -57,11 +56,10 @@ public class Noeud extends NoeudArbre {
 	 * @return
 	 */
 	@Override
-	public Integer getDirectionToDestination(ResultatRecherche resultat, Case destination) {
+	public Integer calculateShortWayToDestination(ResultatRecherche resultat, Case destination) {
 
 		// si la case actuelle est la destination on retourne 1 et si c'est une feuille on retourne null.
 		if (destination.equals(caseNoeud)) {
-			System.out.println("Destination trouvée: " + destination);
 			return 1;
 		} else if (isLeafOrDeadEnd() || !caseNoeud.canPass()) {
 			return null;
@@ -70,38 +68,34 @@ public class Noeud extends NoeudArbre {
 		Integer distance = new Integer(INTEGER_DISTANCE_INITIALE);
 
 		if (this.noeudEst != null) {
-			Integer result = noeudEst.getDirectionToDestination(resultat, destination);
+			Integer result = noeudEst.calculateShortWayToDestination(resultat, destination);
 			if (result != null) {
 				distance = Math.min(result, distance);
 
 				if (distance == result)
 					resultat.setSelectedCase(caseNoeud);
 			}
-			System.out.println(this.toString() + " | caseEst: " + result);
 		}
 
 		if (this.noeudSud != null) {
-			Integer result = noeudSud.getDirectionToDestination(resultat, destination);
+			Integer result = noeudSud.calculateShortWayToDestination(resultat, destination);
 			if (result != null) {
 				distance = Math.min(result, distance);
 			}
-			System.out.println(this.toString() + " | caseSud: " + result);
 		}
 
 		if (this.noeudOuest != null) {
-			Integer result = noeudOuest.getDirectionToDestination(resultat, destination);
+			Integer result = noeudOuest.calculateShortWayToDestination(resultat, destination);
 			if (result != null) {
 				distance = Math.min(result, distance);
 			}
-			System.out.println(this.toString() + " | caseOuest: " + result);
 		}
 
 		if (this.noeudNord != null) {
-			Integer result = noeudNord.getDirectionToDestination(resultat, destination);
+			Integer result = noeudNord.calculateShortWayToDestination(resultat, destination);
 			if (result != null) {
 				distance = Math.min(result, distance);
 			}
-			System.out.println(this.toString() + " | caseNord: " + result);
 		}
 
 		if (distance == INTEGER_DISTANCE_INITIALE) {
@@ -111,9 +105,14 @@ public class Noeud extends NoeudArbre {
 			// on ajoute 1 si on a trouvé la destination à un niveau inférieur
 			distance++;
 		}
-		System.out.println(this.toString() + " | Distance: " + distance);
 
 		return distance;
+	}
+
+	@Override
+	public String toString() {
+		return "Noeud [pere=" + pere + ", caseNoeud=" + caseNoeud + ", noeudNord=" + noeudNord + ", noeudSud=" + noeudSud + ", noeudEst=" + noeudEst
+				+ ", noeudOuest=" + noeudOuest + "]";
 	}
 
 	@Override
@@ -139,12 +138,6 @@ public class Noeud extends NoeudArbre {
 		} else if (!pere.equals(other.pere))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Noeud [pere=" + pere + ", caseNoeud=" + caseNoeud + ", noeudNord=" + noeudNord + ", noeudSud=" + noeudSud + ", noeudEst=" + noeudEst
-				+ ", noeudOuest=" + noeudOuest + "]";
 	}
 
 }

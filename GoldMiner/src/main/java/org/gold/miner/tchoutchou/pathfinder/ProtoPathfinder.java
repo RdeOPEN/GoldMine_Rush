@@ -7,7 +7,7 @@ import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.tree.Arbre;
-import org.gold.miner.tchoutchou.tree.TreeFactory;
+import org.gold.miner.tchoutchou.tree.factories.TreeFactory;
 
 public class ProtoPathfinder implements Pathfinder {
 

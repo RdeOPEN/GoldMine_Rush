@@ -4,6 +4,8 @@ import org.gold.miner.tchoutchou.mine.Case;
 
 public abstract class NoeudArbre {
 
+	protected static final int INTEGER_DISTANCE_INITIALE = 9999;
+	
 	protected Case caseNoeud;
 	protected Noeud noeudNord = null;
 	protected Noeud noeudSud = null;
@@ -14,7 +16,7 @@ public abstract class NoeudArbre {
 		this.caseNoeud = caseNoeud;
 	}
 
-	abstract Integer getDirectionToDestination(ResultatRecherche resultat, Case destination);
+	abstract Integer calculateShortWayToDestination(ResultatRecherche resultat, Case destination);
 
 	public Case getCase() {
 		return this.caseNoeud;

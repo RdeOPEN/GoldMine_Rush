@@ -31,7 +31,7 @@ public class RacineTest {
 		noeudRacine.addNoeudNord(case4);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer distance = noeudRacine.getDirectionToDestination(resultat, destination);
+		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(distance).isEqualTo(1);
 		Assertions.assertThat(resultat.getSelectedCase()).isEqualTo(case3.getCase());

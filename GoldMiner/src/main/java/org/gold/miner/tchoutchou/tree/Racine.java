@@ -10,43 +10,45 @@ public class Racine extends NoeudArbre {
 	}
 
 	@Override
-	public Integer getDirectionToDestination(ResultatRecherche resultat, Case destination) {
+	public Integer calculateShortWayToDestination(ResultatRecherche resultat, Case destination) {
 
-		Integer distance = new Integer(9999);
+		Integer distance = new Integer(INTEGER_DISTANCE_INITIALE);
 
 		if (this.noeudEst != null) {
-			Integer result = noeudEst.getDirectionToDestination(resultat, destination);
+			Integer result = noeudEst.calculateShortWayToDestination(resultat, destination);
 			distance = getMinDistance(noeudEst.getCase(), resultat, distance, result, MinerAction.EAST);
-			System.out.println(this.toString() + " | caseEst: " + result);
 		}
 
 		if (this.noeudSud != null) {
-			Integer result = noeudSud.getDirectionToDestination(resultat, destination);
+			Integer result = noeudSud.calculateShortWayToDestination(resultat, destination);
 			distance = getMinDistance(noeudSud.getCase(), resultat, distance, result, MinerAction.SOUTH);
-			System.out.println(this.toString() + " | caseSud: " + result);
 		}
 
 		if (this.noeudOuest != null) {
-			Integer result = noeudOuest.getDirectionToDestination(resultat, destination);
+			Integer result = noeudOuest.calculateShortWayToDestination(resultat, destination);
 			distance = getMinDistance(noeudOuest.getCase(), resultat, distance, result, MinerAction.WEST);
-			System.out.println(this.toString() + " | caseOuest: " + result);
 		}
 
 		if (this.noeudNord != null) {
-			Integer result = noeudNord.getDirectionToDestination(resultat, destination);
+			Integer result = noeudNord.calculateShortWayToDestination(resultat, destination);
 			distance = getMinDistance(noeudNord.getCase(), resultat, distance, result, MinerAction.NORTH);
-			System.out.println(this.toString() + " | caseNord: " + result);
+		}
+
+		if (distance == INTEGER_DISTANCE_INITIALE) {
+			// on remet a null la distance si on a pas trouvé de chemin vers la destination
+			distance = null;
 		}
 
 		return distance;
 	}
 
 	private static Integer getMinDistance(Case currentCase, ResultatRecherche resultat, Integer distance, Integer result, MinerAction minerAction) {
+		System.out.println("getMinDistance. distance: "+distance+". result: "+result);
 		Integer minDistance = distance;
 		if (result != null) {
 			minDistance = Math.min(result, distance);
 			if (minDistance == result) {
-				System.out.println("Distance mini trouvée pour la case : " + currentCase);
+				resultat.setDistance(minDistance);
 				resultat.setSelectedCase(currentCase);
 				resultat.setMinerAction(minerAction);
 			}

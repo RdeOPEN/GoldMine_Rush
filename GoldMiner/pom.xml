@@ -4,7 +4,11 @@
 	<groupId>org.tchou.tchou</groupId>
 	<artifactId>GoldMinerTchouTchou</artifactId>
 	<version>1.1.0-SNAPSHOT</version>
-	<description>Projet de creation du mineur par les tchoutchous</description>
+	<description>Projet du mineur par les tchoutchous</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 	<dependencies>
 		<!-- Test dependencies -->
@@ -60,7 +64,7 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>org.tchou.tchou.mineurultime.Main</mainClass>
+									<mainClass>org.gold.miner.tchoutchou.Main</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

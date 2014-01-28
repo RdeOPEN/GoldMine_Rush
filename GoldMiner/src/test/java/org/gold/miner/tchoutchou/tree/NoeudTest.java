@@ -44,7 +44,7 @@ public class NoeudTest {
 		noeud.addNoeudNord(noeud2);
 		
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.getDirectionToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isNull();
 	}
@@ -55,7 +55,7 @@ public class NoeudTest {
 		Noeud noeud = new Noeud(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.getDirectionToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
 	}
@@ -68,7 +68,7 @@ public class NoeudTest {
 		noeud.addNoeudNord(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.getDirectionToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(2);
 	}
@@ -81,7 +81,7 @@ public class NoeudTest {
 		noeud.addNoeudEst(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.getDirectionToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(2);
 	}
@@ -94,7 +94,7 @@ public class NoeudTest {
 		noeud.addNoeudSud(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.getDirectionToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(2);
 	}
@@ -107,7 +107,7 @@ public class NoeudTest {
 		noeud.addNoeudOuest(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.getDirectionToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(2);
 	}

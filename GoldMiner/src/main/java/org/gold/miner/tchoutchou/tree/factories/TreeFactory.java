@@ -1,9 +1,13 @@
-package org.gold.miner.tchoutchou.tree;
+package org.gold.miner.tchoutchou.tree.factories;
 
 import java.util.Map;
 
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Position;
+import org.gold.miner.tchoutchou.tree.Arbre;
+import org.gold.miner.tchoutchou.tree.Noeud;
+import org.gold.miner.tchoutchou.tree.NoeudArbre;
+import org.gold.miner.tchoutchou.tree.Racine;
 
 public class TreeFactory {
 
@@ -32,15 +36,15 @@ public class TreeFactory {
 		noeudRacine.addNoeudOuest(noeud3);
 		noeudRacine.addNoeudNord(noeud4);
 
-		addNoeuds(casesInMap, noeud1);
-		addNoeuds(casesInMap, noeud2);
-		addNoeuds(casesInMap, noeud3);
-		addNoeuds(casesInMap, noeud4);
+		addNodes(casesInMap, noeud1);
+		addNodes(casesInMap, noeud2);
+		addNodes(casesInMap, noeud3);
+		addNodes(casesInMap, noeud4);
 
 		return new Arbre(noeudRacine);
 	}
-
-	private static void addNoeuds(Map<Position, Case> casesInMap, NoeudArbre noeud) {
+	
+	private static void addNodes(Map<Position, Case> casesInMap, NoeudArbre noeud) {
 		int positionX = noeud.getCase().getPosition().getPositionX();
 		int positionY = noeud.getCase().getPosition().getPositionY();
 

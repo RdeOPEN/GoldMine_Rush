@@ -1,7 +1,6 @@
-package org.gold.miner.tchoutchou.tree;
+package org.gold.miner.tchoutchou.tree.factories;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +9,11 @@ import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.LineSight;
 import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
+import org.gold.miner.tchoutchou.tree.Arbre;
+import org.gold.miner.tchoutchou.tree.Noeud;
+import org.gold.miner.tchoutchou.tree.NoeudArbre;
+import org.gold.miner.tchoutchou.tree.Racine;
+import org.gold.miner.tchoutchou.tree.factories.TreeFactory;
 import org.junit.Test;
 
 public class TreeFactoryTest {
@@ -52,8 +56,6 @@ public class TreeFactoryTest {
 		addNoeuds(casesInMap, noeud2);
 		addNoeuds(casesInMap, noeud3);
 		addNoeuds(casesInMap, noeud4);
-
-		System.out.println("racine: " + racine);
 
 		Arbre arbre = TreeFactory.constructTree(startPosition, casesInMap);
 

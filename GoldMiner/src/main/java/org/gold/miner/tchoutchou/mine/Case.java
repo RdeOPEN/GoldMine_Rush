@@ -22,9 +22,14 @@ public class Case implements Comparable<Case> {
 	}
 
 	public boolean canPass() {
-		if (TypeTerrain.S.equals(type) || TypeTerrain.X.equals(type)) {
+//		if (TypeTerrain.S.equals(type) || TypeTerrain.X.equals(type)) {
+//			return false;
+//		}
+
+		if (TypeTerrain.S.equals(type)) {
 			return false;
 		}
+		
 		return true;
 	}
 
