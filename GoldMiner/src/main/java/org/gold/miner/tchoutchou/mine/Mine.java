@@ -2,7 +2,9 @@ package org.gold.miner.tchoutchou.mine;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Mine {
@@ -48,6 +50,9 @@ public class Mine {
 		return cases;
 	}
 
+	/**
+	 * @return casesSet
+	 */
 	public Set<Case> getCasesInCollection() {
 		Set<Case> casesSet = new HashSet<Case>();
 		for (int i = 0; i < cases.length; i++) {
@@ -59,6 +64,17 @@ public class Mine {
 			}
 		}
 		return casesSet;
+	}
+
+	/**
+	 * @return mapCases
+	 */
+	public Map<Position, Case> getCasesInMap() {
+		Map<Position, Case> mapCases = new HashMap<Position, Case>();
+		for (Case currCase : getCasesInCollection()) {
+			mapCases.put(currCase.getPosition(), currCase);
+		}
+		return mapCases;
 	}
 
 	@Override

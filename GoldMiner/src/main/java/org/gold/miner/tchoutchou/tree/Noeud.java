@@ -2,57 +2,43 @@ package org.gold.miner.tchoutchou.tree;
 
 import org.gold.miner.tchoutchou.mine.Case;
 
-public class Noeud {
+public class Noeud extends NoeudArbre {
 
-	public static Noeud racine;
-	private Case caseNoeud;
+	private static final int INTEGER_DISTANCE_INITIALE = 9999;
 	private Case pere = null;
-	private Noeud caseNord = null;
-	private Noeud caseSud = null;
-	private Noeud caseEst = null;
-	private Noeud caseOuest = null;
 
-	public Noeud(Case caseNoeud) {
-		this.caseNoeud = caseNoeud;
+	public Noeud(NoeudArbre pere, Case caseNoeud) {
+		super(caseNoeud);
+		if (pere != null) {
+			this.pere = pere.getCase();
+		}
 	}
 
-	public static Noeud getRacine() {
-		return Noeud.racine;
-	}
-
-	public static void setRacine(Noeud r) {
-		Noeud.racine = r;
-	}
-
-	public Case getCase() {
-		return caseNoeud;
-	}
-
-	public void setPere(Case pere) {
-		this.pere = pere;
-	}
-
-	public void addCaseNord(Noeud caseNord) {
+	@Override
+	public void addNoeudNord(Noeud caseNord) {
 		if (isNotCasePere(caseNord.getCase())) {
-			this.caseNord = caseNord;
+			this.noeudNord = caseNord;
 		}
 	}
 
-	public void addCaseSud(Noeud caseSud) {
+	@Override
+	public void addNoeudSud(Noeud caseSud) {
 		if (isNotCasePere(caseSud.getCase())) {
-			this.caseSud = caseSud;
+			this.noeudSud = caseSud;
 		}
 	}
 
-	public void addCaseEst(Noeud caseEst) {
+	@Override
+	public void addNoeudEst(Noeud caseEst) {
 		if (isNotCasePere(caseEst.getCase())) {
-			this.caseEst = caseEst;
+			this.noeudEst = caseEst;
 		}
 	}
 
-	public void addCaseOuest(Noeud caseOuest) {
+	@Override
+	public void addNoeudOuest(Noeud caseOuest) {
 		if (isNotCasePere(caseOuest.getCase())) {
-			this.caseOuest = caseOuest;
+			this.noeudOuest = caseOuest;
 		}
 	}
 
@@ -64,45 +50,77 @@ public class Noeud {
 		return pere.getPosition().equals(casePere.getPosition()) ? false : true;
 	}
 
-	// methode qui affiche un Noeud et ses descendants
-	public Integer parcoursNoeuds(Case destination) {
-		Integer distanceToDestination = 1;
-		if (!destination.equals(caseNoeud) && caseEst == null && caseSud == null && caseOuest == null && caseNord == null) {
+	/**
+	 * Parcours un Noeud et ses fils
+	 * 
+	 * @param destination
+	 * @return
+	 */
+	@Override
+	public Integer getDirectionToDestination(ResultatRecherche resultat, Case destination) {
+
+		// si la case actuelle est la destination on retourne 1 et si c'est une feuille on retourne null.
+		if (destination.equals(caseNoeud)) {
+			System.out.println("Destination trouvée: " + destination);
+			return 1;
+		} else if (isLeafOrDeadEnd() || !caseNoeud.canPass()) {
 			return null;
 		}
 
-		Integer distanceResult = null;
-		if (this.caseEst != null) {
-			distanceResult = caseEst.parcoursNoeuds(destination);
-		}
-		if (this.caseSud != null) {
-			distanceResult = caseSud.parcoursNoeuds(destination);
-		}
-		if (this.caseOuest != null) {
-			distanceResult = caseOuest.parcoursNoeuds(destination);
-		}
-		if (this.caseNord != null) {
-			distanceResult = caseNord.parcoursNoeuds(destination);
+		Integer distance = new Integer(INTEGER_DISTANCE_INITIALE);
+
+		if (this.noeudEst != null) {
+			Integer result = noeudEst.getDirectionToDestination(resultat, destination);
+			if (result != null) {
+				distance = Math.min(result, distance);
+
+				if (distance == result)
+					resultat.setSelectedCase(caseNoeud);
+			}
+			System.out.println(this.toString() + " | caseEst: " + result);
 		}
 
-		if (distanceResult != null) {
-			distanceToDestination += distanceResult;
+		if (this.noeudSud != null) {
+			Integer result = noeudSud.getDirectionToDestination(resultat, destination);
+			if (result != null) {
+				distance = Math.min(result, distance);
+			}
+			System.out.println(this.toString() + " | caseSud: " + result);
 		}
 
-		System.out.println(this.toString() + " | Distance: " + distanceToDestination);
+		if (this.noeudOuest != null) {
+			Integer result = noeudOuest.getDirectionToDestination(resultat, destination);
+			if (result != null) {
+				distance = Math.min(result, distance);
+			}
+			System.out.println(this.toString() + " | caseOuest: " + result);
+		}
 
-		return distanceToDestination;
+		if (this.noeudNord != null) {
+			Integer result = noeudNord.getDirectionToDestination(resultat, destination);
+			if (result != null) {
+				distance = Math.min(result, distance);
+			}
+			System.out.println(this.toString() + " | caseNord: " + result);
+		}
+
+		if (distance == INTEGER_DISTANCE_INITIALE) {
+			// on remet a null la distance si on a pas trouvé la destination à un niveau inférieur
+			distance = null;
+		} else {
+			// on ajoute 1 si on a trouvé la destination à un niveau inférieur
+			distance++;
+		}
+		System.out.println(this.toString() + " | Distance: " + distance);
+
+		return distance;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((caseEst == null) ? 0 : caseEst.hashCode());
-		result = prime * result + ((caseNoeud == null) ? 0 : caseNoeud.hashCode());
-		result = prime * result + ((caseNord == null) ? 0 : caseNord.hashCode());
-		result = prime * result + ((caseOuest == null) ? 0 : caseOuest.hashCode());
-		result = prime * result + ((caseSud == null) ? 0 : caseSud.hashCode());
+		int result = super.hashCode();
+		result = prime * result + ((pere == null) ? 0 : pere.hashCode());
 		return result;
 	}
 
@@ -110,42 +128,23 @@ public class Noeud {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Noeud other = (Noeud) obj;
-		if (caseEst == null) {
-			if (other.caseEst != null)
+		if (pere == null) {
+			if (other.pere != null)
 				return false;
-		} else if (!caseEst.equals(other.caseEst))
-			return false;
-		if (caseNoeud == null) {
-			if (other.caseNoeud != null)
-				return false;
-		} else if (!caseNoeud.equals(other.caseNoeud))
-			return false;
-		if (caseNord == null) {
-			if (other.caseNord != null)
-				return false;
-		} else if (!caseNord.equals(other.caseNord))
-			return false;
-		if (caseOuest == null) {
-			if (other.caseOuest != null)
-				return false;
-		} else if (!caseOuest.equals(other.caseOuest))
-			return false;
-		if (caseSud == null) {
-			if (other.caseSud != null)
-				return false;
-		} else if (!caseSud.equals(other.caseSud))
+		} else if (!pere.equals(other.pere))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Noeud [caseNoeud=" + caseNoeud + ", caseNord=" + caseNord + ", caseSud=" + caseSud + ", caseEst=" + caseEst + ", caseOuest=" + caseOuest + "]";
+		return "Noeud [pere=" + pere + ", caseNoeud=" + caseNoeud + ", noeudNord=" + noeudNord + ", noeudSud=" + noeudSud + ", noeudEst=" + noeudEst
+				+ ", noeudOuest=" + noeudOuest + "]";
 	}
 
 }

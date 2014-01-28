@@ -3,103 +3,113 @@ package org.gold.miner.tchoutchou.tree;
 import org.fest.assertions.api.Assertions;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Position;
+import org.gold.miner.tchoutchou.mine.TypeTerrain;
 import org.junit.Test;
 
 public class NoeudTest {
 
 	@Test
 	public void isNotCasePere_must_return_false_when_case_is_pere() throws Exception {
-		Noeud noeud = new Noeud(new Case(new Position(15, 15), "M"));
-		Case pere = new Case(new Position(15, 16), "S");
-		noeud.setPere(pere);
+		Noeud pere = new Noeud(null, new Case(new Position(15, 16), TypeTerrain.S.name()));
 
-		Assertions.assertThat(noeud.isNotCasePere(pere)).isFalse();
+		Noeud noeud = new Noeud(pere, new Case(new Position(15, 15), TypeTerrain.M.name()));
+
+		Assertions.assertThat(noeud.isNotCasePere(pere.getCase())).isFalse();
 	}
 
 	@Test
 	public void isNotCasePere_must_return_true_when_pere_is_null() throws Exception {
-		Noeud noeud = new Noeud(new Case(new Position(15, 15), "M"));
-		Case notPere = new Case(new Position(15, 16), "S");
-		noeud.setPere(null);
+		Case notPere = new Case(new Position(15, 16), TypeTerrain.S.name());
+
+		Noeud noeud = new Noeud(null, new Case(new Position(15, 15), TypeTerrain.M.name()));
 
 		Assertions.assertThat(noeud.isNotCasePere(notPere)).isTrue();
 	}
 
 	@Test
 	public void isNotCasePere_must_return_true_when_case_is_not_pere() throws Exception {
-		Noeud noeud = new Noeud(new Case(new Position(15, 15), "M"));
-		Case pere = new Case(new Position(15, 16), "S");
-		noeud.setPere(pere);
+		Case notPere = new Case(new Position(16, 15), TypeTerrain.S.name());
+		Noeud pere = new Noeud(null, new Case(new Position(15, 16), TypeTerrain.S.name()));
 
-		Case notPere = new Case(new Position(16, 15), "S");
+		Noeud noeud = new Noeud(pere, new Case(new Position(15, 15), TypeTerrain.M.name()));
 
 		Assertions.assertThat(noeud.isNotCasePere(notPere)).isTrue();
 	}
 
 	@Test
-	public void testNoeuds() throws Exception {
-		// creation racine
-		Noeud noeudRacine = new Noeud(new Case(new Position(15, 15), "M"));
+	public void parcoursNoeuds_must_return_null_when_destination_was_not_found() throws Exception {
+		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		Noeud noeud = new Noeud(null, new Case(new Position(15, 15), TypeTerrain.M.name()));
+		Noeud noeud2 = new Noeud(null, new Case(new Position(15, 15), TypeTerrain.M.name()));
+		noeud.addNoeudNord(noeud2);
+		
+		ResultatRecherche resultat = new ResultatRecherche();
+		Integer result = noeud.getDirectionToDestination(resultat, destination);
 
-		Case destination = new Case(new Position(14, 15), "4");
-
-		// ajout de la case EST
-		Noeud case1 = new Noeud(new Case(new Position(16, 15), "M"));
-		// ajout de la case SUD
-		Noeud case2 = new Noeud(new Case(new Position(15, 16), "S"));
-		// ajout de la case OUEST
-		Noeud case3 = new Noeud(destination);
-		// ajout de la case OUEST
-		Noeud case4 = new Noeud(new Case(new Position(15, 14), "E"));
-
-		noeudRacine.addCaseEst(case1);
-		noeudRacine.addCaseSud(case2);
-		noeudRacine.addCaseOuest(case3);
-		noeudRacine.addCaseNord(case4);
-
-		Integer distance = noeudRacine.parcoursNoeuds(destination);
-
-		Assertions.assertThat(distance).isEqualTo(1);
+		Assertions.assertThat(result).isNull();
 	}
 
 	@Test
-	public void testNoeuds2() throws Exception {
-		Case destination = new Case(new Position(16, 14), "S");
-		
-		// creation racine
-		Noeud noeudRacine = new Noeud(new Case(new Position(15, 15), "M"));
+	public void parcoursNoeuds_must_return_1_when_destination_case_was_found() throws Exception {
+		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		Noeud noeud = new Noeud(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
 
-		// ajout de la case EST
-		Noeud case1 = new Noeud(new Case(new Position(16, 15), "M"));
-		// ajout de la case SUD
-		Noeud case2 = new Noeud(new Case(new Position(15, 16), "4"));
-		// ajout de la case OUEST
-		Noeud case3 = new Noeud(new Case(new Position(14, 15), "M"));
-		// ajout de la case OUEST
-		Noeud case4 = new Noeud(new Case(new Position(15, 14), "E"));
+		ResultatRecherche resultat = new ResultatRecherche();
+		Integer result = noeud.getDirectionToDestination(resultat, destination);
 
-		noeudRacine.addCaseEst(case1);
-		noeudRacine.addCaseSud(case2);
-		noeudRacine.addCaseOuest(case3);
-		noeudRacine.addCaseNord(case4);
+		Assertions.assertThat(result).isEqualTo(1);
+	}
 
-		// ajout de la case EST
-		Noeud caseEst1 = new Noeud(new Case(new Position(17, 15), "S"));
-		// ajout de la case SUD
-		Noeud caseEst2 = new Noeud(new Case(new Position(16, 14), "S"));
-		// ajout de la case OUEST
-		Noeud caseEst3 = new Noeud(new Case(new Position(15, 15), "S"));
-		// ajout de la case OUEST
-		Noeud caseEst4 = new Noeud(destination);
+	@Test
+	public void parcoursNoeuds_must_return_2_when_destination_case_was_found_caseNord() throws Exception {
+		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		Noeud noeud = new Noeud(null, new Case(new Position(15, 15), TypeTerrain.M.name()));
+		Noeud noeudDest = new Noeud(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
+		noeud.addNoeudNord(noeudDest);
 
-		case1.addCaseEst(caseEst1);
-		case1.addCaseSud(caseEst2);
-		case1.addCaseOuest(caseEst3);
-		case1.addCaseNord(caseEst4);
+		ResultatRecherche resultat = new ResultatRecherche();
+		Integer result = noeud.getDirectionToDestination(resultat, destination);
 
-		Integer distance = noeudRacine.parcoursNoeuds(destination);
+		Assertions.assertThat(result).isEqualTo(2);
+	}
 
-		Assertions.assertThat(distance).isEqualTo(2);
+	@Test
+	public void parcoursNoeuds_must_return_2_when_destination_case_was_found_caseEst() throws Exception {
+		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		Noeud noeud = new Noeud(null, new Case(new Position(15, 15), TypeTerrain.M.name()));
+		Noeud noeudDest = new Noeud(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
+		noeud.addNoeudEst(noeudDest);
+
+		ResultatRecherche resultat = new ResultatRecherche();
+		Integer result = noeud.getDirectionToDestination(resultat, destination);
+
+		Assertions.assertThat(result).isEqualTo(2);
+	}
+
+	@Test
+	public void parcoursNoeuds_must_return_2_when_destination_case_was_found_caseSud() throws Exception {
+		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		Noeud noeud = new Noeud(null, new Case(new Position(15, 15), TypeTerrain.M.name()));
+		Noeud noeudDest = new Noeud(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
+		noeud.addNoeudSud(noeudDest);
+
+		ResultatRecherche resultat = new ResultatRecherche();
+		Integer result = noeud.getDirectionToDestination(resultat, destination);
+
+		Assertions.assertThat(result).isEqualTo(2);
+	}
+
+	@Test
+	public void parcoursNoeuds_must_return_2_when_destination_case_was_found_caseOuest() throws Exception {
+		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		Noeud noeud = new Noeud(null, new Case(new Position(15, 15), TypeTerrain.M.name()));
+		Noeud noeudDest = new Noeud(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
+		noeud.addNoeudOuest(noeudDest);
+
+		ResultatRecherche resultat = new ResultatRecherche();
+		Integer result = noeud.getDirectionToDestination(resultat, destination);
+
+		Assertions.assertThat(result).isEqualTo(2);
 	}
 
 }

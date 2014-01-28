@@ -1,11 +1,13 @@
 package org.gold.miner.tchoutchou.pathfinder;
 
-import java.util.Set;
+import java.util.Map;
 
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
+import org.gold.miner.tchoutchou.tree.Arbre;
+import org.gold.miner.tchoutchou.tree.TreeFactory;
 
 public class ProtoPathfinder implements Pathfinder {
 
@@ -17,15 +19,15 @@ public class ProtoPathfinder implements Pathfinder {
 
 	@Override
 	public MinerAction moveTo(Position currentPosition, Position destination) {
-
 		// recuperation du plan de la mine
-		Set<Case> cases = mine.getCasesInCollection();
+		Map<Position, Case> casesInMap = mine.getCasesInMap();
 
-		for (Case currCase : cases) {
-			// TODO:
-		}
+		// construction Arbre
+		Arbre arbre = TreeFactory.constructTree(currentPosition, casesInMap);
 
-		return MinerAction.WEST;
+		MinerAction minerAction = arbre.parcoursArbreTo(casesInMap.get(destination));
+
+		return minerAction;
 	}
 
 }

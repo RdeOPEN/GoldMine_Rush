@@ -21,6 +21,13 @@ public class Case implements Comparable<Case> {
 		this.diamonds = Integer.parseInt(nbDiamonds);
 	}
 
+	public boolean canPass() {
+		if (TypeTerrain.S.equals(type) || TypeTerrain.X.equals(type)) {
+			return false;
+		}
+		return true;
+	}
+
 	private boolean isDigits(String type) {
 		boolean result = false;
 		for (Character typeChar : type.toCharArray()) {

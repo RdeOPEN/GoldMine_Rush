@@ -78,7 +78,7 @@ public class MineTest {
 		Assertions.assertThat(casesInCollection).containsOnly(casesToUpdate.toArray(new Case[casesInCollection.size()]));
 	}
 
-	private Case genCase(int x, int y, String typeTerrain) {
+	private static Case genCase(int x, int y, String typeTerrain) {
 		return new Case(new Position(x, y), typeTerrain);
 	}
 
