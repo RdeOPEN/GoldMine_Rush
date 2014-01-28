@@ -2,11 +2,11 @@ package org.gold.miner.tchoutchou.tree;
 
 import org.gold.miner.tchoutchou.mine.Case;
 
-public class Noeud extends NoeudArbre {
+public class NoeudArbreImpl extends NoeudArbre {
 
 	private Case pere = null;
 
-	public Noeud(NoeudArbre pere, Case caseNoeud) {
+	public NoeudArbreImpl(NoeudArbre pere, Case caseNoeud) {
 		super(caseNoeud);
 		if (pere != null) {
 			this.pere = pere.getCase();
@@ -14,28 +14,28 @@ public class Noeud extends NoeudArbre {
 	}
 
 	@Override
-	public void addNoeudNord(Noeud caseNord) {
+	public void addNoeudNord(NoeudArbreImpl caseNord) {
 		if (isNotCasePere(caseNord.getCase())) {
 			this.noeudNord = caseNord;
 		}
 	}
 
 	@Override
-	public void addNoeudSud(Noeud caseSud) {
+	public void addNoeudSud(NoeudArbreImpl caseSud) {
 		if (isNotCasePere(caseSud.getCase())) {
 			this.noeudSud = caseSud;
 		}
 	}
 
 	@Override
-	public void addNoeudEst(Noeud caseEst) {
+	public void addNoeudEst(NoeudArbreImpl caseEst) {
 		if (isNotCasePere(caseEst.getCase())) {
 			this.noeudEst = caseEst;
 		}
 	}
 
 	@Override
-	public void addNoeudOuest(Noeud caseOuest) {
+	public void addNoeudOuest(NoeudArbreImpl caseOuest) {
 		if (isNotCasePere(caseOuest.getCase())) {
 			this.noeudOuest = caseOuest;
 		}
@@ -131,7 +131,7 @@ public class Noeud extends NoeudArbre {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Noeud other = (Noeud) obj;
+		NoeudArbreImpl other = (NoeudArbreImpl) obj;
 		if (pere == null) {
 			if (other.pere != null)
 				return false;

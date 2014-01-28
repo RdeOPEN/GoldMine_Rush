@@ -5,9 +5,9 @@ import java.util.Map;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.tree.Arbre;
-import org.gold.miner.tchoutchou.tree.Noeud;
 import org.gold.miner.tchoutchou.tree.NoeudArbre;
-import org.gold.miner.tchoutchou.tree.Racine;
+import org.gold.miner.tchoutchou.tree.NoeudArbreImpl;
+import org.gold.miner.tchoutchou.tree.RacineArbre;
 
 public class TreeFactory {
 
@@ -17,19 +17,19 @@ public class TreeFactory {
 
 	public static Arbre constructTree(Position startPosition, Map<Position, Case> casesInMap) {
 		Case caseDepart = casesInMap.get(startPosition);
-		Racine noeudRacine = new Racine(caseDepart);
+		RacineArbre noeudRacine = new RacineArbre(caseDepart);
 
 		int positionX = noeudRacine.getCase().getPosition().getPositionX();
 		int positionY = noeudRacine.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST
-		Noeud noeud1 = new Noeud(noeudRacine, casesInMap.get(new Position(positionX + 1, positionY)));
+		NoeudArbreImpl noeud1 = new NoeudArbreImpl(noeudRacine, casesInMap.get(new Position(positionX + 1, positionY)));
 		// ajout de la case SUD
-		Noeud noeud2 = new Noeud(noeudRacine, casesInMap.get(new Position(positionX, positionY + 1)));
+		NoeudArbreImpl noeud2 = new NoeudArbreImpl(noeudRacine, casesInMap.get(new Position(positionX, positionY + 1)));
 		// ajout de la case OUEST
-		Noeud noeud3 = new Noeud(noeudRacine, casesInMap.get(new Position(positionX - 1, positionY)));
+		NoeudArbreImpl noeud3 = new NoeudArbreImpl(noeudRacine, casesInMap.get(new Position(positionX - 1, positionY)));
 		// ajout de la case NORD
-		Noeud noeud4 = new Noeud(noeudRacine, casesInMap.get(new Position(positionX, positionY - 1)));
+		NoeudArbreImpl noeud4 = new NoeudArbreImpl(noeudRacine, casesInMap.get(new Position(positionX, positionY - 1)));
 
 		noeudRacine.addNoeudEst(noeud1);
 		noeudRacine.addNoeudSud(noeud2);
@@ -50,16 +50,16 @@ public class TreeFactory {
 
 		// ajout de la case EST
 		Case caseTmp = casesInMap.get(new Position(positionX + 1, positionY));
-		Noeud noeud1 = new Noeud(noeud, caseTmp != null ? caseTmp : null);
+		NoeudArbreImpl noeud1 = new NoeudArbreImpl(noeud, caseTmp != null ? caseTmp : null);
 		// ajout de la case SUD
 		caseTmp = casesInMap.get(new Position(positionX, positionY + 1));
-		Noeud noeud2 = new Noeud(noeud, caseTmp != null ? caseTmp : null);
+		NoeudArbreImpl noeud2 = new NoeudArbreImpl(noeud, caseTmp != null ? caseTmp : null);
 		// ajout de la case OUEST
 		caseTmp = casesInMap.get(new Position(positionX - 1, positionY));
-		Noeud noeud3 = new Noeud(noeud, caseTmp != null ? caseTmp : null);
+		NoeudArbreImpl noeud3 = new NoeudArbreImpl(noeud, caseTmp != null ? caseTmp : null);
 		// ajout de la case NORD
 		caseTmp = casesInMap.get(new Position(positionX, positionY - 1));
-		Noeud noeud4 = new Noeud(noeud, caseTmp != null ? caseTmp : null);
+		NoeudArbreImpl noeud4 = new NoeudArbreImpl(noeud, caseTmp != null ? caseTmp : null);
 
 		noeud.addNoeudEst(noeud1);
 		noeud.addNoeudSud(noeud2);

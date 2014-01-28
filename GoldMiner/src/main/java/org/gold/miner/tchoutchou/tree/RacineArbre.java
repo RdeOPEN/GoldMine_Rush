@@ -3,9 +3,9 @@ package org.gold.miner.tchoutchou.tree;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 
-public class Racine extends NoeudArbre {
+public class RacineArbre extends NoeudArbre {
 
-	public Racine(Case caseNoeud) {
+	public RacineArbre(Case caseNoeud) {
 		super(caseNoeud);
 	}
 

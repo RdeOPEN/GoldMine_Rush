@@ -5,9 +5,9 @@ import org.gold.miner.tchoutchou.mineur.MinerAction;
 
 public class Arbre {
 
-	private Racine noeudRacine;
+	private RacineArbre noeudRacine;
 
-	public Arbre(Racine racine) {
+	public Arbre(RacineArbre racine) {
 		this.noeudRacine = racine;
 	}
 
@@ -24,7 +24,7 @@ public class Arbre {
 		return resultat.getMinerAction();
 	}
 
-	public Racine getNoeudRacine() {
+	public RacineArbre getNoeudRacine() {
 		return noeudRacine;
 	}
 

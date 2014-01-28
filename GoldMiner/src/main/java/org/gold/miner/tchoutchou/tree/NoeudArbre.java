@@ -7,10 +7,10 @@ public abstract class NoeudArbre {
 	protected static final int INTEGER_DISTANCE_INITIALE = 9999;
 	
 	protected Case caseNoeud;
-	protected Noeud noeudNord = null;
-	protected Noeud noeudSud = null;
-	protected Noeud noeudEst = null;
-	protected Noeud noeudOuest = null;
+	protected NoeudArbreImpl noeudNord = null;
+	protected NoeudArbreImpl noeudSud = null;
+	protected NoeudArbreImpl noeudEst = null;
+	protected NoeudArbreImpl noeudOuest = null;
 
 	public NoeudArbre(Case caseNoeud) {
 		this.caseNoeud = caseNoeud;
@@ -22,19 +22,19 @@ public abstract class NoeudArbre {
 		return this.caseNoeud;
 	}
 
-	public void addNoeudNord(Noeud caseNord) {
+	public void addNoeudNord(NoeudArbreImpl caseNord) {
 		this.noeudNord = caseNord;
 	}
 
-	public void addNoeudSud(Noeud caseSud) {
+	public void addNoeudSud(NoeudArbreImpl caseSud) {
 		this.noeudSud = caseSud;
 	}
 
-	public void addNoeudEst(Noeud caseEst) {
+	public void addNoeudEst(NoeudArbreImpl caseEst) {
 		this.noeudEst = caseEst;
 	}
 
-	public void addNoeudOuest(Noeud caseOuest) {
+	public void addNoeudOuest(NoeudArbreImpl caseOuest) {
 		this.noeudOuest = caseOuest;
 	}
 

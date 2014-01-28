@@ -10,10 +10,9 @@ import org.gold.miner.tchoutchou.mine.LineSight;
 import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.tree.Arbre;
-import org.gold.miner.tchoutchou.tree.Noeud;
 import org.gold.miner.tchoutchou.tree.NoeudArbre;
-import org.gold.miner.tchoutchou.tree.Racine;
-import org.gold.miner.tchoutchou.tree.factories.TreeFactory;
+import org.gold.miner.tchoutchou.tree.NoeudArbreImpl;
+import org.gold.miner.tchoutchou.tree.RacineArbre;
 import org.junit.Test;
 
 public class TreeFactoryTest {
@@ -37,15 +36,15 @@ public class TreeFactoryTest {
 
 		Map<Position, Case> casesInMap = mine.getCasesInMap();
 
-		Racine racine = new Racine(casesInMap.get(startPosition));
+		RacineArbre racine = new RacineArbre(casesInMap.get(startPosition));
 		// ajout de la case EST
-		Noeud noeud1 = new Noeud(racine, casesInMap.get(new Position(11, 10)));
+		NoeudArbreImpl noeud1 = new NoeudArbreImpl(racine, casesInMap.get(new Position(11, 10)));
 		// ajout de la case SUD
-		Noeud noeud2 = new Noeud(racine, casesInMap.get(new Position(10, 11)));
+		NoeudArbreImpl noeud2 = new NoeudArbreImpl(racine, casesInMap.get(new Position(10, 11)));
 		// ajout de la case OUEST
-		Noeud noeud3 = new Noeud(racine, casesInMap.get(new Position(9, 10)));
+		NoeudArbreImpl noeud3 = new NoeudArbreImpl(racine, casesInMap.get(new Position(9, 10)));
 		// ajout de la case NORD
-		Noeud noeud4 = new Noeud(racine, casesInMap.get(new Position(10, 9)));
+		NoeudArbreImpl noeud4 = new NoeudArbreImpl(racine, casesInMap.get(new Position(10, 9)));
 
 		racine.addNoeudEst(noeud1);
 		racine.addNoeudSud(noeud2);
@@ -62,24 +61,24 @@ public class TreeFactoryTest {
 		Assertions.assertThat(arbre.getNoeudRacine()).isEqualTo(racine);
 	}
 
-	private static Set<Noeud> addNoeuds(Map<Position, Case> casesInMap, NoeudArbre noeud) {
-		Set<Noeud> casesInSet = new HashSet<Noeud>();
+	private static Set<NoeudArbreImpl> addNoeuds(Map<Position, Case> casesInMap, NoeudArbre noeud) {
+		Set<NoeudArbreImpl> casesInSet = new HashSet<NoeudArbreImpl>();
 
 		int positionX = noeud.getCase().getPosition().getPositionX();
 		int positionY = noeud.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST
 		Case caseTmp = casesInMap.get(new Position(positionX + 1, positionY));
-		Noeud noeud1 = new Noeud(noeud, caseTmp != null ? caseTmp : null);
+		NoeudArbreImpl noeud1 = new NoeudArbreImpl(noeud, caseTmp != null ? caseTmp : null);
 		// ajout de la case SUD
 		caseTmp = casesInMap.get(new Position(positionX, positionY + 1));
-		Noeud noeud2 = new Noeud(noeud, caseTmp != null ? caseTmp : null);
+		NoeudArbreImpl noeud2 = new NoeudArbreImpl(noeud, caseTmp != null ? caseTmp : null);
 		// ajout de la case OUEST
 		caseTmp = casesInMap.get(new Position(positionX - 1, positionY));
-		Noeud noeud3 = new Noeud(noeud, caseTmp != null ? caseTmp : null);
+		NoeudArbreImpl noeud3 = new NoeudArbreImpl(noeud, caseTmp != null ? caseTmp : null);
 		// ajout de la case NORD
 		caseTmp = casesInMap.get(new Position(positionX, positionY - 1));
-		Noeud noeud4 = new Noeud(noeud, caseTmp != null ? caseTmp : null);
+		NoeudArbreImpl noeud4 = new NoeudArbreImpl(noeud, caseTmp != null ? caseTmp : null);
 
 		noeud.addNoeudEst(noeud1);
 		casesInSet.add(noeud1);

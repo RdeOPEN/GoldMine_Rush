@@ -8,8 +8,8 @@ import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.LineSight;
 import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
-import org.gold.miner.tchoutchou.tree.Noeud;
-import org.gold.miner.tchoutchou.tree.Racine;
+import org.gold.miner.tchoutchou.tree.NoeudArbreImpl;
+import org.gold.miner.tchoutchou.tree.RacineArbre;
 import org.gold.miner.tchoutchou.tree.ResultatRecherche;
 import org.junit.Test;
 
@@ -34,8 +34,8 @@ public class NodeFactoryTest {
 
 		Map<Position, Case> casesInMap = mine.getCasesInMap();
 
-		Racine racine = new Racine(casesInMap.get(startPosition));
-		Set<Noeud> nodes = NodeFactory.constructNodes(casesInMap, racine);
+		RacineArbre racine = new RacineArbre(casesInMap.get(startPosition));
+		Set<NoeudArbreImpl> nodes = NodeFactory.constructNodes(casesInMap, racine);
 
 		Assertions.assertThat(nodes).isNotNull();
 		Assertions.assertThat(nodes).isNotEmpty();
@@ -53,7 +53,7 @@ public class NodeFactoryTest {
 		Assertions.assertThat(resultat.getDistance()).isEqualTo(3);
 	}
 
-	private ResultatRecherche extracted(Racine racine, Case destination) {
+	private static ResultatRecherche extracted(RacineArbre racine, Case destination) {
 		System.out.println("Recherche destination: " + destination);
 		ResultatRecherche resultat = new ResultatRecherche();
 		racine.calculateShortWayToDestination(resultat, destination);

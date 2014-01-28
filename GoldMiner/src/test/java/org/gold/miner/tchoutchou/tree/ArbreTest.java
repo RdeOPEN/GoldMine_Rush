@@ -12,19 +12,19 @@ public class ArbreTest {
 	public void test_chemin_le_plus_court_profondeur_1() throws Exception {
 
 		// creation racine
-		Racine noeudRacine = new Racine(new Case(new Position(15, 15), TypeTerrain.E.name()));
+		RacineArbre noeudRacine = new RacineArbre(new Case(new Position(15, 15), TypeTerrain.E.name()));
 		Arbre arbre = new Arbre(noeudRacine);
 
 		Case destination = new Case(new Position(14, 15), TypeTerrain.D.name());
 
 		// ajout de la case EST
-		Noeud case1 = new Noeud(noeudRacine, new Case(new Position(16, 15), TypeTerrain.M.name()));
+		NoeudArbreImpl case1 = new NoeudArbreImpl(noeudRacine, new Case(new Position(16, 15), TypeTerrain.M.name()));
 		// ajout de la case SUD
-		Noeud case2 = new Noeud(noeudRacine, new Case(new Position(15, 16), TypeTerrain.S.name()));
+		NoeudArbreImpl case2 = new NoeudArbreImpl(noeudRacine, new Case(new Position(15, 16), TypeTerrain.S.name()));
 		// ajout de la case OUEST
-		Noeud case3 = new Noeud(noeudRacine, destination);
+		NoeudArbreImpl case3 = new NoeudArbreImpl(noeudRacine, destination);
 		// ajout de la case OUEST
-		Noeud case4 = new Noeud(noeudRacine, new Case(new Position(15, 14), TypeTerrain.E.name()));
+		NoeudArbreImpl case4 = new NoeudArbreImpl(noeudRacine, new Case(new Position(15, 14), TypeTerrain.E.name()));
 
 		noeudRacine.addNoeudEst(case1);
 		noeudRacine.addNoeudSud(case2);
@@ -41,17 +41,17 @@ public class ArbreTest {
 		Case destination = new Case(new Position(16, 14), TypeTerrain.D.name());
 
 		// creation racine
-		Racine noeudRacine = new Racine(new Case(new Position(15, 15), TypeTerrain.E.name()));
+		RacineArbre noeudRacine = new RacineArbre(new Case(new Position(15, 15), TypeTerrain.E.name()));
 		Arbre arbre = new Arbre(noeudRacine);
 
 		// ajout de la case EST
-		Noeud caseEst = new Noeud(noeudRacine, new Case(new Position(16, 15), TypeTerrain.M.name()));
+		NoeudArbreImpl caseEst = new NoeudArbreImpl(noeudRacine, new Case(new Position(16, 15), TypeTerrain.M.name()));
 		// ajout de la case SUD
-		Noeud case2 = new Noeud(noeudRacine, new Case(new Position(15, 16), TypeTerrain.D.name()));
+		NoeudArbreImpl case2 = new NoeudArbreImpl(noeudRacine, new Case(new Position(15, 16), TypeTerrain.D.name()));
 		// ajout de la case OUEST
-		Noeud case3 = new Noeud(noeudRacine, new Case(new Position(14, 15), TypeTerrain.M.name()));
+		NoeudArbreImpl case3 = new NoeudArbreImpl(noeudRacine, new Case(new Position(14, 15), TypeTerrain.M.name()));
 		// ajout de la case OUEST
-		Noeud case4 = new Noeud(noeudRacine, new Case(new Position(15, 14), TypeTerrain.E.name()));
+		NoeudArbreImpl case4 = new NoeudArbreImpl(noeudRacine, new Case(new Position(15, 14), TypeTerrain.E.name()));
 
 		noeudRacine.addNoeudEst(caseEst);
 		noeudRacine.addNoeudSud(case2);
@@ -59,13 +59,13 @@ public class ArbreTest {
 		noeudRacine.addNoeudNord(case4);
 
 		// ajout de la case EST
-		Noeud caseEst1 = new Noeud(caseEst, new Case(new Position(17, 15), TypeTerrain.S.name()));
+		NoeudArbreImpl caseEst1 = new NoeudArbreImpl(caseEst, new Case(new Position(17, 15), TypeTerrain.S.name()));
 		// ajout de la case SUD
-		Noeud caseEst2 = new Noeud(caseEst, new Case(new Position(16, 16), TypeTerrain.S.name()));
+		NoeudArbreImpl caseEst2 = new NoeudArbreImpl(caseEst, new Case(new Position(16, 16), TypeTerrain.S.name()));
 		// ajout de la case OUEST
-		Noeud caseEst3 = new Noeud(caseEst, new Case(new Position(15, 15), TypeTerrain.S.name()));
+		NoeudArbreImpl caseEst3 = new NoeudArbreImpl(caseEst, new Case(new Position(15, 15), TypeTerrain.S.name()));
 		// ajout de la case NORD
-		Noeud caseEst4 = new Noeud(caseEst, destination);
+		NoeudArbreImpl caseEst4 = new NoeudArbreImpl(caseEst, destination);
 
 		caseEst.addNoeudEst(caseEst1);
 		caseEst.addNoeudSud(caseEst2);
@@ -83,7 +83,7 @@ public class ArbreTest {
 		Case destination = new Case(new Position(16, 13), TypeTerrain.M.name());
 
 		// creation racine
-		Racine noeudRacine = new Racine(new Case(new Position(15, 15), TypeTerrain.E.name()));
+		RacineArbre noeudRacine = new RacineArbre(new Case(new Position(15, 15), TypeTerrain.E.name()));
 		Arbre arbre = new Arbre(noeudRacine);
 
 		// positionX = 15 | positionY = 15
@@ -91,13 +91,13 @@ public class ArbreTest {
 		int positionY = noeudRacine.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST
-		Noeud caseEst = new Noeud(noeudRacine, new Case(new Position(positionX + 1, positionY), TypeTerrain.M.name()));
+		NoeudArbreImpl caseEst = new NoeudArbreImpl(noeudRacine, new Case(new Position(positionX + 1, positionY), TypeTerrain.M.name()));
 		// ajout de la case SUD
-		Noeud case2 = new Noeud(noeudRacine, new Case(new Position(positionX, positionY + 1), TypeTerrain.D.name()));
+		NoeudArbreImpl case2 = new NoeudArbreImpl(noeudRacine, new Case(new Position(positionX, positionY + 1), TypeTerrain.D.name()));
 		// ajout de la case OUEST
-		Noeud case3 = new Noeud(noeudRacine, new Case(new Position(positionX - 1, positionY), TypeTerrain.M.name()));
+		NoeudArbreImpl case3 = new NoeudArbreImpl(noeudRacine, new Case(new Position(positionX - 1, positionY), TypeTerrain.M.name()));
 		// ajout de la case OUEST
-		Noeud case4 = new Noeud(noeudRacine, new Case(new Position(positionX, positionY - 1), TypeTerrain.E.name()));
+		NoeudArbreImpl case4 = new NoeudArbreImpl(noeudRacine, new Case(new Position(positionX, positionY - 1), TypeTerrain.E.name()));
 
 		noeudRacine.addNoeudEst(caseEst);
 		noeudRacine.addNoeudSud(case2);
@@ -109,13 +109,13 @@ public class ArbreTest {
 		positionY = caseEst.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST
-		Noeud caseEst1 = new Noeud(caseEst, new Case(new Position(positionX + 1, positionY), TypeTerrain.M.name()));
+		NoeudArbreImpl caseEst1 = new NoeudArbreImpl(caseEst, new Case(new Position(positionX + 1, positionY), TypeTerrain.M.name()));
 		// ajout de la case SUD
-		Noeud caseEst2 = new Noeud(caseEst, new Case(new Position(positionX, positionY + 1), TypeTerrain.S.name()));
+		NoeudArbreImpl caseEst2 = new NoeudArbreImpl(caseEst, new Case(new Position(positionX, positionY + 1), TypeTerrain.S.name()));
 		// ajout de la case OUEST
-		Noeud caseEst3 = new Noeud(caseEst, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
+		NoeudArbreImpl caseEst3 = new NoeudArbreImpl(caseEst, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
 		// ajout de la case NORD
-		Noeud caseEst4 = new Noeud(caseEst, new Case(new Position(positionX, positionY - 1), TypeTerrain.M.name()));
+		NoeudArbreImpl caseEst4 = new NoeudArbreImpl(caseEst, new Case(new Position(positionX, positionY - 1), TypeTerrain.M.name()));
 
 		caseEst.addNoeudEst(caseEst1);
 		caseEst.addNoeudSud(caseEst2);
@@ -127,13 +127,13 @@ public class ArbreTest {
 		positionY = caseEst4.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST
-		Noeud caseNord1 = new Noeud(caseEst4, new Case(new Position(positionX + 1, positionY), TypeTerrain.E.name()));
+		NoeudArbreImpl caseNord1 = new NoeudArbreImpl(caseEst4, new Case(new Position(positionX + 1, positionY), TypeTerrain.E.name()));
 		// ajout de la case SUD
-		Noeud caseNord2 = new Noeud(caseEst4, new Case(new Position(positionX, positionY + 1), TypeTerrain.S.name()));
+		NoeudArbreImpl caseNord2 = new NoeudArbreImpl(caseEst4, new Case(new Position(positionX, positionY + 1), TypeTerrain.S.name()));
 		// ajout de la case OUEST
-		Noeud caseNord3 = new Noeud(caseEst4, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
+		NoeudArbreImpl caseNord3 = new NoeudArbreImpl(caseEst4, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
 		// ajout de la case NORD
-		Noeud caseNord4 = new Noeud(caseEst4, destination);
+		NoeudArbreImpl caseNord4 = new NoeudArbreImpl(caseEst4, destination);
 
 		caseEst4.addNoeudEst(caseNord1);
 		caseEst4.addNoeudSud(caseNord2);
@@ -151,7 +151,7 @@ public class ArbreTest {
 		Case destination = new Case(new Position(16, 12), TypeTerrain.M.name());
 
 		// creation racine
-		Racine noeudRacine = new Racine(new Case(new Position(15, 15), TypeTerrain.E.name()));
+		RacineArbre noeudRacine = new RacineArbre(new Case(new Position(15, 15), TypeTerrain.E.name()));
 		Arbre arbre = new Arbre(noeudRacine);
 
 		// niveau 1
@@ -161,13 +161,13 @@ public class ArbreTest {
 		int positionY = noeudRacine.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST (16,15)
-		Noeud caseEst = new Noeud(noeudRacine, new Case(new Position(positionX + 1, positionY), TypeTerrain.M.name()));
+		NoeudArbreImpl caseEst = new NoeudArbreImpl(noeudRacine, new Case(new Position(positionX + 1, positionY), TypeTerrain.M.name()));
 		// ajout de la case SUD (15,16)
-		Noeud case2 = new Noeud(noeudRacine, new Case(new Position(positionX, positionY + 1), TypeTerrain.D.name()));
+		NoeudArbreImpl case2 = new NoeudArbreImpl(noeudRacine, new Case(new Position(positionX, positionY + 1), TypeTerrain.D.name()));
 		// ajout de la case OUEST (14,15)
-		Noeud case3 = new Noeud(noeudRacine, new Case(new Position(positionX - 1, positionY), TypeTerrain.M.name()));
+		NoeudArbreImpl case3 = new NoeudArbreImpl(noeudRacine, new Case(new Position(positionX - 1, positionY), TypeTerrain.M.name()));
 		// ajout de la case OUEST (15,14)
-		Noeud case4 = new Noeud(noeudRacine, new Case(new Position(positionX, positionY - 1), TypeTerrain.E.name()));
+		NoeudArbreImpl case4 = new NoeudArbreImpl(noeudRacine, new Case(new Position(positionX, positionY - 1), TypeTerrain.E.name()));
 
 		noeudRacine.addNoeudEst(caseEst);
 		noeudRacine.addNoeudSud(case2);
@@ -181,13 +181,13 @@ public class ArbreTest {
 		positionY = caseEst.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST (17,15)
-		Noeud caseEst1 = new Noeud(caseEst, new Case(new Position(positionX + 1, positionY), TypeTerrain.M.name()));
+		NoeudArbreImpl caseEst1 = new NoeudArbreImpl(caseEst, new Case(new Position(positionX + 1, positionY), TypeTerrain.M.name()));
 		// ajout de la case SUD (16,16)
-		Noeud caseEst2 = new Noeud(caseEst, new Case(new Position(positionX, positionY + 1), TypeTerrain.S.name()));
+		NoeudArbreImpl caseEst2 = new NoeudArbreImpl(caseEst, new Case(new Position(positionX, positionY + 1), TypeTerrain.S.name()));
 		// ajout de la case OUEST (15,15)
-		Noeud caseEst3 = new Noeud(caseEst, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
+		NoeudArbreImpl caseEst3 = new NoeudArbreImpl(caseEst, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
 		// ajout de la case NORD (16,14)
-		Noeud caseEst4 = new Noeud(caseEst, new Case(new Position(positionX, positionY - 1), TypeTerrain.M.name()));
+		NoeudArbreImpl caseEst4 = new NoeudArbreImpl(caseEst, new Case(new Position(positionX, positionY - 1), TypeTerrain.M.name()));
 
 		caseEst.addNoeudEst(caseEst1);
 		caseEst.addNoeudSud(caseEst2);
@@ -201,13 +201,13 @@ public class ArbreTest {
 		positionY = caseEst4.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST (17,14)
-		Noeud caseNord1 = new Noeud(caseEst4, new Case(new Position(positionX + 1, positionY), TypeTerrain.E.name()));
+		NoeudArbreImpl caseNord1 = new NoeudArbreImpl(caseEst4, new Case(new Position(positionX + 1, positionY), TypeTerrain.E.name()));
 		// ajout de la case SUD (16,15)
-		Noeud caseNord2 = new Noeud(caseEst4, new Case(new Position(positionX, positionY + 1), TypeTerrain.M.name()));
+		NoeudArbreImpl caseNord2 = new NoeudArbreImpl(caseEst4, new Case(new Position(positionX, positionY + 1), TypeTerrain.M.name()));
 		// ajout de la case OUEST (15,14)
-		Noeud caseNord3 = new Noeud(caseEst4, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
+		NoeudArbreImpl caseNord3 = new NoeudArbreImpl(caseEst4, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
 		// ajout de la case NORD (16,13)
-		Noeud caseNord4 = new Noeud(caseEst4, new Case(new Position(positionX, positionY - 1), TypeTerrain.M.name()));
+		NoeudArbreImpl caseNord4 = new NoeudArbreImpl(caseEst4, new Case(new Position(positionX, positionY - 1), TypeTerrain.M.name()));
 
 		caseEst4.addNoeudEst(caseNord1);
 		caseEst4.addNoeudSud(caseNord2);
@@ -221,13 +221,13 @@ public class ArbreTest {
 		positionY = caseNord4.getCase().getPosition().getPositionY();
 
 		// ajout de la case EST (17,13)
-		Noeud caseSud1 = new Noeud(caseNord4, new Case(new Position(positionX + 1, positionY), TypeTerrain.E.name()));
+		NoeudArbreImpl caseSud1 = new NoeudArbreImpl(caseNord4, new Case(new Position(positionX + 1, positionY), TypeTerrain.E.name()));
 		// ajout de la case SUD (16,14)
-		Noeud caseSud2 = new Noeud(caseNord4, new Case(new Position(positionX, positionY + 1), TypeTerrain.S.name()));
+		NoeudArbreImpl caseSud2 = new NoeudArbreImpl(caseNord4, new Case(new Position(positionX, positionY + 1), TypeTerrain.S.name()));
 		// ajout de la case OUEST (15,13)
-		Noeud caseSud3 = new Noeud(caseNord4, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
+		NoeudArbreImpl caseSud3 = new NoeudArbreImpl(caseNord4, new Case(new Position(positionX - 1, positionY), TypeTerrain.E.name()));
 		// ajout de la case NORD (16,12)
-		Noeud caseSud4 = new Noeud(caseNord4, new Case(new Position(positionX, positionY - 1), TypeTerrain.M.name()));
+		NoeudArbreImpl caseSud4 = new NoeudArbreImpl(caseNord4, new Case(new Position(positionX, positionY - 1), TypeTerrain.M.name()));
 		// Noeud caseSud4 = new Noeud(caseNord2, destination);
 
 		caseNord4.addNoeudEst(caseSud1);
