@@ -9,7 +9,7 @@ public class Position implements Comparable<Position> {
 		this.positionX = positionX;
 		this.positionY = positionY;
 	}
-	
+
 	public Position(String position, String delimiter) {
 		parsePosition(position, delimiter);
 	}
@@ -26,6 +26,22 @@ public class Position implements Comparable<Position> {
 
 	public int getPositionY() {
 		return positionY;
+	}
+
+	public static Position calculatePositionEast(Position position) {
+		return new Position(position.getPositionX() + 1, position.getPositionY());
+	}
+
+	public static Position calculatePositionSouth(Position position) {
+		return new Position(position.getPositionX(), position.getPositionY() + 1);
+	}
+
+	public static Position calculatePositionWest(Position position) {
+		return new Position(position.getPositionX() - 1, position.getPositionY());
+	}
+
+	public static Position calculatePositionNorth(Position position) {
+		return new Position(position.getPositionX(), position.getPositionY() - 1);
 	}
 
 	@Override
@@ -61,7 +77,7 @@ public class Position implements Comparable<Position> {
 	@Override
 	public int compareTo(Position pos) {
 		int result = Integer.valueOf(positionX).compareTo(Integer.valueOf(pos.positionX));
-		if(result == 0) {
+		if (result == 0) {
 			result = Integer.valueOf(positionY).compareTo(Integer.valueOf(pos.positionY));
 		}
 		return result;
