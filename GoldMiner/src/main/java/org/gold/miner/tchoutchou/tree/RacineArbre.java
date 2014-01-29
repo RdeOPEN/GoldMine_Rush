@@ -43,7 +43,6 @@ public class RacineArbre extends NoeudArbre {
 	}
 
 	private static Integer getMinDistance(Case currentCase, ResultatRecherche resultat, Integer distance, Integer result, MinerAction minerAction) {
-		System.out.println("getMinDistance. distance: "+distance+". result: "+result);
 		Integer minDistance = distance;
 		if (result != null) {
 			minDistance = Math.min(result, distance);

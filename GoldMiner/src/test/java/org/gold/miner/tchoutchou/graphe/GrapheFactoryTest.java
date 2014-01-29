@@ -35,7 +35,7 @@ public class GrapheFactoryTest {
 	@Test
 	public void constructGraphe() throws Exception {
 		NodeGraphe node88 = new NodeGraphe(new Case(new Position(8, 8), TypeTerrain.S, 0));
-		NodeGraphe node89 = new NodeGraphe(new Case(new Position(9, 8), TypeTerrain.D, 7));
+		NodeGraphe node98 = new NodeGraphe(new Case(new Position(9, 8), TypeTerrain.D, 7));
 		NodeGraphe node1010 = new NodeGraphe(new Case(new Position(10, 10), TypeTerrain.X, 0));
 		NodeGraphe node1212 = new NodeGraphe(new Case(new Position(12, 12), TypeTerrain.M, 0));
 
@@ -45,7 +45,8 @@ public class GrapheFactoryTest {
 		Assertions.assertThat(nodes).isNotNull();
 		Assertions.assertThat(nodes.size()).isEqualTo(25);
 		Assertions.assertThat(nodes.get(new Position(8, 8)).getCase()).isEqualTo(node88.getCase());
-		Assertions.assertThat(nodes.get(new Position(9, 8)).getCase()).isEqualTo(node89.getCase());
+		Assertions.assertThat(nodes.get(new Position(8, 8)).getNodeEast().getCase()).isEqualTo(node98.getCase());
+		Assertions.assertThat(nodes.get(new Position(9, 8)).getCase()).isEqualTo(node98.getCase());
 		Assertions.assertThat(nodes.get(new Position(10, 10)).getCase()).isEqualTo(node1010.getCase());
 		Assertions.assertThat(nodes.get(new Position(12, 12)).getCase()).isEqualTo(node1212.getCase());
 	}

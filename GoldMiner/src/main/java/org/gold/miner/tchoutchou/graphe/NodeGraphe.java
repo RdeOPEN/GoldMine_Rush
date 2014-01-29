@@ -1,38 +1,117 @@
 package org.gold.miner.tchoutchou.graphe;
 
 import org.gold.miner.tchoutchou.mine.Case;
+import org.gold.miner.tchoutchou.tree.ResultatRecherche;
 
 public class NodeGraphe {
 
+	protected static final int INTEGER_DISTANCE_INITIALE = 9999;
+
 	private Case caseNode;
 
-	private NodeGraphe nodeEst;
-	private NodeGraphe nodeSud;
-	private NodeGraphe nodeOuest;
-	private NodeGraphe nodeNord;
+	private NodeGraphe nodeEast;
+	private NodeGraphe nodeSouth;
+	private NodeGraphe nodeWest;
+	private NodeGraphe nodeNorth;
 
 	public NodeGraphe(Case caseTmp) {
 		caseNode = caseTmp;
+	}
+
+	public Integer calculateShortWayToDestination(ResultatRecherche resultat, Case destination) {
+
+		// si la case actuelle est la destination on retourne 1 et si c'est une feuille on retourne null.
+		if (destination.equals(caseNode)) {
+			return 1;
+		} else if (!caseNode.canPass()) {
+			return null;
+		}
+
+		Integer distance = new Integer(INTEGER_DISTANCE_INITIALE);
+
+		if (this.nodeEast != null) {
+			Integer result = nodeEast.calculateShortWayToDestination(resultat, destination);
+			if (result != null) {
+				distance = getMinDistance(distance, result);
+
+				if (distance == result)
+					resultat.setSelectedCase(caseNode);
+			}
+		}
+
+		if (this.nodeSouth != null) {
+			Integer result = nodeSouth.calculateShortWayToDestination(resultat, destination);
+			if (result != null) {
+				distance = getMinDistance(distance, result);
+			}
+		}
+
+		if (this.nodeWest != null) {
+			Integer result = nodeWest.calculateShortWayToDestination(resultat, destination);
+			if (result != null) {
+				distance = getMinDistance(distance, result);
+			}
+		}
+
+		if (this.nodeNorth != null) {
+			Integer result = nodeNorth.calculateShortWayToDestination(resultat, destination);
+			if (result != null) {
+				distance = getMinDistance(distance, result);
+			}
+		}
+
+		if (distance == INTEGER_DISTANCE_INITIALE) {
+			// on remet a null la distance si on a pas trouvé la destination à un niveau inférieur
+			distance = null;
+		} else {
+			// on ajoute 1 si on a trouvé la destination à un niveau inférieur
+			distance++;
+		}
+
+		return distance;
+	}
+
+	private static int getMinDistance(Integer distance, Integer result) {
+		if (distance == null && result != null) {
+			return result;
+		}
+		return Math.min(result, distance);
 	}
 
 	public Case getCase() {
 		return caseNode;
 	}
 
-	public void addNodeEst(NodeGraphe node) {
-		this.nodeEst = node;
+	public void addNodeEast(NodeGraphe node) {
+		this.nodeEast = node;
 	}
 
-	public void addNodeSud(NodeGraphe node) {
-		this.nodeSud = node;
+	public void addNodeSouth(NodeGraphe node) {
+		this.nodeSouth = node;
 	}
 
-	public void addNodeOuest(NodeGraphe node) {
-		this.nodeOuest = node;
+	public void addNodeWest(NodeGraphe node) {
+		this.nodeWest = node;
 	}
 
-	public void addNodeNord(NodeGraphe node) {
-		this.nodeNord = node;
+	public void addNodeNorth(NodeGraphe node) {
+		this.nodeNorth = node;
+	}
+
+	public NodeGraphe getNodeEast() {
+		return nodeEast;
+	}
+
+	public NodeGraphe getNodeSouth() {
+		return nodeSouth;
+	}
+
+	public NodeGraphe getNodeWest() {
+		return nodeWest;
+	}
+
+	public NodeGraphe getNodeNorth() {
+		return nodeNorth;
 	}
 
 	public int getPositionX() {
@@ -47,10 +126,10 @@ public class NodeGraphe {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nodeEst == null) ? 0 : nodeEst.hashCode());
-		result = prime * result + ((nodeNord == null) ? 0 : nodeNord.hashCode());
-		result = prime * result + ((nodeOuest == null) ? 0 : nodeOuest.hashCode());
-		result = prime * result + ((nodeSud == null) ? 0 : nodeSud.hashCode());
+		result = prime * result + ((nodeEast == null) ? 0 : nodeEast.hashCode());
+		result = prime * result + ((nodeNorth == null) ? 0 : nodeNorth.hashCode());
+		result = prime * result + ((nodeWest == null) ? 0 : nodeWest.hashCode());
+		result = prime * result + ((nodeSouth == null) ? 0 : nodeSouth.hashCode());
 		return result;
 	}
 
@@ -63,32 +142,32 @@ public class NodeGraphe {
 		if (getClass() != obj.getClass())
 			return false;
 		NodeGraphe other = (NodeGraphe) obj;
-		if (nodeEst == null) {
-			if (other.nodeEst != null)
+		if (nodeEast == null) {
+			if (other.nodeEast != null)
 				return false;
-		} else if (!nodeEst.equals(other.nodeEst))
+		} else if (!nodeEast.equals(other.nodeEast))
 			return false;
-		if (nodeNord == null) {
-			if (other.nodeNord != null)
+		if (nodeNorth == null) {
+			if (other.nodeNorth != null)
 				return false;
-		} else if (!nodeNord.equals(other.nodeNord))
+		} else if (!nodeNorth.equals(other.nodeNorth))
 			return false;
-		if (nodeOuest == null) {
-			if (other.nodeOuest != null)
+		if (nodeWest == null) {
+			if (other.nodeWest != null)
 				return false;
-		} else if (!nodeOuest.equals(other.nodeOuest))
+		} else if (!nodeWest.equals(other.nodeWest))
 			return false;
-		if (nodeSud == null) {
-			if (other.nodeSud != null)
+		if (nodeSouth == null) {
+			if (other.nodeSouth != null)
 				return false;
-		} else if (!nodeSud.equals(other.nodeSud))
+		} else if (!nodeSouth.equals(other.nodeSouth))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "NodeGraphe [caseNode=" + caseNode + ", nodeEst=" + nodeEst + ", nodeSud=" + nodeSud + ", nodeOuest=" + nodeOuest + ", nodeNord=" + nodeNord
+		return "NodeGraphe [caseNode=" + caseNode + ", nodeEst=" + nodeEast + ", nodeSud=" + nodeSouth + ", nodeOuest=" + nodeWest + ", nodeNord=" + nodeNorth
 				+ "]";
 	}
 
