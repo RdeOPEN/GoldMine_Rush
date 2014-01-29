@@ -1,29 +1,42 @@
 package org.gold.miner.tchoutchou.graphe;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Position;
-import org.gold.miner.tchoutchou.tree.NoeudArbreImpl;
 
 public class GrapheFactory {
 
-	public static NodeGraphe constructGraphe(Map<Position, Case> casesInMap, Position startPosition) {
-
-		NodeGraphe racine = new NodeGraphe(casesInMap.get(startPosition));
-
-		addNodeEst(racine, casesInMap);
-		addNodeSud(racine, casesInMap);
-		addNodeOuest(racine, casesInMap);
-		addNodeNord(racine, casesInMap);
-
-		return racine;
+	public static Collection<NodeGraphe> constructGraphe(Collection<Case> cases) {
+		Set<NodeGraphe> nodes = new HashSet<NodeGraphe>();
+		
+		for (Case caseCourante : cases)
+		{
+			// creation d'un node et on reli aux autres noeuds en les construisants, si les noeuds existent deja dans nodes on ne les recrees pas.
+			NodeGraphe node = new NodeGraphe(caseCourante);
+			if(nodes.contains(o)) {
+				continue;
+			}
+			
+			if() {
+				
+			}
+			
+			addNodeEst(node, casesInMap);
+			addNodeSud(node, casesInMap);
+			addNodeOuest(node, casesInMap);
+			addNodeNord(node, casesInMap);
+		}
+		return nodes;
 	}
 
 	private static void addNodes(NodeGraphe node, Map<Position, Case> casesInMap) {
-		
+
 	}
-	
+
 	private static void addNodeEst(NodeGraphe node, Map<Position, Case> casesInMap) {
 		// ajout de la case EST
 		Case caseTmp = casesInMap.get(new Position(node.getPositionX() + 1, node.getPositionY()));

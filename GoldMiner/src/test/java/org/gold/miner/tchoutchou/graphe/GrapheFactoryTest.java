@@ -1,6 +1,7 @@
 package org.gold.miner.tchoutchou.graphe;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.fest.assertions.api.Assertions;
 import org.gold.miner.tchoutchou.mine.Case;
@@ -30,7 +31,9 @@ public class GrapheFactoryTest {
 
 		Map<Position, Case> casesInMap = mine.getCasesInMap();
 		
-		RacineGraphe racineGraphe = GrapheFactory.constructGraphe(casesInMap);
+		Set<Case> casesInSet = mine.getCasesInCollection();
+		
+		RacineGraphe racineGraphe = GrapheFactory.constructGraphe(casesInSet);
 
 		Assertions.assertThat(racineGraphe).isNotNull();
 	}
