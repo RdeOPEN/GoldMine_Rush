@@ -12,7 +12,7 @@ public abstract class Miner {
 	private static final int NUMBER_MAX_DIAMONDS = 3;
 
 	protected Pathfinder pathfinder;
-	protected Position trolleyPosition;
+	public static Position trolleyPosition;
 	protected Position currentPosition;
 	protected MinerAction direction;
 	protected LineSight lineSight;
@@ -32,7 +32,7 @@ public abstract class Miner {
 	public Miner(Pathfinder pathfinder, Position trolleyPosition, Position currentPosition, MinerAction direction, LineSight lineSight,
 			List<Position> positionOpponents, int nbDiamonds) {
 		this.pathfinder = pathfinder;
-		this.trolleyPosition = trolleyPosition;
+		Miner.trolleyPosition = trolleyPosition; // maj de la position du chariot du joueur (ne devrait pas changer)
 		this.currentPosition = currentPosition;
 		this.direction = direction;
 		this.positionOpponents = positionOpponents;
@@ -48,18 +48,7 @@ public abstract class Miner {
 	/**
 	 * @return MinerAction
 	 */
-	public MinerAction move() {
-		return pathfinder.moveTo(null, null);
-	}
-
-	/**
-	 * Ordonne au mineur de retourner au chariot
-	 * 
-	 * @return MinerAction
-	 */
-	protected MinerAction returnToTheTrolley() {
-		return pathfinder.moveTo(null, null);
-	}
+	public abstract MinerAction move();
 
 	public int getNbDiamonds() {
 		return nbDiamonds;

@@ -1,5 +1,7 @@
 package org.gold.miner.tchoutchou.mine;
 
+import org.gold.miner.tchoutchou.mineur.Miner;
+
 public class Case implements Comparable<Case> {
 
 	private Position position;
@@ -35,12 +37,14 @@ public class Case implements Comparable<Case> {
 	}
 
 	public boolean canPass() {
-		if (TypeTerrain.S.equals(typeTerrain) || TypeTerrain.X.equals(typeTerrain)) {
+		if (TypeTerrain.S.equals(typeTerrain)) {
 			return false;
 		}
 
-		if (TypeTerrain.S.equals(typeTerrain)) {
-			return false;
+		if (TypeTerrain.X.equals(typeTerrain)) {
+			if (!position.equals(Miner.trolleyPosition)) {
+				return false;
+			}
 		}
 
 		return true;

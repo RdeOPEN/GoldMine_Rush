@@ -62,7 +62,7 @@ public class Main {
 				String positionAndNbEnnemis = comServeur.getNextLine();
 				Position currentPositionMiner = new Position(positionAndNbEnnemis, DELIMITER_SPACE);
 
-				// on garde la position d'origine du chariot
+				// on garde la position d'origine du chariot si positionChariot vaut null
 				if (positionChariot == null) {
 					positionChariot = currentPositionMiner;
 				}
