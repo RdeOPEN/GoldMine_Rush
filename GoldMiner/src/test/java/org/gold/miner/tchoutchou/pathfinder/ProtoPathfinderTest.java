@@ -18,7 +18,7 @@ public class ProtoPathfinderTest {
 
 	@BeforeClass
 	public static void setUp() {
-		String line = "5 5 2";
+		String line = "5 5 3";
 		mine = new Mine(line, DELIMITER);
 
 		// + 0 1 2 3 4
@@ -30,39 +30,39 @@ public class ProtoPathfinderTest {
 
 		List<Case> casesToUpdate = new ArrayList<Case>();
 
-		// ligne 1
+		// colonne 0
 		casesToUpdate.add(genCase(0, 0, "S"));
 		casesToUpdate.add(genCase(0, 1, "S"));
-		casesToUpdate.add(genCase(0, 2, "S"));
-		casesToUpdate.add(genCase(0, 3, "S"));
-		casesToUpdate.add(genCase(0, 4, "S"));
+		casesToUpdate.add(genCase(0, 2, "M"));
+		casesToUpdate.add(genCase(0, 3, "M"));
+		casesToUpdate.add(genCase(0, 4, "3"));
 
-		// ligne 2
+		// colonne 1
 		casesToUpdate.add(genCase(1, 0, "S"));
 		casesToUpdate.add(genCase(1, 1, "M"));
-		casesToUpdate.add(genCase(1, 2, "S"));
-		casesToUpdate.add(genCase(1, 3, "M"));
-		casesToUpdate.add(genCase(1, 4, "S"));
+		casesToUpdate.add(genCase(1, 2, "M"));
+		casesToUpdate.add(genCase(1, 3, "S"));
+		casesToUpdate.add(genCase(1, 4, "M"));
 
-		// ligne 3
-		casesToUpdate.add(genCase(2, 0, "M"));
-		casesToUpdate.add(genCase(2, 1, "M"));
+		// colonne 2
+		casesToUpdate.add(genCase(2, 0, "S"));
+		casesToUpdate.add(genCase(2, 1, "S"));
 		casesToUpdate.add(genCase(2, 2, "E"));
-		casesToUpdate.add(genCase(2, 3, "M"));
-		casesToUpdate.add(genCase(2, 4, "S"));
+		casesToUpdate.add(genCase(2, 3, "S"));
+		casesToUpdate.add(genCase(2, 4, "M"));
 
-		// ligne 4
-		casesToUpdate.add(genCase(3, 0, "M"));
-		casesToUpdate.add(genCase(3, 1, "S"));
-		casesToUpdate.add(genCase(3, 2, "S"));
+		// colonne 3
+		casesToUpdate.add(genCase(3, 0, "S"));
+		casesToUpdate.add(genCase(3, 1, "M"));
+		casesToUpdate.add(genCase(3, 2, "M"));
 		casesToUpdate.add(genCase(3, 3, "M"));
-		casesToUpdate.add(genCase(3, 4, "S"));
+		casesToUpdate.add(genCase(3, 4, "M"));
 
-		// ligne 5
-		casesToUpdate.add(genCase(4, 0, "3"));
-		casesToUpdate.add(genCase(4, 1, "M"));
-		casesToUpdate.add(genCase(4, 2, "M"));
-		casesToUpdate.add(genCase(4, 3, "M"));
+		// colonne 4
+		casesToUpdate.add(genCase(4, 0, "S"));
+		casesToUpdate.add(genCase(4, 1, "S"));
+		casesToUpdate.add(genCase(4, 2, "S"));
+		casesToUpdate.add(genCase(4, 3, "S"));
 		casesToUpdate.add(genCase(4, 4, "S"));
 
 		mine.updateCases(casesToUpdate);
@@ -70,13 +70,20 @@ public class ProtoPathfinderTest {
 
 	@Test
 	public void moveTo_must_return_actions_to_go_to_diamonds() throws Exception {
-		Position destination = new Position(4, 0);
+		Position destination = new Position(0, 4);
 
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+		
 		MinerAction minerAction = protoPathfinder.moveTo(new Position(2, 2), destination);
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.WEST);
 		
 		minerAction = protoPathfinder.moveTo(new Position(1, 2), destination);
+		Assertions.assertThat(minerAction).isEqualTo(MinerAction.WEST);
+		
+		minerAction = protoPathfinder.moveTo(new Position(0, 2), destination);
+		Assertions.assertThat(minerAction).isEqualTo(MinerAction.SOUTH);
+		
+		minerAction = protoPathfinder.moveTo(new Position(0, 3), destination);
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.SOUTH);
 	}
 

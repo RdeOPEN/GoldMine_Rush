@@ -1,8 +1,9 @@
 package org.gold.miner.tchoutchou.mine;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.fest.assertions.api.Assertions;
 import org.junit.Test;
@@ -40,20 +41,22 @@ public class MineTest {
 
 		mine.updateCases(casesToUpdate);
 
-		Case[][] casesUpdated = mine.getCases();
+		Map<Position, Case> casesUpdated = mine.getCasesInMap();
 
-		Assertions.assertThat(casesUpdated.length).isEqualTo(40);
-		Assertions.assertThat(casesUpdated[0].length).isEqualTo(25);
-		Assertions.assertThat(casesUpdated[0][0]).isEqualTo(new Case(new Position(0, 0), "S"));
-		Assertions.assertThat(casesUpdated[0][1]).isEqualTo(new Case(new Position(0, 1), "5"));
-		Assertions.assertThat(casesUpdated[0][2]).isEqualTo(new Case(new Position(0, 2), "E"));
-		Assertions.assertThat(casesUpdated[0][3]).isEqualTo(new Case(new Position(0, 3), "M"));
-		Assertions.assertThat(casesUpdated[1][0]).isEqualTo(new Case(new Position(1, 0), "M"));
-		Assertions.assertThat(casesUpdated[1][1]).isEqualTo(new Case(new Position(1, 1), "S"));
-		Assertions.assertThat(casesUpdated[2][1]).isEqualTo(new Case(new Position(2, 1), "E"));
-		Assertions.assertThat(casesUpdated[2][2]).isEqualTo(new Case(new Position(2, 2), "M"));
-		Assertions.assertThat(casesUpdated[39][24]).isEqualTo(new Case(new Position(39, 24), "S"));
-		Assertions.assertThat(casesUpdated[15][15]).isEqualTo(new Case(new Position(15, 15), "M"));
+		Assertions.assertThat(casesUpdated.size()).isEqualTo(casesToUpdate.size());
+		Assertions.assertThat(casesUpdated.get(new Position(0, 0))).isEqualTo(new Case(new Position(0, 0), "S"));
+		Assertions.assertThat(casesUpdated.get(new Position(0, 1))).isEqualTo(new Case(new Position(0, 1), "5"));
+		Assertions.assertThat(casesUpdated.get(new Position(0, 2))).isEqualTo(new Case(new Position(0, 2), "E"));
+		Assertions.assertThat(casesUpdated.get(new Position(0, 3))).isEqualTo(new Case(new Position(0, 3), "M"));
+		Assertions.assertThat(casesUpdated.get(new Position(1, 0))).isEqualTo(new Case(new Position(1, 0), "M"));
+		Assertions.assertThat(casesUpdated.get(new Position(1, 1))).isEqualTo(new Case(new Position(1, 1), "S"));
+		Assertions.assertThat(casesUpdated.get(new Position(2, 1))).isEqualTo(new Case(new Position(2, 1), "E"));
+		Assertions.assertThat(casesUpdated.get(new Position(2, 2))).isEqualTo(new Case(new Position(2, 2), "M"));
+		Assertions.assertThat(casesUpdated.get(new Position(39, 24))).isEqualTo(new Case(new Position(39, 24), "S"));
+		Assertions.assertThat(casesUpdated.get(new Position(15, 15))).isEqualTo(new Case(new Position(15, 15), "M"));
+
+		Assertions.assertThat(mine.getCasesInMap()).isEqualTo(mine.getCasesInMap());
+		Assertions.assertThat(mine.getCasesInMap().get(new Position(2, 2))).isEqualTo(mine.getCasesInMap().get(new Position(2, 2)));
 	}
 
 	@Test
@@ -73,7 +76,7 @@ public class MineTest {
 
 		mine.updateCases(casesToUpdate);
 
-		Set<Case> casesInCollection = mine.getCasesInCollection();
+		Collection<Case> casesInCollection = mine.getCasesInCollection();
 
 		Assertions.assertThat(casesInCollection).containsOnly(casesToUpdate.toArray(new Case[casesInCollection.size()]));
 	}

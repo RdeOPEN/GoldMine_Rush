@@ -2,12 +2,13 @@ package org.gold.miner.tchoutchou.pathfinder;
 
 import java.util.Map;
 
+import org.gold.miner.tchoutchou.graphe.GrapheFactory;
+import org.gold.miner.tchoutchou.graphe.NodeGraphe;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
-import org.gold.miner.tchoutchou.tree.Arbre;
-import org.gold.miner.tchoutchou.tree.factories.TreeFactory;
+import org.gold.miner.tchoutchou.tree.ResultatRecherche;
 
 public class ProtoPathfinder implements Pathfinder {
 
@@ -22,10 +23,18 @@ public class ProtoPathfinder implements Pathfinder {
 		// recuperation du plan de la mine
 		Map<Position, Case> casesInMap = mine.getCasesInMap();
 
-		// construction Arbre
-		Arbre arbre = TreeFactory.constructTree(currentPosition, casesInMap);
+		// construction Graphe
+		Map<Position, NodeGraphe> graphe = GrapheFactory.constructGraphe(casesInMap);
 
-		MinerAction minerAction = arbre.parcoursArbreTo(casesInMap.get(destination));
+		NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
+
+		ResultatRecherche resultatRecherche = new ResultatRecherche();
+		Integer shortWay = nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, casesInMap.get(destination));
+
+		System.out.println("shortWay calculated: "+shortWay);
+		System.out.println(resultatRecherche);
+		
+		MinerAction minerAction = resultatRecherche.getMinerAction();
 
 		return minerAction;
 	}

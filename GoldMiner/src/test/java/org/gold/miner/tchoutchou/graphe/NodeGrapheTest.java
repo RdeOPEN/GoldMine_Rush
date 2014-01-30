@@ -12,7 +12,7 @@ public class NodeGrapheTest {
 
 	@Test
 	public void test_chemin_le_plus_court_profondeur_1() throws Exception {
-		Case destination = new Case(new Position(14, 15), TypeTerrain.D.name());
+		Case destination = new Case(new Position(14, 15), "5");
 
 		// creation racine
 		NodeGraphe noeudRacine = new NodeGraphe(new Case(new Position(15, 15), TypeTerrain.E.name()));
@@ -32,7 +32,7 @@ public class NodeGrapheTest {
 		noeudRacine.addNodeNorth(case4);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, destination);
+		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(distance).isEqualTo(1);
 		Assertions.assertThat(resultat.getSelectedCase()).isEqualTo(case3.getCase());
@@ -47,7 +47,7 @@ public class NodeGrapheTest {
 		noeud.addNodeNorth(noeud2);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isNull();
 	}
@@ -58,7 +58,7 @@ public class NodeGrapheTest {
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(15, 16), TypeTerrain.M.name()));
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
 	}
@@ -71,9 +71,9 @@ public class NodeGrapheTest {
 		noeud.addNodeNorth(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
-		Assertions.assertThat(result).isEqualTo(2);
+		Assertions.assertThat(result).isEqualTo(1);
 	}
 
 	@Test
@@ -84,9 +84,9 @@ public class NodeGrapheTest {
 		noeud.addNodeEast(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
-		Assertions.assertThat(result).isEqualTo(2);
+		Assertions.assertThat(result).isEqualTo(1);
 	}
 
 	@Test
@@ -97,9 +97,9 @@ public class NodeGrapheTest {
 		noeud.addNodeSouth(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
-		Assertions.assertThat(result).isEqualTo(2);
+		Assertions.assertThat(result).isEqualTo(1);
 	}
 
 	@Test
@@ -110,8 +110,35 @@ public class NodeGrapheTest {
 		noeud.addNodeWest(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
-		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
-		Assertions.assertThat(result).isEqualTo(2);
+		Assertions.assertThat(result).isEqualTo(1);
 	}
+
+	@Test
+	public void getMinDistance_must_return_null_when_distance_and_result_are_null() throws Exception {
+		Integer minDistance = NodeGraphe.getMinDistance(null, null);
+		Assertions.assertThat(minDistance).isNull();
+	}
+
+	@Test
+	public void getMinDistance_must_return_1_when_distance_is_null_and_result_is_equal_to_1() throws Exception {
+		Integer minDistance = NodeGraphe.getMinDistance(null, 1);
+		Assertions.assertThat(minDistance).isEqualTo(new Integer(1));
+	}
+
+	@Test
+	public void getMinDistance_must_return_1_when_distance_is_equal_to_1_and_result_is_null() throws Exception {
+		Integer minDistance = NodeGraphe.getMinDistance(1, null);
+		Assertions.assertThat(minDistance).isEqualTo(new Integer(1));
+	}
+
+	@Test
+	public void getMinDistance_must_return_min_distance_when_distance_and_result_is_not_null() throws Exception {
+		Integer minDistance = NodeGraphe.getMinDistance(4, 2);
+		Assertions.assertThat(minDistance).isEqualTo(new Integer(2));
+		minDistance = NodeGraphe.getMinDistance(2, 4);
+		Assertions.assertThat(minDistance).isEqualTo(new Integer(2));
+	}
+
 }

@@ -1,11 +1,8 @@
 package org.gold.miner.tchoutchou.mine;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class Mine {
 
@@ -13,14 +10,13 @@ public class Mine {
 	private int hauteur;
 	private int nbDiamants;
 
-	private Case[][] cases;
+	private Map<Position, Case> mapCases = new HashMap<Position, Case>();
 
 	public Mine(String mineProperties, String delimiter) {
 		String[] envValues = mineProperties.split(delimiter);
 		this.largeur = Integer.parseInt(envValues[0]);
 		this.hauteur = Integer.parseInt(envValues[1]);
 		this.nbDiamants = Integer.parseInt(envValues[2]);
-		cases = new Case[largeur][hauteur];
 	}
 
 	public void update(LineSight lineSight) {
@@ -29,8 +25,7 @@ public class Mine {
 
 	public void updateCases(Collection<Case> casesToUpdateMap) {
 		for (Case caseUpdate : casesToUpdateMap) {
-			Position position = caseUpdate.getPosition();
-			cases[position.getPositionX()][position.getPositionY()] = caseUpdate;
+			mapCases.put(caseUpdate.getPosition(), caseUpdate);
 		}
 	}
 
@@ -46,40 +41,15 @@ public class Mine {
 		return nbDiamants;
 	}
 
-	public Case[][] getCases() {
-		return cases;
-	}
-
 	/**
 	 * @return casesSet
 	 */
-	public Set<Case> getCasesInCollection() {
-		Set<Case> casesSet = new HashSet<Case>();
-		for (int i = 0; i < cases.length; i++) {
-			for (int j = 0; j < cases[i].length; j++) {
-				Case currCase = cases[i][j];
-				if (currCase != null) {
-					casesSet.add(currCase);
-				}
-			}
-		}
-		return casesSet;
+	public Collection<Case> getCasesInCollection() {
+		return mapCases.values();
 	}
 
-	/**
-	 * @return mapCases
-	 */
 	public Map<Position, Case> getCasesInMap() {
-		Map<Position, Case> mapCases = new HashMap<Position, Case>();
-		for (Case currCase : getCasesInCollection()) {
-			mapCases.put(currCase.getPosition(), currCase);
-		}
 		return mapCases;
-	}
-
-	@Override
-	public String toString() {
-		return "Mine [largeur=" + largeur + ", hauteur=" + hauteur + ", nbDiamants=" + nbDiamants + ", cases=" + Arrays.toString(cases) + "]";
 	}
 
 }
