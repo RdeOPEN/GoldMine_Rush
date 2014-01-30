@@ -1,5 +1,9 @@
 package org.gold.miner.tchoutchou.graphe;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.tree.ResultatRecherche;
@@ -21,65 +25,56 @@ public class NodeGraphe {
 
 	public Integer calculateShortWayToDestination(ResultatRecherche resultat, NodeGraphe previousNode, Case destination) {
 
-		// si la case actuelle est la destination on retourne 1 et si c'est une feuille on retourne null.
+		// si la case actuelle est la destination on retourne 1 pour dire qu'on l'a trouvé.
 		if (destination.equals(caseNode)) {
 			return 1;
 		} else if (!caseNode.canPass()) {
 			return null;
 		}
 
-		Integer distance = null;
+		List<ResultatRecherche> resultats = new ArrayList<ResultatRecherche>();
 
 		if (this.nodeEast != null && !nodeEast.equals(previousNode)) {
 			Integer result = nodeEast.calculateShortWayToDestination(resultat, this, destination);
 			if (result != null) {
-				distance = getMinDistance(distance, result);
-
-				if (distance > 0 && distance == result) {
-					resultat.setDistance(distance);
-					resultat.setSelectedCase(nodeEast.getCase());
-					resultat.setMinerAction(MinerAction.EAST);
-				}
+				ResultatRecherche resultatEst = new ResultatRecherche(nodeEast.getCase(), MinerAction.EAST, result);
+				resultats.add(resultatEst);
 			}
 		}
 
 		if (this.nodeSouth != null && !nodeSouth.equals(previousNode)) {
 			Integer result = nodeSouth.calculateShortWayToDestination(resultat, this, destination);
 			if (result != null) {
-				distance = getMinDistance(distance, result);
-
-				if (distance > 0 && distance == result) {
-					resultat.setDistance(distance);
-					resultat.setSelectedCase(nodeSouth.getCase());
-					resultat.setMinerAction(MinerAction.SOUTH);
-				}
+				ResultatRecherche resultatEst = new ResultatRecherche(nodeSouth.getCase(), MinerAction.SOUTH, result);
+				resultats.add(resultatEst);
 			}
 		}
 
 		if (this.nodeWest != null && !nodeWest.equals(previousNode)) {
 			Integer result = nodeWest.calculateShortWayToDestination(resultat, this, destination);
 			if (result != null) {
-				distance = getMinDistance(distance, result);
-
-				if (distance > 0 && distance == result) {
-					resultat.setDistance(distance);
-					resultat.setSelectedCase(nodeWest.getCase());
-					resultat.setMinerAction(MinerAction.WEST);
-				}
+				ResultatRecherche resultatEst = new ResultatRecherche(nodeWest.getCase(), MinerAction.WEST, result);
+				resultats.add(resultatEst);
 			}
 		}
 
 		if (this.nodeNorth != null && !nodeNorth.equals(previousNode)) {
 			Integer result = nodeNorth.calculateShortWayToDestination(resultat, this, destination);
 			if (result != null) {
-				distance = getMinDistance(distance, result);
-
-				if (distance > 0 && distance == result) {
-					resultat.setDistance(distance);
-					resultat.setSelectedCase(nodeNorth.getCase());
-					resultat.setMinerAction(MinerAction.NORTH);
-				}
+				ResultatRecherche resultatEst = new ResultatRecherche(nodeNorth.getCase(), MinerAction.NORTH, result);
+				resultats.add(resultatEst);
 			}
+		}
+
+		Integer distance = null;
+		if (!resultats.isEmpty()) {
+			// on tri les resultats en fonction de la distance a la destination
+			Collections.sort(resultats);
+			ResultatRecherche resultatMinDistance = resultats.get(0);
+			distance = resultatMinDistance.getDistance();
+			resultat.setDistance(distance);
+			resultat.setMinerAction(resultatMinDistance.getMinerAction());
+			resultat.setSelectedCase(resultatMinDistance.getSelectedCase());
 		}
 
 		if (distance != null && previousNode != null) {
@@ -147,12 +142,6 @@ public class NodeGraphe {
 	}
 
 	@Override
-	public String toString() {
-		return "NodeGraphe [caseNode=" + caseNode + ", nodeEst=" + nodeEast + ", nodeSud=" + nodeSouth + ", nodeOuest=" + nodeWest + ", nodeNord=" + nodeNorth
-				+ "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -175,6 +164,11 @@ public class NodeGraphe {
 		} else if (!caseNode.equals(other.caseNode))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "NodeGraphe [caseNode=" + caseNode + "]";
 	}
 
 }

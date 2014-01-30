@@ -29,11 +29,8 @@ public class ProtoPathfinder implements Pathfinder {
 		NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
 
 		ResultatRecherche resultatRecherche = new ResultatRecherche();
-		Integer shortWay = nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, casesInMap.get(destination));
+		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase());
 
-		System.out.println("shortWay calculated: "+shortWay);
-		System.out.println(resultatRecherche);
-		
 		MinerAction minerAction = resultatRecherche.getMinerAction();
 
 		return minerAction;

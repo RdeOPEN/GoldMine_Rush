@@ -3,11 +3,21 @@ package org.gold.miner.tchoutchou.tree;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 
-public class ResultatRecherche {
+public class ResultatRecherche implements Comparable<ResultatRecherche> {
 
 	private Integer distance;
 	private Case selectedCase;
 	private MinerAction minerAction;
+
+	public ResultatRecherche() {
+
+	}
+
+	public ResultatRecherche(Case selectedCase, MinerAction minerAction, Integer distance) {
+		this.selectedCase = selectedCase;
+		this.minerAction = minerAction;
+		this.distance = distance;
+	}
 
 	public Integer getDistance() {
 		return distance;
@@ -70,6 +80,11 @@ public class ResultatRecherche {
 	@Override
 	public String toString() {
 		return "ResultatRecherche [distance=" + distance + ", selectedCase=" + selectedCase + ", minerAction=" + minerAction + "]";
+	}
+
+	@Override
+	public int compareTo(ResultatRecherche o) {
+		return distance.compareTo(o.getDistance());
 	}
 
 }

@@ -54,65 +54,80 @@ public class NodeGrapheTest {
 
 	@Test
 	public void calculateShortWayToDestination_must_return_1_when_destination_case_was_found() throws Exception {
-		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
-		NodeGraphe noeud = new NodeGraphe(new Case(new Position(15, 16), TypeTerrain.M.name()));
+		Case destination = new Case(new Position(5, 5), TypeTerrain.M.name());
+		NodeGraphe noeud = new NodeGraphe(new Case(new Position(5, 5), TypeTerrain.M.name()));
 
 		ResultatRecherche resultat = new ResultatRecherche();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
+		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(null);
 	}
 
 	@Test
 	public void calculateShortWayToDestination_must_return_2_when_destination_case_was_found_inNorth() throws Exception {
-		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		Case destination = new Case(new Position(15, 14), TypeTerrain.M.name());
+		
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(15, 15), TypeTerrain.M.name()));
-		NodeGraphe noeudDest = new NodeGraphe(new Case(new Position(15, 16), TypeTerrain.M.name()));
+		NodeGraphe noeudEast = new NodeGraphe(new Case(new Position(16, 15), TypeTerrain.M.name()));
+		NodeGraphe noeudDest = new NodeGraphe(destination);
 		noeud.addNodeNorth(noeudDest);
-
+		noeud.addNodeEast(noeudEast);
+		
 		ResultatRecherche resultat = new ResultatRecherche();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
+		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.NORTH);
 	}
 
 	@Test
 	public void calculateShortWayToDestination_must_return_2_when_destination_case_was_found_inEast() throws Exception {
-		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		Case destination = new Case(new Position(16, 16), TypeTerrain.M.name());
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(15, 15), TypeTerrain.M.name()));
-		NodeGraphe noeudDest = new NodeGraphe(new Case(new Position(15, 16), TypeTerrain.M.name()));
+		NodeGraphe noeudDest = new NodeGraphe(destination);
 		noeud.addNodeEast(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
+		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.EAST);
 	}
 
 	@Test
 	public void calculateShortWayToDestination_must_return_2_when_destination_case_was_found_inSouth() throws Exception {
 		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
+		
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(15, 15), TypeTerrain.M.name()));
-		NodeGraphe noeudDest = new NodeGraphe(new Case(new Position(15, 16), TypeTerrain.M.name()));
-		noeud.addNodeSouth(noeudDest);
-
+		NodeGraphe noeudEast = new NodeGraphe(new Case(new Position(16, 15), TypeTerrain.M.name()));
+		NodeGraphe noeudWest = new NodeGraphe(new Case(new Position(14, 15), TypeTerrain.M.name()));
+		NodeGraphe noeudSouth = new NodeGraphe(destination);
+		noeud.addNodeSouth(noeudSouth);
+		noeud.addNodeEast(noeudEast);
+		noeud.addNodeWest(noeudWest);
+		
 		ResultatRecherche resultat = new ResultatRecherche();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
+		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.SOUTH);
+
 	}
 
 	@Test
 	public void calculateShortWayToDestination_must_return_2_when_destination_case_was_found_inWest() throws Exception {
 		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(15, 15), TypeTerrain.M.name()));
-		NodeGraphe noeudDest = new NodeGraphe(new Case(new Position(15, 16), TypeTerrain.M.name()));
+		NodeGraphe noeudDest = new NodeGraphe(destination);
 		noeud.addNodeWest(noeudDest);
 
 		ResultatRecherche resultat = new ResultatRecherche();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
+		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.WEST);
+
 	}
 
 	@Test
