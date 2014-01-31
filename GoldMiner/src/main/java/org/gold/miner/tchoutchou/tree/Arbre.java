@@ -12,12 +12,12 @@ public class Arbre {
 	}
 
 	protected Integer getShortWay(Case destination) {
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		return noeudRacine.calculateShortWayToDestination(resultat, destination);
 	}
 
 	public MinerAction parcoursArbreTo(Case destination) {
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 
 		noeudRacine.calculateShortWayToDestination(resultat, destination);
 

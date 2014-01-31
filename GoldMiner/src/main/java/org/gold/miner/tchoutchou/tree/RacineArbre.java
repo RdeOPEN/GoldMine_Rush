@@ -10,7 +10,7 @@ public class RacineArbre extends NoeudArbre {
 	}
 
 	@Override
-	public Integer calculateShortWayToDestination(ResultatRecherche resultat, Case destination) {
+	public Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, Case destination) {
 
 		Integer distance = new Integer(INTEGER_DISTANCE_INITIALE);
 
@@ -42,7 +42,7 @@ public class RacineArbre extends NoeudArbre {
 		return distance;
 	}
 
-	private static Integer getMinDistance(Case currentCase, ResultatRecherche resultat, Integer distance, Integer result, MinerAction minerAction) {
+	private static Integer getMinDistance(Case currentCase, ResultatRechercheChemin resultat, Integer distance, Integer result, MinerAction minerAction) {
 		Integer minDistance = distance;
 		if (result != null) {
 			minDistance = Math.min(result, distance);

@@ -10,7 +10,7 @@ import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.tree.NoeudArbreImpl;
 import org.gold.miner.tchoutchou.tree.RacineArbre;
-import org.gold.miner.tchoutchou.tree.ResultatRecherche;
+import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class NodeFactoryTest {
 		Position startPosition = new Position(10, 10);
 		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
 		Mine mine = new Mine("40 40 50", DELIMITER);
-		mine.update(ligneSight);
+		mine.updateCases(ligneSight);
 
 		Map<Position, Case> casesInMap = mine.getCasesInMap();
 
@@ -43,7 +43,7 @@ public class NodeFactoryTest {
 		Assertions.assertThat(nodes).isNotEmpty();
 
 		Case destination = casesInMap.get(new Position(10, 11));
-		ResultatRecherche resultat = extracted(racine, destination);
+		ResultatRechercheChemin resultat = extracted(racine, destination);
 		Assertions.assertThat(resultat.getDistance()).isEqualTo(1);
 
 		destination = casesInMap.get(new Position(10, 12));
@@ -55,9 +55,9 @@ public class NodeFactoryTest {
 		Assertions.assertThat(resultat.getDistance()).isEqualTo(3);
 	}
 
-	private static ResultatRecherche extracted(RacineArbre racine, Case destination) {
+	private static ResultatRechercheChemin extracted(RacineArbre racine, Case destination) {
 		System.out.println("Recherche destination: " + destination);
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		racine.calculateShortWayToDestination(resultat, destination);
 		System.out.println("Resultat " + destination.getPosition() + " : " + resultat);
 		return resultat;

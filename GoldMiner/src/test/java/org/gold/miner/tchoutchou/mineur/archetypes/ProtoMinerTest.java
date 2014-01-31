@@ -31,7 +31,7 @@ public class ProtoMinerTest {
 
 	@Before
 	public void setUp() {
-		Mockito.when(pathfinder.moveTo(null, null)).thenReturn(MinerAction.NORTH);
+		Mockito.when(pathfinder.getMinerActionToMoveTo(null, null)).thenReturn(MinerAction.NORTH);
 		Mockito.when(lineSight.getDiamondsPositions()).thenReturn(Arrays.asList(new Case(new Position(10, 10), "5")));
 	}
 

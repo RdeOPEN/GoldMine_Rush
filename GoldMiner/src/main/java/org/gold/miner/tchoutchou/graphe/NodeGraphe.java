@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
-import org.gold.miner.tchoutchou.tree.ResultatRecherche;
+import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 
 public class NodeGraphe {
 
@@ -23,7 +23,7 @@ public class NodeGraphe {
 		caseNode = caseTmp;
 	}
 
-	public Integer calculateShortWayToDestination(ResultatRecherche resultat, NodeGraphe previousNode, Case destination) {
+	public Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, NodeGraphe previousNode, Case destination) {
 
 		// si la case actuelle est la destination on retourne 1 pour dire qu'on l'a trouvé.
 		if (destination.equals(caseNode)) {
@@ -32,12 +32,12 @@ public class NodeGraphe {
 			return null;
 		}
 
-		List<ResultatRecherche> resultats = new ArrayList<ResultatRecherche>();
+		List<ResultatRechercheChemin> resultats = new ArrayList<ResultatRechercheChemin>();
 
 		if (this.nodeEast != null && !nodeEast.equals(previousNode)) {
 			Integer result = nodeEast.calculateShortWayToDestination(resultat, this, destination);
 			if (result != null) {
-				ResultatRecherche resultatEst = new ResultatRecherche(nodeEast.getCase(), MinerAction.EAST, result);
+				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeEast.getCase(), MinerAction.EAST, result);
 				resultats.add(resultatEst);
 			}
 		}
@@ -45,7 +45,7 @@ public class NodeGraphe {
 		if (this.nodeSouth != null && !nodeSouth.equals(previousNode)) {
 			Integer result = nodeSouth.calculateShortWayToDestination(resultat, this, destination);
 			if (result != null) {
-				ResultatRecherche resultatEst = new ResultatRecherche(nodeSouth.getCase(), MinerAction.SOUTH, result);
+				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeSouth.getCase(), MinerAction.SOUTH, result);
 				resultats.add(resultatEst);
 			}
 		}
@@ -53,7 +53,7 @@ public class NodeGraphe {
 		if (this.nodeWest != null && !nodeWest.equals(previousNode)) {
 			Integer result = nodeWest.calculateShortWayToDestination(resultat, this, destination);
 			if (result != null) {
-				ResultatRecherche resultatEst = new ResultatRecherche(nodeWest.getCase(), MinerAction.WEST, result);
+				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeWest.getCase(), MinerAction.WEST, result);
 				resultats.add(resultatEst);
 			}
 		}
@@ -61,7 +61,7 @@ public class NodeGraphe {
 		if (this.nodeNorth != null && !nodeNorth.equals(previousNode)) {
 			Integer result = nodeNorth.calculateShortWayToDestination(resultat, this, destination);
 			if (result != null) {
-				ResultatRecherche resultatEst = new ResultatRecherche(nodeNorth.getCase(), MinerAction.NORTH, result);
+				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeNorth.getCase(), MinerAction.NORTH, result);
 				resultats.add(resultatEst);
 			}
 		}
@@ -70,7 +70,7 @@ public class NodeGraphe {
 		if (!resultats.isEmpty()) {
 			// on tri les resultats en fonction de la distance a la destination
 			Collections.sort(resultats);
-			ResultatRecherche resultatMinDistance = resultats.get(0);
+			ResultatRechercheChemin resultatMinDistance = resultats.get(0);
 			distance = resultatMinDistance.getDistance();
 			resultat.setDistance(distance);
 			resultat.setMinerAction(resultatMinDistance.getMinerAction());

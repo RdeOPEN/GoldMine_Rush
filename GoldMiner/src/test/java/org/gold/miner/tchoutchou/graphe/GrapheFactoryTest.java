@@ -29,7 +29,7 @@ public class GrapheFactoryTest {
 		Position startPosition = new Position(10, 10);
 		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
 		mine = new Mine("40 40 50", DELIMITER);
-		mine.update(ligneSight);
+		mine.updateCases(ligneSight);
 	}
 
 	@Test

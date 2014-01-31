@@ -3,17 +3,17 @@ package org.gold.miner.tchoutchou.tree;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 
-public class ResultatRecherche implements Comparable<ResultatRecherche> {
+public class ResultatRechercheChemin implements Comparable<ResultatRechercheChemin> {
 
 	private Integer distance;
 	private Case selectedCase;
 	private MinerAction minerAction;
 
-	public ResultatRecherche() {
+	public ResultatRechercheChemin() {
 
 	}
 
-	public ResultatRecherche(Case selectedCase, MinerAction minerAction, Integer distance) {
+	public ResultatRechercheChemin(Case selectedCase, MinerAction minerAction, Integer distance) {
 		this.selectedCase = selectedCase;
 		this.minerAction = minerAction;
 		this.distance = distance;
@@ -61,7 +61,7 @@ public class ResultatRecherche implements Comparable<ResultatRecherche> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ResultatRecherche other = (ResultatRecherche) obj;
+		ResultatRechercheChemin other = (ResultatRechercheChemin) obj;
 		if (distance == null) {
 			if (other.distance != null)
 				return false;
@@ -83,7 +83,7 @@ public class ResultatRecherche implements Comparable<ResultatRecherche> {
 	}
 
 	@Override
-	public int compareTo(ResultatRecherche o) {
+	public int compareTo(ResultatRechercheChemin o) {
 		return distance.compareTo(o.getDistance());
 	}
 

@@ -27,7 +27,7 @@ public class ProtoPathfinderTest {
 		Position startPosition = new Position(2, 2);
 		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
 		mine = new Mine("40 40 50", DELIMITER);
-		mine.update(ligneSight);
+		mine.updateCases(ligneSight);
 	}
 
 	@Test
@@ -36,16 +36,16 @@ public class ProtoPathfinderTest {
 
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
-		MinerAction minerAction = protoPathfinder.moveTo(new Position(2, 2), destination);
+		MinerAction minerAction = protoPathfinder.getMinerActionToMoveTo(new Position(2, 2), destination);
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.WEST);
 
-		minerAction = protoPathfinder.moveTo(new Position(1, 2), destination);
+		minerAction = protoPathfinder.getMinerActionToMoveTo(new Position(1, 2), destination);
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.WEST);
 
-		minerAction = protoPathfinder.moveTo(new Position(0, 2), destination);
+		minerAction = protoPathfinder.getMinerActionToMoveTo(new Position(0, 2), destination);
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.SOUTH);
 
-		minerAction = protoPathfinder.moveTo(new Position(0, 3), destination);
+		minerAction = protoPathfinder.getMinerActionToMoveTo(new Position(0, 3), destination);
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.SOUTH);
 	}
 

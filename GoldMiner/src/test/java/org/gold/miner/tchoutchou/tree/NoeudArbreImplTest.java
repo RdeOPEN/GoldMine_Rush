@@ -43,7 +43,7 @@ public class NoeudArbreImplTest {
 		NoeudArbreImpl noeud2 = new NoeudArbreImpl(null, new Case(new Position(15, 15), TypeTerrain.M.name()));
 		noeud.addNoeudNord(noeud2);
 		
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isNull();
@@ -54,7 +54,7 @@ public class NoeudArbreImplTest {
 		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
 		NoeudArbreImpl noeud = new NoeudArbreImpl(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
@@ -67,7 +67,7 @@ public class NoeudArbreImplTest {
 		NoeudArbreImpl noeudDest = new NoeudArbreImpl(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
 		noeud.addNoeudNord(noeudDest);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(2);
@@ -80,7 +80,7 @@ public class NoeudArbreImplTest {
 		NoeudArbreImpl noeudDest = new NoeudArbreImpl(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
 		noeud.addNoeudEst(noeudDest);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(2);
@@ -93,7 +93,7 @@ public class NoeudArbreImplTest {
 		NoeudArbreImpl noeudDest = new NoeudArbreImpl(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
 		noeud.addNoeudSud(noeudDest);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(2);
@@ -106,7 +106,7 @@ public class NoeudArbreImplTest {
 		NoeudArbreImpl noeudDest = new NoeudArbreImpl(null, new Case(new Position(15, 16), TypeTerrain.M.name()));
 		noeud.addNoeudOuest(noeudDest);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(result).isEqualTo(2);

@@ -18,7 +18,7 @@ public class RandomPathfinder implements Pathfinder {
 	}
 
 	@Override
-	public MinerAction moveTo(Position currentPosition, Position destination) {
+	public MinerAction getMinerActionToMoveTo(Position currentPosition, Position destination) {
 		MinerAction action = null;
 		switch (random.nextInt(4)) {
 		case 0:

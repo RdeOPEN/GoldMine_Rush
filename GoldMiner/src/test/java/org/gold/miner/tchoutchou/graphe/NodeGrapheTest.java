@@ -5,7 +5,7 @@ import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mine.TypeTerrain;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
-import org.gold.miner.tchoutchou.tree.ResultatRecherche;
+import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 import org.junit.Test;
 
 public class NodeGrapheTest {
@@ -31,7 +31,7 @@ public class NodeGrapheTest {
 		noeudRacine.addNodeWest(case3);
 		noeudRacine.addNodeNorth(case4);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(distance).isEqualTo(1);
@@ -46,7 +46,7 @@ public class NodeGrapheTest {
 		NodeGraphe noeud2 = new NodeGraphe(new Case(new Position(15, 15), TypeTerrain.M.name()));
 		noeud.addNodeNorth(noeud2);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isNull();
@@ -57,7 +57,7 @@ public class NodeGrapheTest {
 		Case destination = new Case(new Position(5, 5), TypeTerrain.M.name());
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(5, 5), TypeTerrain.M.name()));
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
@@ -74,7 +74,7 @@ public class NodeGrapheTest {
 		noeud.addNodeNorth(noeudDest);
 		noeud.addNodeEast(noeudEast);
 		
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
@@ -88,7 +88,7 @@ public class NodeGrapheTest {
 		NodeGraphe noeudDest = new NodeGraphe(destination);
 		noeud.addNodeEast(noeudDest);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
@@ -107,7 +107,7 @@ public class NodeGrapheTest {
 		noeud.addNodeEast(noeudEast);
 		noeud.addNodeWest(noeudWest);
 		
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);
@@ -122,7 +122,7 @@ public class NodeGrapheTest {
 		NodeGraphe noeudDest = new NodeGraphe(destination);
 		noeud.addNodeWest(noeudDest);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination);
 
 		Assertions.assertThat(result).isEqualTo(1);

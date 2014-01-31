@@ -32,7 +32,7 @@ public class TreeFactoryTest {
 		Position startPosition = new Position(10, 10);
 		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
 		Mine mine = new Mine("40 40 50", DELIMITER);
-		mine.update(ligneSight);
+		mine.updateCases(ligneSight);
 
 		Map<Position, Case> casesInMap = mine.getCasesInMap();
 

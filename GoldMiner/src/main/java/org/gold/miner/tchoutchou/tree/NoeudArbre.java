@@ -16,7 +16,7 @@ public abstract class NoeudArbre {
 		this.caseNoeud = caseNoeud;
 	}
 
-	abstract Integer calculateShortWayToDestination(ResultatRecherche resultat, Case destination);
+	abstract Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, Case destination);
 
 	public Case getCase() {
 		return this.caseNoeud;

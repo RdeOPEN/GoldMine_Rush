@@ -47,9 +47,4 @@ public class RandomMiner extends Miner {
 		return action;
 	}
 
-	@Override
-	public MinerAction move() {
-		return null;
-	}
-
 }

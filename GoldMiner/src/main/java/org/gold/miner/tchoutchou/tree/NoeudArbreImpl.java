@@ -56,7 +56,7 @@ public class NoeudArbreImpl extends NoeudArbre {
 	 * @return
 	 */
 	@Override
-	public Integer calculateShortWayToDestination(ResultatRecherche resultat, Case destination) {
+	public Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, Case destination) {
 
 		// si la case actuelle est la destination on retourne 1 et si c'est une feuille on retourne null.
 		if (destination.equals(caseNoeud)) {

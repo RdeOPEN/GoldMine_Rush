@@ -30,7 +30,7 @@ public class RacineArbreTest {
 		noeudRacine.addNoeudOuest(case3);
 		noeudRacine.addNoeudNord(case4);
 
-		ResultatRecherche resultat = new ResultatRecherche();
+		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
 		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, destination);
 
 		Assertions.assertThat(distance).isEqualTo(1);

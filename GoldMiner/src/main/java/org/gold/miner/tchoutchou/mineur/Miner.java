@@ -24,7 +24,6 @@ public abstract class Miner {
 	 * @param trolleyPosition
 	 * @param currentPosition
 	 * @param direction
-	 *            TODO
 	 * @param lineSight
 	 * @param positionOpponents
 	 * @param nbDiamonds
@@ -46,14 +45,15 @@ public abstract class Miner {
 	public abstract MinerAction doAction();
 
 	/**
-	 * @return MinerAction
+	 * @return
 	 */
-	public abstract MinerAction move();
-
 	public int getNbDiamonds() {
 		return nbDiamonds;
 	}
 
+	/**
+	 * @param nbDiamonds
+	 */
 	public void setNbDiamonds(int nbDiamonds) {
 		this.nbDiamonds = nbDiamonds;
 	}
