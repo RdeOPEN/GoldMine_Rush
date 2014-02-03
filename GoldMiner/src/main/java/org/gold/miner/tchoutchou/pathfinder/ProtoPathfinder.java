@@ -55,6 +55,7 @@ public class ProtoPathfinder implements Pathfinder {
 			nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(caseWithDiamonds.getPosition()).getCase());
 			// ResultatRechercheChemin resultatRecherche = this.exploreTo(currentPosition, caseWithDiamonds.getPosition());
 			if (resultatRecherche.isCompleted()) {
+				System.out.println(resultatRecherche);
 				resultats.add(resultatRecherche);
 			}
 		}

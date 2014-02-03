@@ -19,6 +19,11 @@ public class NodeGraphe {
 	private NodeGraphe nodeWest;
 	private NodeGraphe nodeNorth;
 
+	private boolean nodeEastAlreadyExplored = false;
+	private boolean nodeSouthAlreadyExplored = false;
+	private boolean nodeWestAlreadyExplored = false;
+	private boolean nodeNorthAlreadyExplored = false;
+
 	public NodeGraphe(Case caseTmp) {
 		caseNode = caseTmp;
 	}
@@ -35,34 +40,46 @@ public class NodeGraphe {
 		List<ResultatRechercheChemin> resultats = new ArrayList<ResultatRechercheChemin>();
 
 		if (this.nodeEast != null && !nodeEast.equals(previousNode)) {
-			Integer result = nodeEast.calculateShortWayToDestination(resultat, this, destination);
-			if (result != null) {
-				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeEast.getCase(), MinerAction.EAST, result);
-				resultats.add(resultatEst);
+			if (!nodeEastAlreadyExplored) {
+				nodeEastAlreadyExplored = true;
+				Integer result = nodeEast.calculateShortWayToDestination(resultat, this, destination);
+				if (result != null) {
+					ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeEast.getCase(), MinerAction.EAST, result);
+					resultats.add(resultatEst);
+				}
 			}
 		}
 
 		if (this.nodeSouth != null && !nodeSouth.equals(previousNode)) {
-			Integer result = nodeSouth.calculateShortWayToDestination(resultat, this, destination);
-			if (result != null) {
-				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeSouth.getCase(), MinerAction.SOUTH, result);
-				resultats.add(resultatEst);
+			if (!nodeSouthAlreadyExplored) {
+				nodeSouthAlreadyExplored = true;
+				Integer result = nodeSouth.calculateShortWayToDestination(resultat, this, destination);
+				if (result != null) {
+					ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeSouth.getCase(), MinerAction.SOUTH, result);
+					resultats.add(resultatEst);
+				}
 			}
 		}
 
 		if (this.nodeWest != null && !nodeWest.equals(previousNode)) {
-			Integer result = nodeWest.calculateShortWayToDestination(resultat, this, destination);
-			if (result != null) {
-				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeWest.getCase(), MinerAction.WEST, result);
-				resultats.add(resultatEst);
+			if (!nodeWestAlreadyExplored) {
+				nodeWestAlreadyExplored = true;
+				Integer result = nodeWest.calculateShortWayToDestination(resultat, this, destination);
+				if (result != null) {
+					ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeWest.getCase(), MinerAction.WEST, result);
+					resultats.add(resultatEst);
+				}
 			}
 		}
 
 		if (this.nodeNorth != null && !nodeNorth.equals(previousNode)) {
-			Integer result = nodeNorth.calculateShortWayToDestination(resultat, this, destination);
-			if (result != null) {
-				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeNorth.getCase(), MinerAction.NORTH, result);
-				resultats.add(resultatEst);
+			if (!nodeNorthAlreadyExplored) {
+				nodeNorthAlreadyExplored = true;
+				Integer result = nodeNorth.calculateShortWayToDestination(resultat, this, destination);
+				if (result != null) {
+					ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeNorth.getCase(), MinerAction.NORTH, result);
+					resultats.add(resultatEst);
+				}
 			}
 		}
 
@@ -87,13 +104,12 @@ public class NodeGraphe {
 	}
 
 	public static Integer getMinDistance(Integer distance, Integer result) {
-		if (distance == null && result == null) {
-			return null;
-		} else if (distance == null && result != null) {
+		if (distance == null) {
 			return result;
 		} else if (result == null) {
 			return distance;
 		}
+
 		return Math.min(distance, result);
 	}
 

@@ -81,12 +81,10 @@ public class MinerTest {
 	private Miner createMinerStub(Pathfinder pathfinder, Position trolleyPosition, Position currentPosition, LineSight lineSight,
 			List<Position> positionOpponents, int nbDiamonds) {
 		Miner miner = new Miner(pathfinder, trolleyPosition, currentPosition, null, lineSight, positionOpponents, nbDiamonds) {
-
 			@Override
 			public MinerAction doAction() {
 				return null;
 			}
-
 		};
 		return miner;
 	}
