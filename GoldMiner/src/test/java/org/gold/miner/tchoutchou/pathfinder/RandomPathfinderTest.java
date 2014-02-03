@@ -15,19 +15,19 @@ public class RandomPathfinderTest {
 	private final long seed = 15151561615055L;
 
 	@Test
-				public void testGetMinerActionToMoveTo() throws Exception {
-					List<MinerAction> mineurActionsExpected = Arrays.asList(MinerAction.SOUTH, MinerAction.NORTH, MinerAction.SOUTH, MinerAction.NORTH, MinerAction.SOUTH,
-							MinerAction.WEST, MinerAction.EAST, MinerAction.NORTH, MinerAction.SOUTH, MinerAction.WEST);
-			
-					Random random = new Random(seed);
-					RandomPathfinder pathFinder = new RandomPathfinder(random);
-			
-					List<MinerAction> mineurActions = new ArrayList<MinerAction>();
-					for (int i = 0; i < 10; i++) {
-						mineurActions.add(pathFinder.getMinerActionToMoveTo(null, null));
-					}
-			
-					Assertions.assertThat(mineurActions).containsExactly(mineurActionsExpected.toArray(new MinerAction[] {}));
-				}
+	public void testGetMinerActionToMoveTo() throws Exception {
+		List<MinerAction> mineurActionsExpected = Arrays.asList(MinerAction.SOUTH, MinerAction.NORTH, MinerAction.SOUTH, MinerAction.NORTH, MinerAction.SOUTH,
+				MinerAction.WEST, MinerAction.EAST, MinerAction.NORTH, MinerAction.SOUTH, MinerAction.WEST);
+
+		Random random = new Random(seed);
+		RandomPathfinder pathFinder = new RandomPathfinder(random);
+
+		List<MinerAction> mineurActions = new ArrayList<MinerAction>();
+		for (int i = 0; i < 10; i++) {
+			mineurActions.add(pathFinder.exploreTo(null, null).getMinerAction());
+		}
+
+		Assertions.assertThat(mineurActions).containsExactly(mineurActionsExpected.toArray(new MinerAction[] {}));
+	}
 
 }

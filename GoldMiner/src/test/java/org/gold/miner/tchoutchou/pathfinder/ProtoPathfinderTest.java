@@ -31,22 +31,35 @@ public class ProtoPathfinderTest {
 	}
 
 	@Test
-	public void moveTo_must_return_actions_to_go_to_diamonds() throws Exception {
+	public void exploreTo_must_return_actions_to_go_to_position() throws Exception {
 		Position destination = new Position(0, 4);
 
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
-		MinerAction minerAction = protoPathfinder.getMinerActionToMoveTo(new Position(2, 2), destination);
+		MinerAction minerAction = protoPathfinder.exploreTo(new Position(2, 2), destination).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.WEST);
 
-		minerAction = protoPathfinder.getMinerActionToMoveTo(new Position(1, 2), destination);
+		minerAction = protoPathfinder.exploreTo(new Position(1, 2), destination).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.WEST);
 
-		minerAction = protoPathfinder.getMinerActionToMoveTo(new Position(0, 2), destination);
+		minerAction = protoPathfinder.exploreTo(new Position(0, 2), destination).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.SOUTH);
 
-		minerAction = protoPathfinder.getMinerActionToMoveTo(new Position(0, 3), destination);
+		minerAction = protoPathfinder.exploreTo(new Position(0, 3), destination).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.SOUTH);
+	}
+
+	@Test
+	public void gotoDiamonds_must_return_actions_to_go_to_diamonds() throws Exception {
+		Position startPosition = new Position(10, 10);
+		String[] env = new String[] { "S S S S S", "S M S M S", "M M E M 2", "M S S M S", "3 M M M S" };
+		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
+		Mine mine = new Mine("40 40 50", DELIMITER);
+		mine.updateCases(ligneSight);
+		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+
+		MinerAction minerAction = protoPathfinder.gotoDiamonds(new Position(10, 10)).getMinerAction();
+		Assertions.assertThat(minerAction).isEqualTo(MinerAction.EAST);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
+import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 
 public class RandomPathfinder implements Pathfinder {
 
@@ -18,7 +19,7 @@ public class RandomPathfinder implements Pathfinder {
 	}
 
 	@Override
-	public MinerAction getMinerActionToMoveTo(Position currentPosition, Position destination) {
+	public ResultatRechercheChemin exploreTo(Position currentPosition, Position destination) {
 		MinerAction action = null;
 		switch (random.nextInt(4)) {
 		case 0:
@@ -34,7 +35,13 @@ public class RandomPathfinder implements Pathfinder {
 			action = MinerAction.SOUTH;
 			break;
 		}
-		return action;
+
+		return new ResultatRechercheChemin(null, action, null);
+	}
+
+	@Override
+	public ResultatRechercheChemin gotoDiamonds(Position currentPosition) {
+		return this.exploreTo(currentPosition, null);
 	}
 
 }

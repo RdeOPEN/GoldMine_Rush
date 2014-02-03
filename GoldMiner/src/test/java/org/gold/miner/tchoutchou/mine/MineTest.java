@@ -1,6 +1,7 @@
 package org.gold.miner.tchoutchou.mine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,34 @@ public class MineTest {
 		Collection<Case> casesInCollection = mine.getCasesInCollection();
 
 		Assertions.assertThat(casesInCollection).containsOnly(casesToUpdate.toArray(new Case[casesInCollection.size()]));
+	}
+
+	@Test
+	public void getDiamondsPositions_must_return_diamonds_positions_in_mine() throws Exception {
+		String line = "40 25 170";
+		Mine mine = new Mine(line, DELIMITER);
+
+		List<Case> casesToUpdate = new ArrayList<Case>();
+		casesToUpdate.add(genCase(0, 0, "S"));
+		casesToUpdate.add(genCase(0, 1, "5"));
+		casesToUpdate.add(genCase(0, 2, "E"));
+		casesToUpdate.add(genCase(0, 3, "M"));
+		casesToUpdate.add(genCase(1, 0, "M"));
+		casesToUpdate.add(genCase(1, 1, "S"));
+		casesToUpdate.add(genCase(2, 1, "E"));
+		casesToUpdate.add(genCase(2, 2, "M"));
+
+		casesToUpdate.add(genCase(15, 15, "3"));
+		casesToUpdate.add(genCase(8, 2, "2"));
+		casesToUpdate.add(genCase(2, 6, "1"));
+
+		mine.updateCases(casesToUpdate);
+
+		Collection<Case> casesExpected = Arrays.asList(genCase(0, 1, "5"), genCase(15, 15, "3"), genCase(8, 2, "2"), genCase(2, 6, "1"));
+
+		Collection<Case> diamondsPositions = mine.getDiamondsPositions();
+
+		Assertions.assertThat(diamondsPositions).containsOnly(casesExpected.toArray(new Case[casesExpected.size()]));
 	}
 
 	private static Case genCase(int x, int y, String typeTerrain) {

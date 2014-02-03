@@ -10,7 +10,7 @@ public class ResultatRechercheChemin implements Comparable<ResultatRechercheChem
 	private MinerAction minerAction;
 
 	public ResultatRechercheChemin() {
-
+		// do nothing
 	}
 
 	public ResultatRechercheChemin(Case selectedCase, MinerAction minerAction, Integer distance) {
@@ -41,6 +41,10 @@ public class ResultatRechercheChemin implements Comparable<ResultatRechercheChem
 
 	public void setMinerAction(MinerAction minerAction) {
 		this.minerAction = minerAction;
+	}
+
+	public boolean isCompleted() {
+		return this.selectedCase != null && this.minerAction != null && this.distance != null;
 	}
 
 	@Override

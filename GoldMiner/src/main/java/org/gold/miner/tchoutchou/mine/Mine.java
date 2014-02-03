@@ -2,7 +2,9 @@ package org.gold.miner.tchoutchou.mine;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Mine {
 
@@ -37,6 +39,17 @@ public class Mine {
 		for (Case caseUpdate : casesToUpdateMap) {
 			mapCases.put(caseUpdate.getPosition(), caseUpdate);
 		}
+	}
+
+	public Collection<Case> getDiamondsPositions() {
+		Collection<Case> cases = new HashSet<Case>();
+		for (Entry<Position, Case> entry : mapCases.entrySet()) {
+			Case value = entry.getValue();
+			if (value.getDiamonds() > 0) {
+				cases.add(value);
+			}
+		}
+		return cases;
 	}
 
 	/**

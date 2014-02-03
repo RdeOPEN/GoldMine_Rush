@@ -12,9 +12,11 @@ import org.gold.miner.tchoutchou.mineur.Miner;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.mineur.archetypes.ProtoMiner;
 import org.gold.miner.tchoutchou.pathfinder.Pathfinder;
+import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -31,7 +33,8 @@ public class ProtoMinerTest {
 
 	@Before
 	public void setUp() {
-		Mockito.when(pathfinder.getMinerActionToMoveTo(null, null)).thenReturn(MinerAction.NORTH);
+		Mockito.when(pathfinder.exploreTo(Matchers.any(Position.class), Matchers.any(Position.class))).thenReturn(new ResultatRechercheChemin(null, MinerAction.NORTH, null));
+		Mockito.when(pathfinder.gotoDiamonds(Matchers.any(Position.class))).thenReturn(new ResultatRechercheChemin(null, MinerAction.NORTH, null));
 		Mockito.when(lineSight.getDiamondsPositions()).thenReturn(Arrays.asList(new Case(new Position(10, 10), "5")));
 	}
 
@@ -57,7 +60,7 @@ public class ProtoMinerTest {
 	public void when_miner_is_on_trolley_and_it_has_no_diamond_then_drop_action_must_not_be_selected() throws Exception {
 		MinerAction actionExpected = MinerAction.DROP;
 		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), null, lineSight, null, 0);
-		
+
 		MinerAction action = miner.doAction();
 		Assertions.assertThat(action).isNotEqualTo(actionExpected);
 	}
@@ -77,9 +80,9 @@ public class ProtoMinerTest {
 		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
 
 		Mockito.when(lineSight.getDiamondsPositions()).thenReturn(new ArrayList<Case>());
-		
+
 		MinerAction action = miner.doAction();
 		Assertions.assertThat(action).isIn(actionsExpected);
 	}
-	
+
 }
