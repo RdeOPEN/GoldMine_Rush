@@ -57,15 +57,15 @@ public class ProtoPathfinderTest {
 		// 02 M--M--E--M--2
 		// 03 M--S--S--M--S
 		// 04 3--M--M--M--S
-		
-		Position startPosition = new Position(10, 10);
+
+		Position startPosition = new Position(2, 2);
 		String[] env = new String[] { "S S S S S", "S M S M S", "M M E M 2", "M S S M S", "3 M M M S" };
 		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
 		Mine mine = new Mine("40 40 50", DELIMITER);
 		mine.updateCases(ligneSight);
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
-		MinerAction minerAction = protoPathfinder.gotoDiamonds(new Position(10, 10)).getMinerAction();
+		MinerAction minerAction = protoPathfinder.gotoDiamonds(new Position(2, 2)).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.EAST);
 	}
 
@@ -77,7 +77,7 @@ public class ProtoPathfinderTest {
 		// 02 M--S--E--M--S
 		// 03 M--S--S--M--S
 		// 04 3--M--M--M--S
-		
+
 		Position startPosition = new Position(10, 10);
 		String[] env = new String[] { "S S 2 S S", "S M M S S", "M S E M S", "M S S M S", "3 M M M S" };
 		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);

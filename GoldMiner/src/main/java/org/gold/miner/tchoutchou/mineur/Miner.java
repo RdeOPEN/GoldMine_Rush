@@ -45,7 +45,7 @@ public abstract class Miner {
 	public abstract MinerAction doAction();
 
 	/**
-	 * @return
+	 * @return nbDiamonds
 	 */
 	public int getNbDiamonds() {
 		return nbDiamonds;
@@ -70,7 +70,7 @@ public abstract class Miner {
 	/**
 	 * Retourne true si le mineur porte le nombre maximal de diamants sur lui.
 	 * 
-	 * @return
+	 * @return nbDiamonds == NUMBER_MAX_DIAMONDS
 	 */
 	public boolean isFullDiamonds() {
 		return nbDiamonds == NUMBER_MAX_DIAMONDS;

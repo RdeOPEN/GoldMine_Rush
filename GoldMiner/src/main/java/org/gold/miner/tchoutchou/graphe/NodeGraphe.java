@@ -19,19 +19,41 @@ public class NodeGraphe {
 	private NodeGraphe nodeWest;
 	private NodeGraphe nodeNorth;
 
-	private boolean nodeEastAlreadyExplored = false;
-	private boolean nodeSouthAlreadyExplored = false;
-	private boolean nodeWestAlreadyExplored = false;
-	private boolean nodeNorthAlreadyExplored = false;
+	private static final String SLASHCHAR = "/";
+	private static final String DELIMITERPOSITION = ",";
 
 	public NodeGraphe(Case caseTmp) {
 		caseNode = caseTmp;
 	}
 
-	public Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, NodeGraphe previousNode, Case destination) {
+	public Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, NodeGraphe previousNode, Case destination, String nodesExplored) {
+
+		int positionXCourante = caseNode.getPosition().getPositionX();
+		int positionYCourante = caseNode.getPosition().getPositionY();
+		System.out.println("Exploration node: " + positionXCourante + "," + positionYCourante);
+		final String strCurrentNode = SLASHCHAR + positionXCourante + DELIMITERPOSITION + positionYCourante;
+
+		if (previousNode == null) {
+			System.out.println("Nous sommes à la racine du graphe: " + positionXCourante + "," + positionYCourante);
+		} else {
+			System.out.println(nodesExplored);
+			int positionXPreviousNode = previousNode.getCase().getPosition().getPositionX();
+			int positionYPreviousNode = previousNode.getCase().getPosition().getPositionY();
+			final String strPreviousNode = SLASHCHAR + positionXPreviousNode + DELIMITERPOSITION + positionYPreviousNode;
+			final String nodeAlreadyExplored = strPreviousNode + strCurrentNode;
+			System.out.println("Chaine recherchée: " + nodeAlreadyExplored);
+			if (nodesExplored.contains(nodeAlreadyExplored)) {
+				System.out.println("La chaine recherchée a été trouvée, on a déjà exploré ces deux noeuds: " + nodeAlreadyExplored);
+				return null;
+			}
+		}
+
+		// on ajoute la case courante et on avance
+		final String nodesExploredAugmented = nodesExplored.concat(strCurrentNode);
 
 		// si la case actuelle est la destination on retourne 1 pour dire qu'on l'a trouvé.
 		if (destination.equals(caseNode)) {
+			System.out.println("Destination trouvée!");
 			return 1;
 		} else if (!caseNode.canPass()) {
 			return null;
@@ -40,46 +62,34 @@ public class NodeGraphe {
 		List<ResultatRechercheChemin> resultats = new ArrayList<ResultatRechercheChemin>();
 
 		if (this.nodeEast != null && !nodeEast.equals(previousNode)) {
-			if (!nodeEastAlreadyExplored) {
-				nodeEastAlreadyExplored = true;
-				Integer result = nodeEast.calculateShortWayToDestination(resultat, this, destination);
-				if (result != null) {
-					ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeEast.getCase(), MinerAction.EAST, result);
-					resultats.add(resultatEst);
-				}
+			Integer result = nodeEast.calculateShortWayToDestination(resultat, this, destination, nodesExploredAugmented);
+			if (result != null) {
+				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeEast.getCase(), MinerAction.EAST, result);
+				resultats.add(resultatEst);
 			}
 		}
 
 		if (this.nodeSouth != null && !nodeSouth.equals(previousNode)) {
-			if (!nodeSouthAlreadyExplored) {
-				nodeSouthAlreadyExplored = true;
-				Integer result = nodeSouth.calculateShortWayToDestination(resultat, this, destination);
-				if (result != null) {
-					ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeSouth.getCase(), MinerAction.SOUTH, result);
-					resultats.add(resultatEst);
-				}
+			Integer result = nodeSouth.calculateShortWayToDestination(resultat, this, destination, nodesExploredAugmented);
+			if (result != null) {
+				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeSouth.getCase(), MinerAction.SOUTH, result);
+				resultats.add(resultatEst);
 			}
 		}
 
 		if (this.nodeWest != null && !nodeWest.equals(previousNode)) {
-			if (!nodeWestAlreadyExplored) {
-				nodeWestAlreadyExplored = true;
-				Integer result = nodeWest.calculateShortWayToDestination(resultat, this, destination);
-				if (result != null) {
-					ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeWest.getCase(), MinerAction.WEST, result);
-					resultats.add(resultatEst);
-				}
+			Integer result = nodeWest.calculateShortWayToDestination(resultat, this, destination, nodesExploredAugmented);
+			if (result != null) {
+				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeWest.getCase(), MinerAction.WEST, result);
+				resultats.add(resultatEst);
 			}
 		}
 
 		if (this.nodeNorth != null && !nodeNorth.equals(previousNode)) {
-			if (!nodeNorthAlreadyExplored) {
-				nodeNorthAlreadyExplored = true;
-				Integer result = nodeNorth.calculateShortWayToDestination(resultat, this, destination);
-				if (result != null) {
-					ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeNorth.getCase(), MinerAction.NORTH, result);
-					resultats.add(resultatEst);
-				}
+			Integer result = nodeNorth.calculateShortWayToDestination(resultat, this, destination, nodesExploredAugmented);
+			if (result != null) {
+				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeNorth.getCase(), MinerAction.NORTH, result);
+				resultats.add(resultatEst);
 			}
 		}
 

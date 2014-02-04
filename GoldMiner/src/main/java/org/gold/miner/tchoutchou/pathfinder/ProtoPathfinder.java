@@ -31,7 +31,7 @@ public class ProtoPathfinder implements Pathfinder {
 		// On part de la position courante du mineur pour déterminer la direction à prendre vers la destination
 		final NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
 		final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
-		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase());
+		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase(), new String());
 
 		return resultatRecherche;
 	}
@@ -52,7 +52,7 @@ public class ProtoPathfinder implements Pathfinder {
 		// La position des diamants est récupéré dans le champ de vision immédiat et on calcul le plus court chemin
 		for (Case caseWithDiamonds : mine.getDiamondsPositions()) {
 			final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
-			nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(caseWithDiamonds.getPosition()).getCase());
+			nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(caseWithDiamonds.getPosition()).getCase(), new String());
 			// ResultatRechercheChemin resultatRecherche = this.exploreTo(currentPosition, caseWithDiamonds.getPosition());
 			if (resultatRecherche.isCompleted()) {
 				System.out.println(resultatRecherche);
