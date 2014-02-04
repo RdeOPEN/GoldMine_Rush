@@ -53,7 +53,7 @@ public class NodeGraphe {
 
 		// si la case actuelle est la destination on retourne 1 pour dire qu'on l'a trouvé.
 		if (destination.equals(caseNode)) {
-			System.out.println("Destination trouvée!");
+			System.out.println("Destination trouvée: "+caseNode.getPosition());
 			return 1;
 		} else if (!caseNode.canPass()) {
 			return null;

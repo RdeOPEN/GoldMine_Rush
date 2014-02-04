@@ -49,14 +49,19 @@ public class ProtoPathfinder implements Pathfinder {
 		// On part de la position courante du mineur pour déterminer la direction à prendre vers la destination
 		final NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
 
-		// La position des diamants est récupéré dans le champ de vision immédiat et on calcul le plus court chemin
-		for (Case caseWithDiamonds : mine.getDiamondsPositions()) {
-			final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
-			nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(caseWithDiamonds.getPosition()).getCase(), new String());
-			// ResultatRechercheChemin resultatRecherche = this.exploreTo(currentPosition, caseWithDiamonds.getPosition());
-			if (resultatRecherche.isCompleted()) {
-				System.out.println(resultatRecherche);
-				resultats.add(resultatRecherche);
+		if (nodeCurrentPosition != null) {
+			// La position des diamants est récupéré dans le champ de vision immédiat et on calcul le plus court chemin
+			for (Case caseWithDiamonds : mine.getDiamondsPositions()) {
+				final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
+				NodeGraphe nodeGrapheDestination = graphe.get(caseWithDiamonds.getPosition());
+				System.out.println(nodeGrapheDestination);
+				if (nodeGrapheDestination != null) {
+					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new String());
+					if (resultatRecherche.isCompleted()) {
+						System.out.println(resultatRecherche);
+						resultats.add(resultatRecherche);
+					}
+				}
 			}
 		}
 
@@ -64,7 +69,9 @@ public class ProtoPathfinder implements Pathfinder {
 		if (!resultats.isEmpty()) {
 			// on trie les resultats en fonction de la distance à parcourir (voir méthode compareTo de la classe ResultatRechercheChemin)
 			Collections.sort(resultats);
-			minerAction = resultats.get(0);
+			ResultatRechercheChemin resultatRechercheCheminSelected = resultats.get(0);
+			minerAction = resultatRechercheCheminSelected;
+			System.out.println("ResultatRechercheCheminSelected: " + resultatRechercheCheminSelected);
 		}
 		return minerAction;
 	}
