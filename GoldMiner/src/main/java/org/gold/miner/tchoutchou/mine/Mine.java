@@ -53,21 +53,21 @@ public class Mine {
 	}
 
 	/**
-	 * @return
+	 * @return largeur
 	 */
 	public int getLargeur() {
 		return largeur;
 	}
 
 	/**
-	 * @return
+	 * @return hauteur
 	 */
 	public int getHauteur() {
 		return hauteur;
 	}
 
 	/**
-	 * @return
+	 * @return nbDiamants
 	 */
 	public int getNbDiamants() {
 		return nbDiamants;
@@ -81,7 +81,7 @@ public class Mine {
 	}
 
 	/**
-	 * @return
+	 * @return mapCases
 	 */
 	public Map<Position, Case> getCasesInMap() {
 		return mapCases;

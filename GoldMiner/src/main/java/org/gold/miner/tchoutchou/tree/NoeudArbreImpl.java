@@ -53,7 +53,7 @@ public class NoeudArbreImpl extends NoeudArbre {
 	 * Parcours un Noeud et ses fils
 	 * 
 	 * @param destination
-	 * @return
+	 * @return distance
 	 */
 	@Override
 	public Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, Case destination) {

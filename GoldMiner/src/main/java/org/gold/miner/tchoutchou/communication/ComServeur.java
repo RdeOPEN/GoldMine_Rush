@@ -1,6 +1,5 @@
 package org.gold.miner.tchoutchou.communication;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -16,7 +15,7 @@ public class ComServeur {
 		scanner = new Scanner(in);
 	}
 
-	public String getNextLine() throws IOException {
+	public String getNextLine() {
 		return scanner.nextLine();
 	}
 
