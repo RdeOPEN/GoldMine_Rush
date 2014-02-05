@@ -8,6 +8,7 @@ public class ResultatRechercheChemin implements Comparable<ResultatRechercheChem
 	private Integer distance;
 	private Case selectedCase;
 	private MinerAction minerAction;
+	private Case destinationCase;
 
 	public ResultatRechercheChemin() {
 		// do nothing
@@ -44,7 +45,15 @@ public class ResultatRechercheChemin implements Comparable<ResultatRechercheChem
 	}
 
 	public boolean isCompleted() {
-		return this.selectedCase != null && this.minerAction != null && this.distance != null;
+		return this.selectedCase != null && this.minerAction != null && this.distance != null && this.destinationCase != null;
+	}
+
+	public Case getDestinationCase() {
+		return destinationCase;
+	}
+
+	public void setDestinationCase(Case destinationCase) {
+		this.destinationCase = destinationCase;
 	}
 
 	@Override
@@ -82,13 +91,14 @@ public class ResultatRechercheChemin implements Comparable<ResultatRechercheChem
 	}
 
 	@Override
-	public String toString() {
-		return "ResultatRecherche [distance=" + distance + ", selectedCase=" + selectedCase + ", minerAction=" + minerAction + "]";
+	public int compareTo(ResultatRechercheChemin o) {
+		return distance.compareTo(o.getDistance());
 	}
 
 	@Override
-	public int compareTo(ResultatRechercheChemin o) {
-		return distance.compareTo(o.getDistance());
+	public String toString() {
+		return "ResultatRechercheChemin [distance=" + distance + ", selectedCase=" + selectedCase + ", minerAction=" + minerAction + ", destinationCase="
+				+ destinationCase + "]";
 	}
 
 }

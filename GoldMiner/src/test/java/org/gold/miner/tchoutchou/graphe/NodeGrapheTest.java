@@ -32,7 +32,7 @@ public class NodeGrapheTest {
 		noeudRacine.addNodeNorth(case4);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, null, destination, new StringBuilder());
 
 		Assertions.assertThat(distance).isEqualTo(1);
 		Assertions.assertThat(resultat.getSelectedCase()).isEqualTo(case3.getCase());
@@ -47,7 +47,7 @@ public class NodeGrapheTest {
 		noeud.addNodeNorth(noeud2);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new StringBuilder());
 
 		Assertions.assertThat(result).isNull();
 	}
@@ -58,7 +58,7 @@ public class NodeGrapheTest {
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(5, 5), TypeTerrain.M.name()));
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new StringBuilder());
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(null);
@@ -67,15 +67,15 @@ public class NodeGrapheTest {
 	@Test
 	public void calculateShortWayToDestination_must_return_2_when_destination_case_was_found_inNorth() throws Exception {
 		Case destination = new Case(new Position(15, 14), TypeTerrain.M.name());
-		
+
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(15, 15), TypeTerrain.M.name()));
 		NodeGraphe noeudEast = new NodeGraphe(new Case(new Position(16, 15), TypeTerrain.M.name()));
 		NodeGraphe noeudDest = new NodeGraphe(destination);
 		noeud.addNodeNorth(noeudDest);
 		noeud.addNodeEast(noeudEast);
-		
+
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new StringBuilder());
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.NORTH);
@@ -89,7 +89,7 @@ public class NodeGrapheTest {
 		noeud.addNodeEast(noeudDest);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new StringBuilder());
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.EAST);
@@ -98,7 +98,7 @@ public class NodeGrapheTest {
 	@Test
 	public void calculateShortWayToDestination_must_return_2_when_destination_case_was_found_inSouth() throws Exception {
 		Case destination = new Case(new Position(15, 16), TypeTerrain.M.name());
-		
+
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(15, 15), TypeTerrain.M.name()));
 		NodeGraphe noeudEast = new NodeGraphe(new Case(new Position(16, 15), TypeTerrain.M.name()));
 		NodeGraphe noeudWest = new NodeGraphe(new Case(new Position(14, 15), TypeTerrain.M.name()));
@@ -106,9 +106,9 @@ public class NodeGrapheTest {
 		noeud.addNodeSouth(noeudSouth);
 		noeud.addNodeEast(noeudEast);
 		noeud.addNodeWest(noeudWest);
-		
+
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new StringBuilder());
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.SOUTH);
@@ -123,7 +123,7 @@ public class NodeGrapheTest {
 		noeud.addNodeWest(noeudDest);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new StringBuilder());
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.WEST);
