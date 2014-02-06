@@ -92,7 +92,7 @@ public class ProtoMinerTest {
 	}
 
 	@Test
-	public void gotoDiamonds_must_return_actions_to_go_to_diamonds() throws Exception {
+	public void gotoDiamonds_must_return_actions_to_go_to_diamonds_and_trolley() throws Exception {
 		// on efface le fichier des traces
 		FileUtils.deleteTracesFile();
 
@@ -282,4 +282,54 @@ public class ProtoMinerTest {
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.EAST);
 	}
 
+	@Test
+	public void doAction_must_return_action_to_explore_the_mine_when_there_are_no_diamonds() throws Exception {
+		// on efface le fichier des traces
+		FileUtils.deleteTracesFile();
+
+		// premier tour, le mineur se trouve sur son chariot et se déplace pour explorer la mine
+		// ++ 05 06 07 08 09
+		// 03 S--M--M--M--M
+		// 04 S--M--S--M--M
+		// 05 M--M--X--M--S
+		// 06 M--S--M--M--S
+		// 07 M--S--M--M--M
+
+		Position chariotPosition = new Position(7, 5);
+
+		Mine mine = new Mine("40 25 50", DELIMITER);
+		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+
+		Position minerPosition = new Position(7, 5);
+		System.out.println("MinerPosition: " + minerPosition);
+		String[] env = new String[] { "S M M M M", "S M S M M", "M M X M S", "M S M M S", "M S M M M" };
+		LineSight ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		Miner protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.EAST, ligneSight,
+				new ArrayList<Position>(), 0);
+
+		MinerAction doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+
+		// deuxième tour, le mineur se déplace pour explorer encore plus en avant la mine
+		// ++ 05 06 07 08 09
+		// 03 S--M--M--M--M
+		// 04 S--M--S--M--M
+		// 05 M--M--X--M--S
+		// 06 M--S--M--M--S
+		// 07 M--S--M--M--M
+
+		minerPosition = new Position(minerPosition.getPositionX(), minerPosition.getPositionY());
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "S M S M M", "M S M M S", "S 4 M X S", "M S M S M", "M M S S M" };
+		ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.WEST, ligneSight,
+				new ArrayList<Position>(), 0);
+
+		doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+	}
 }

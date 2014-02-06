@@ -9,7 +9,6 @@ import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.Miner;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.pathfinder.Pathfinder;
-import org.gold.miner.tchoutchou.pathfinder.RandomPathfinder;
 import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 
 public class ProtoMiner extends Miner {
@@ -43,9 +42,8 @@ public class ProtoMiner extends Miner {
 
 		// il faut retourner une action quoi qu'il arrive donc au hasard
 		if (action == null) {
-			RandomPathfinder randomPathfinder = new RandomPathfinder();
-			action = randomPathfinder.searchDiamonds(currentPosition).getMinerAction();
-			System.out.println("RandomPathfinder appelé! Action: " + action);
+			action = returnToTheTrolley();
+			FileUtils.writeInTracesFile("Action par défaut choisi! Action: " + action);
 		}
 
 		FileUtils.writeInTracesFile("Action mineur: " + action);
