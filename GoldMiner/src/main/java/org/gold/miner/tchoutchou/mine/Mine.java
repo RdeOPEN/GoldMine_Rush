@@ -25,53 +25,53 @@ public class Mine {
 		this.largeur = Integer.parseInt(envValues[0]);
 		this.hauteur = Integer.parseInt(envValues[1]);
 		this.nbDiamants = Integer.parseInt(envValues[2]);
-		FileUtils.writeInFile("Initialisation de la mine : " + this.toString());
+		FileUtils.writeInTracesFile("Initialisation de la mine : " + this.toString());
 	}
 
 	/**
 	 * @param lineSight
 	 */
 	public void updateCases(LineSight lineSight) {
-		FileUtils.writeInFile("Mise à jour de la mine en cours...");
+		FileUtils.writeInTracesFile("Mise à jour de la mine en cours...");
 		this.updateCases(lineSight.getCases());
-		FileUtils.writeInFile("Fin mise à jour de la mine.");
+		FileUtils.writeInTracesFile("Fin mise à jour de la mine.");
 	}
 
 	/**
 	 * @param casesToUpdateMap
 	 */
 	public void updateCases(Collection<Case> casesToUpdateMap) {
-		FileUtils.writeInFile("Etat de la mine avant mise à jour :");
+		FileUtils.writeInTracesFile("Etat de la mine avant mise à jour :");
 		printMine();
 		for (Case caseUpdate : casesToUpdateMap) {
 			mapCases.put(caseUpdate.getPosition(), caseUpdate);
 		}
 		printMine();
-		FileUtils.writeInFile("Etat de la mine après mise à jour :");
+		FileUtils.writeInTracesFile("Etat de la mine après mise à jour :");
 	}
 
 	public Collection<Case> getDiamondsPositions() {
-		FileUtils.writeInFile("Récuperation des positions des diamants...");
+		FileUtils.writeInTracesFile("Récuperation des positions des diamants...");
 		Collection<Case> cases = new HashSet<Case>();
 		for (Entry<Position, Case> entry : mapCases.entrySet()) {
 			Case value = entry.getValue();
 			if (value.getDiamonds() > 0) {
 				cases.add(value);
-				FileUtils.writeInFile("Position diamants: " + value);
+				FileUtils.writeInTracesFile("Position diamants: " + value);
 			}
 		}
 		return cases;
 	}
 
 	public void printMine() {
-		FileUtils.writeInFile("+++++++++ Début impression plan de la mine +++++++++");
+		FileUtils.writeInTracesFile("+++++++++ Début impression plan de la mine +++++++++");
 		StringBuilder stringbuilder = new StringBuilder();
 		for (int y = 0; y < hauteur; y++) {
 			for (int x = 0; x < largeur; x++) {
 				Case currCase = mapCases.get(new Position(x, y));
 				String type = null;
 				if (currCase == null) {
-					type = "n";
+					type = ".";
 				} else {
 					if (TypeTerrain.D.equals(currCase.getType())) {
 						type = String.valueOf(currCase.getDiamonds());
@@ -83,8 +83,8 @@ public class Mine {
 			}
 			stringbuilder.append("\n");
 		}
-		FileUtils.writeInFile(stringbuilder.toString());
-		FileUtils.writeInFile("+++++++++ Fin impression plan de la mine +++++++++");
+		FileUtils.writeInTracesFile(stringbuilder.toString());
+		FileUtils.writeInTracesFile("+++++++++ Fin impression plan de la mine +++++++++\n");
 	}
 
 	/**

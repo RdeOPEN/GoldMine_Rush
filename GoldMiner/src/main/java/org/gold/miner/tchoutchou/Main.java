@@ -24,8 +24,8 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		FileUtils.supprFile();
-		FileUtils.writeInFile("Start Main mineur: " + new Date());
+		FileUtils.deleteTracesFile();
+		FileUtils.writeInTracesFile("Start Main mineur: " + new Date());
 
 		try {
 			ComServeur comServeur = new ComServeur();
@@ -38,7 +38,7 @@ public class Main {
 			String mineProperties = comServeur.getNextLine();
 			Mine mine = new Mine(mineProperties, DELIMITER_SPACE);
 
-			FileUtils.writeInFile("mineProperties: " + mineProperties);
+			FileUtils.writeInTracesFile("mineProperties: " + mineProperties);
 
 			// sauvegarde de la position du chariot
 			Position positionChariot = null;
@@ -48,7 +48,7 @@ public class Main {
 			int nbTours = 0;
 			while (true) {
 				nbTours++;
-				FileUtils.writeInFile("*********** TOUR " + nbTours + " ***********");
+				FileUtils.writeInTracesFile("*********** TOUR " + nbTours + " ***********");
 				// - La 1ere ligne indique la position du mineur sur la carte sous la forme 'x y nbAdversaires' (0≤x<largeur et 0≤y<hauteur) et nombre de joueur
 				// en vue
 				// 1ere ligne: 12 18 0
@@ -70,25 +70,25 @@ public class Main {
 				String positionAndNbEnnemis = comServeur.getNextLine();
 				Position currentPositionMiner = new Position(positionAndNbEnnemis, DELIMITER_SPACE);
 
-				FileUtils.writeInFile("positionAndNbEnnemis: " + positionAndNbEnnemis);
+				FileUtils.writeInTracesFile("positionAndNbEnnemis: " + positionAndNbEnnemis);
 
 				// on garde la position d'origine du chariot si positionChariot vaut null
 				if (positionChariot == null) {
-					FileUtils.writeInFile("Affectation position chariot: " + currentPositionMiner);
+					FileUtils.writeInTracesFile("Affectation position chariot: " + currentPositionMiner);
 					positionChariot = currentPositionMiner;
 				}
 
 				String[] posValues = positionAndNbEnnemis.split(DELIMITER_SPACE);
 				int nbEnnemis = Integer.parseInt(posValues[2]);
 
-				FileUtils.writeInFile("------ lineSightLines ------");
+				FileUtils.writeInTracesFile("------ lineSightLines ------");
 				// on récupère les 5 prochaines lignes décrivant l'environnement immédiat du mineur (ligne de vue)
 				String[] lineSightLines = new String[5];
 				for (int i = 0; i < 5; i++) {
 					lineSightLines[i] = comServeur.getNextLine();
-					FileUtils.writeInFile("lineSightLines[" + i + "]: " + lineSightLines[i]);
+					FileUtils.writeInTracesFile("lineSightLines[" + i + "]: " + lineSightLines[i]);
 				}
-				FileUtils.writeInFile("----------------------------");
+				FileUtils.writeInTracesFile("----------------------------");
 
 				LineSight lineSight = new LineSight(lineSightLines, currentPositionMiner, DELIMITER_SPACE);
 
@@ -100,7 +100,7 @@ public class Main {
 
 				// mise à jour de la carte de la mine
 				mine.updateCases(lineSight);
-				FileUtils.writeInFile("Mise à jour Mine effectuée!");
+				FileUtils.writeInTracesFile("Mise à jour Mine effectuée!");
 
 				// initialisation pathFinder pour le tour courant
 				// pathFinder = PathfinderFactory.createPathfinder(pathfinderArchetype, mine);
@@ -111,13 +111,13 @@ public class Main {
 
 				// send miner's action to goldrush-simu
 				String actionToSend = miner.doAction().toString();
-				FileUtils.writeInFile("Action prochain tour: " + actionToSend);
-				FileUtils.writeInFile("");
+				FileUtils.writeInTracesFile("Action prochain tour: " + actionToSend);
+				FileUtils.writeInTracesFile("");
 				comServeur.sendCommand(actionToSend);
 			}
 		} catch (Exception e) {
-			System.out.println("Erreur: " + e.getMessage());
-			e.printStackTrace();
+			FileUtils.writeInTracesFile("ERROR: " + e.getMessage());
+			FileUtils.writeInTracesFile("CAUSE: " + e.getCause());
 		}
 	}
 

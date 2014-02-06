@@ -40,7 +40,7 @@ public class ProtoPathfinder implements Pathfinder {
 
 	@Override
 	public ResultatRechercheChemin searchDiamonds(Position currentPosition) {
-		FileUtils.writeInFile("== Entree Pathfinder. méthode searchDiamonds ==");
+		FileUtils.writeInTracesFile("== Entree Pathfinder. méthode searchDiamonds ==");
 
 		ResultatRechercheChemin resultatRechercheFinal = null;
 		List<ResultatRechercheChemin> resultats = new ArrayList<ResultatRechercheChemin>();
@@ -48,11 +48,11 @@ public class ProtoPathfinder implements Pathfinder {
 		Collection<Case> diamondsPositions = mine.getDiamondsPositions();
 
 		if (diamondsPositions != null && !diamondsPositions.isEmpty()) {
-			FileUtils.writeInFile("Des positions contenant des diamants ont été trouvés: " + diamondsPositions.toString());
+			FileUtils.writeInTracesFile("Des positions contenant des diamants ont été trouvés: " + diamondsPositions.toString());
 			// recuperation du plan de la mine
 			final Map<Position, Case> casesInMap = mine.getCasesInMap();
 
-			FileUtils.writeInFile("Construction graphe de la mine.");
+			FileUtils.writeInTracesFile("Construction graphe de la mine.");
 			// construction Graphe de decision
 			final Map<Position, NodeGraphe> graphe = GrapheFactory.constructGraphe(casesInMap);
 
@@ -79,12 +79,12 @@ public class ProtoPathfinder implements Pathfinder {
 				ResultatRechercheChemin resultatRechercheCheminSelected = resultats.get(0);
 				resultatRechercheFinal = resultatRechercheCheminSelected;
 				// System.out.println("ResultatRechercheCheminSelected: " + resultatRechercheCheminSelected);
-				FileUtils.writeInFile("Resultat de la recherche de diamants : " + resultatRechercheFinal);
+				FileUtils.writeInTracesFile("Resultat de la recherche de diamants : " + resultatRechercheFinal);
 			}
 		} else {
-			FileUtils.writeInFile("Aucun diamants n'a été trouvé dans la mine. Aucune action ne sera effectuée.");
+			FileUtils.writeInTracesFile("Aucun diamants n'a été trouvé dans la mine. Aucune action ne sera effectuée.");
 		}
-		FileUtils.writeInFile("== Sortie Pathfinder ==");
+		FileUtils.writeInTracesFile("== Sortie Pathfinder ==");
 		return resultatRechercheFinal;
 	}
 }
