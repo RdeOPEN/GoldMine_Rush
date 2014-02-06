@@ -100,7 +100,7 @@ public class Main {
 
 				// mise à jour de la carte de la mine
 				mine.updateCases(lineSight);
-				FileUtils.writeInTracesFile("Mise à jour Mine effectuée!");
+				FileUtils.writeInTracesFile("Mise a jour Mine effectuee!");
 
 				// initialisation pathFinder pour le tour courant
 				// pathFinder = PathfinderFactory.createPathfinder(pathfinderArchetype, mine);

@@ -40,7 +40,7 @@ public class ProtoPathfinder implements Pathfinder {
 
 	@Override
 	public ResultatRechercheChemin searchDiamonds(Position currentPosition) {
-		FileUtils.writeInTracesFile("== Entree Pathfinder. méthode searchDiamonds ==");
+		FileUtils.writeInTracesFile("== Entree Pathfinder. methode searchDiamonds ==");
 
 		ResultatRechercheChemin resultatRechercheFinal = null;
 		List<ResultatRechercheChemin> resultats = new ArrayList<ResultatRechercheChemin>();
@@ -48,7 +48,7 @@ public class ProtoPathfinder implements Pathfinder {
 		Collection<Case> diamondsPositions = mine.getDiamondsPositions();
 
 		if (diamondsPositions != null && !diamondsPositions.isEmpty()) {
-			FileUtils.writeInTracesFile("Des positions contenant des diamants ont été trouvés: " + diamondsPositions.toString());
+			FileUtils.writeInTracesFile("Des positions contenant des diamants ont ete trouves: " + diamondsPositions.toString());
 			// recuperation du plan de la mine
 			final Map<Position, Case> casesInMap = mine.getCasesInMap();
 
@@ -82,7 +82,7 @@ public class ProtoPathfinder implements Pathfinder {
 				FileUtils.writeInTracesFile("Resultat de la recherche de diamants : " + resultatRechercheFinal);
 			}
 		} else {
-			FileUtils.writeInTracesFile("Aucun diamants n'a été trouvé dans la mine. Aucune action ne sera effectuée.");
+			FileUtils.writeInTracesFile("Aucun diamants n'a ete trouve dans la mine. Aucune action ne sera effectuee.");
 		}
 		FileUtils.writeInTracesFile("== Sortie Pathfinder ==");
 		return resultatRechercheFinal;

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.fest.assertions.api.Assertions;
+import org.gold.miner.tchoutchou.FileUtils;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.LineSight;
 import org.gold.miner.tchoutchou.mine.Mine;
@@ -92,10 +93,14 @@ public class ProtoMinerTest {
 
 	@Test
 	public void gotoDiamonds_must_return_actions_to_go_to_diamonds() throws Exception {
+		// on efface le fichier des traces
+		FileUtils.deleteTracesFile();
+
+		// premier tour, le mineur se trouve sur son chariot et se déplace vers l'Ouest
 		// ++ 20 21 22 23 24
 		// 08 M--S--M--M--M
 		// 09 S--M--M--S--S
-		// 10 7--M--X--S--S
+		// 10 4--M--X--S--S
 		// 11 S--M--S--M--S
 		// 12 M--S--S--M--M
 
@@ -104,9 +109,9 @@ public class ProtoMinerTest {
 		Mine mine = new Mine("40 25 50", DELIMITER);
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
-		// premier tour, le mineur se trouve sur son chariot
 		Position minerPosition = new Position(22, 10);
-		String[] env = new String[] { "M S M M M", "S M M S S", "7 M X S S", "S M S M S", "M S S M M" };
+		System.out.println("MinerPosition: " + minerPosition);
+		String[] env = new String[] { "M S M M M", "S M M S S", "4 M X S S", "S M S M S", "M S S M M" };
 		LineSight ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
 
@@ -116,17 +121,17 @@ public class ProtoMinerTest {
 		MinerAction doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
 
-		// second tour, le mineur s'est déplacé vers l'Ouest
-		
+		// deuxième tour, le mineur se déplace vers l'Ouest
 		// ++ 19 20 21 22 23
 		// 08 S--M--S--M--M
 		// 09 M--S--M--M--S
-		// 10 S--7--M--X--S
+		// 10 S--4--M--X--S
 		// 11 M--S--M--S--M
 		// 12 M--M--S--S--M
-		
+
 		minerPosition = new Position(minerPosition.getPositionX() - 1, minerPosition.getPositionY());
-		env = new String[] { "S M S M M", "M S M M S", "S 7 M X S", "M S M S M", "M M S S M" };
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "S M S M M", "M S M M S", "S 4 M X S", "M S M S M", "M M S S M" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
 
@@ -135,6 +140,146 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+
+		// troisième tour, le mineur ramasse des diamants (max 3)
+		// ++ 19 20 21 22 23
+		// 08 S--S--M--S--M
+		// 09 M--M--S--M--M
+		// 10 M--S--4--M--X
+		// 11 M--M--S--M--S
+		// 12 S--M--M--S--S
+
+		minerPosition = new Position(minerPosition.getPositionX() - 1, minerPosition.getPositionY());
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "S S M S M", "M M S M M", "M S 4 M X", "M M S M S", "S M M S S" };
+		ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.WEST, ligneSight,
+				new ArrayList<Position>(), 0);
+
+		doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.PICK);
+
+		// Quatrieme tour, le mineur se déplace vers l'Est
+		// ++ 19 20 21 22 23
+		// 08 S--S--M--S--M
+		// 09 M--M--S--M--M
+		// 10 M--S--1--M--X
+		// 11 M--M--S--M--S
+		// 12 S--M--M--S--S
+
+		minerPosition = new Position(minerPosition.getPositionX(), minerPosition.getPositionY());
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "S S M S M", "M M S M M", "M S 1 M X", "M M S M S", "S M M S S" };
+		ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.EAST, ligneSight,
+				new ArrayList<Position>(), 3);
+
+		doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.EAST);
+
+		// cinquième tour, le mineur se déplace vers l'Est
+		// ++ 19 20 21 22 23
+		// 08 S--M--S--M--M
+		// 09 M--S--M--M--S
+		// 10 S--1--M--X--S
+		// 11 M--S--M--S--M
+		// 12 M--M--S--S--M
+
+		minerPosition = new Position(minerPosition.getPositionX() + 1, minerPosition.getPositionY());
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "S M S M M", "M S M M S", "S 1 M X S", "M S M S M", "M M S S M" };
+		ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.EAST, ligneSight,
+				new ArrayList<Position>(), 3);
+
+		doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.EAST);
+
+		// sixieme tour, le mineur se déplace est sur le chariot et drop les diamants
+		// ++ 20 21 22 23 24
+		// 08 M--S--M--M--M
+		// 09 S--M--M--S--S
+		// 10 1--M--X--S--S
+		// 11 S--M--S--M--S
+		// 12 M--S--S--M--M
+
+		minerPosition = new Position(22, 10);
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "M S M M M", "S M M S S", "1 M X S S", "S M S M S", "M S S M M" };
+		ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.EAST, ligneSight,
+				new ArrayList<Position>(), 3);
+
+		doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.DROP);
+
+		// septieme tour, le mineur se déplace vers l'Ouest
+		// ++ 19 20 21 22 23
+		// 08 S--M--S--M--M
+		// 09 M--S--M--M--S
+		// 10 S--1--M--X--S
+		// 11 M--S--M--S--M
+		// 12 M--M--S--S--M
+
+		minerPosition = new Position(minerPosition.getPositionX() - 1, minerPosition.getPositionY());
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "S M S M M", "M S M M S", "S 1 M X S", "M S M S M", "M M S S M" };
+		ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.WEST, ligneSight,
+				new ArrayList<Position>(), 0);
+
+		doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+
+		// huitieme tour, le mineur ramasse des diamants (max 3)
+		// ++ 19 20 21 22 23
+		// 08 S--S--M--S--M
+		// 09 M--M--S--M--M
+		// 10 M--S--1--M--X
+		// 11 M--M--S--M--S
+		// 12 S--M--M--S--S
+
+		minerPosition = new Position(minerPosition.getPositionX() - 1, minerPosition.getPositionY());
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "S S M S M", "M M S M M", "M S 1 M X", "M M S M S", "S M M S S" };
+		ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.WEST, ligneSight,
+				new ArrayList<Position>(), 0);
+
+		doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.PICK);
+
+		// Quatrieme tour, le mineur se déplace vers l'Est
+		// ++ 19 20 21 22 23
+		// 08 S--S--M--S--M
+		// 09 M--M--S--M--M
+		// 10 M--S--E--M--X
+		// 11 M--M--S--M--S
+		// 12 S--M--M--S--S
+
+		minerPosition = new Position(minerPosition.getPositionX(), minerPosition.getPositionY());
+		System.out.println("MinerPosition: " + minerPosition);
+		env = new String[] { "S S M S M", "M M S M M", "M S E M X", "M M S M S", "S M M S S" };
+		ligneSight = new LineSight(env, minerPosition, DELIMITER);
+		mine.updateCases(ligneSight);
+
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.EAST, ligneSight,
+				new ArrayList<Position>(), 1);
+
+		doAction = protoMiner.doAction();
+		Assertions.assertThat(doAction).isEqualTo(MinerAction.EAST);
 	}
 
 }

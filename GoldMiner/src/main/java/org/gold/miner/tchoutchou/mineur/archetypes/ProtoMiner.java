@@ -21,17 +21,19 @@ public class ProtoMiner extends Miner {
 
 	@Override
 	public MinerAction doAction() {
-		FileUtils.writeInTracesFile("=== Début décision action prochain tour. ===");
+		FileUtils.writeInTracesFile("=== Debut decision action prochain tour. ===");
 		MinerAction action = null;
 		if (hasDiamonds() && trolleyPosition.equals(currentPosition)) {
-			FileUtils.writeInTracesFile("Le mineur est sur le chariot et il possède des diamants sur lui : " + this.nbDiamonds);
+			FileUtils.writeInTracesFile("Le mineur est sur le chariot et il possede des diamants sur lui : " + this.nbDiamonds);
 			action = MinerAction.DROP;
 			dropDiamonds();
 		} else if (isFullDiamonds()) {
-			FileUtils.writeInTracesFile("Le mineur a le maximum de diamants sur lui, il retourne donc au chariot les déposer à la position " + Miner.trolleyPosition);
+			FileUtils.writeInTracesFile("Le mineur a le maximum de diamants sur lui, il retourne donc au chariot les déposer à la position "
+					+ Miner.trolleyPosition);
 			action = returnToTheTrolley();
 		} else if (!isFullDiamonds() && minerIsOnDiamonds()) {
-			FileUtils.writeInTracesFile("Le mineur est sur des diamants et il peut encore en porter donc il va les ramasser à la position " + this.currentPosition);
+			FileUtils.writeInTracesFile("Le mineur est sur des diamants et il peut encore en porter donc il va les ramasser à la position "
+					+ this.currentPosition);
 			action = MinerAction.PICK;
 			nbDiamonds = pickDiamonds();
 		} else {
@@ -43,6 +45,7 @@ public class ProtoMiner extends Miner {
 		if (action == null) {
 			RandomPathfinder randomPathfinder = new RandomPathfinder();
 			action = randomPathfinder.searchDiamonds(currentPosition).getMinerAction();
+			System.out.println("RandomPathfinder appelé! Action: " + action);
 		}
 
 		FileUtils.writeInTracesFile("Action mineur: " + action);

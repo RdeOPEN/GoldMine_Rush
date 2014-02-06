@@ -32,22 +32,22 @@ public class Mine {
 	 * @param lineSight
 	 */
 	public void updateCases(LineSight lineSight) {
-		FileUtils.writeInTracesFile("Mise à jour de la mine en cours...");
+		FileUtils.writeInTracesFile("Mise a jour de la mine en cours...");
 		this.updateCases(lineSight.getCases());
-		FileUtils.writeInTracesFile("Fin mise à jour de la mine.");
+		FileUtils.writeInTracesFile("Fin mise a jour de la mine.");
 	}
 
 	/**
 	 * @param casesToUpdateMap
 	 */
 	public void updateCases(Collection<Case> casesToUpdateMap) {
-		FileUtils.writeInTracesFile("Etat de la mine avant mise à jour :");
-		printMine();
+		// FileUtils.writeInTracesFile("Etat de la mine avant mise à jour :");
+		// printMine();
 		for (Case caseUpdate : casesToUpdateMap) {
 			mapCases.put(caseUpdate.getPosition(), caseUpdate);
 		}
+		FileUtils.writeInTracesFile("Etat de la mine apres mise a jour :");
 		printMine();
-		FileUtils.writeInTracesFile("Etat de la mine après mise à jour :");
 	}
 
 	public Collection<Case> getDiamondsPositions() {
