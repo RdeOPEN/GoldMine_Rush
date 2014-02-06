@@ -7,6 +7,6 @@ public interface Pathfinder {
 
 	ResultatRechercheChemin exploreTo(Position currentPosition, Position destination);
 
-	ResultatRechercheChemin gotoDiamonds(Position currentPosition);
+	ResultatRechercheChemin searchDiamonds(Position currentPosition);
 
 }

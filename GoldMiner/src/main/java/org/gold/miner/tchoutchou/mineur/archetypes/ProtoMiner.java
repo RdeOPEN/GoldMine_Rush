@@ -2,12 +2,15 @@ package org.gold.miner.tchoutchou.mineur.archetypes;
 
 import java.util.List;
 
+import org.gold.miner.tchoutchou.FileUtils;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.LineSight;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.Miner;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.pathfinder.Pathfinder;
+import org.gold.miner.tchoutchou.pathfinder.RandomPathfinder;
+import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 
 public class ProtoMiner extends Miner {
 
@@ -18,18 +21,31 @@ public class ProtoMiner extends Miner {
 
 	@Override
 	public MinerAction doAction() {
+		FileUtils.writeInFile("=== Début décision action prochain tour. ===");
 		MinerAction action = null;
 		if (hasDiamonds() && trolleyPosition.equals(currentPosition)) {
+			FileUtils.writeInFile("Le mineur est sur le chariot et il possède des diamants sur lui : " + this.nbDiamonds);
 			action = MinerAction.DROP;
 			dropDiamonds();
 		} else if (isFullDiamonds()) {
+			FileUtils.writeInFile("Le mineur a le maximum de diamants sur lui, il retourne donc au chariot les déposer à la position " + Miner.trolleyPosition);
 			action = returnToTheTrolley();
 		} else if (!isFullDiamonds() && minerIsOnDiamonds()) {
+			FileUtils.writeInFile("Le mineur est sur des diamants et il peut encore en porter donc il va les ramasser à la position " + this.currentPosition);
 			action = MinerAction.PICK;
 			nbDiamonds = pickDiamonds();
 		} else {
+			FileUtils.writeInFile("Le mineur doit bouger (recherche diamants ou déplacement exploratoire).");
 			action = this.move();
 		}
+
+		// il faut retourner une action quoi qu'il arrive donc au hasard
+		if (action == null) {
+			RandomPathfinder randomPathfinder = new RandomPathfinder();
+			action = randomPathfinder.searchDiamonds(currentPosition).getMinerAction();
+		}
+
+		FileUtils.writeInFile("Action mineur: " + action);
 
 		return action;
 	}
@@ -39,7 +55,8 @@ public class ProtoMiner extends Miner {
 	 */
 	public MinerAction move() {
 		// recupere l'action a faire
-		return pathfinder.gotoDiamonds(currentPosition).getMinerAction();
+		ResultatRechercheChemin resultatRecherche = pathfinder.searchDiamonds(currentPosition);
+		return resultatRecherche != null ? resultatRecherche.getMinerAction() : null;
 	}
 
 	/**

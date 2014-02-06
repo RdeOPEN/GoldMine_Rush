@@ -40,7 +40,7 @@ public class RandomPathfinder implements Pathfinder {
 	}
 
 	@Override
-	public ResultatRechercheChemin gotoDiamonds(Position currentPosition) {
+	public ResultatRechercheChemin searchDiamonds(Position currentPosition) {
 		return this.exploreTo(currentPosition, null);
 	}
 

@@ -1,10 +1,12 @@
 package org.gold.miner.tchoutchou.pathfinder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.gold.miner.tchoutchou.FileUtils;
 import org.gold.miner.tchoutchou.graphe.GrapheFactory;
 import org.gold.miner.tchoutchou.graphe.NodeGraphe;
 import org.gold.miner.tchoutchou.mine.Case;
@@ -37,42 +39,52 @@ public class ProtoPathfinder implements Pathfinder {
 	}
 
 	@Override
-	public ResultatRechercheChemin gotoDiamonds(Position currentPosition) {
+	public ResultatRechercheChemin searchDiamonds(Position currentPosition) {
+		FileUtils.writeInFile("== Entree Pathfinder. méthode searchDiamonds ==");
+
+		ResultatRechercheChemin resultatRechercheFinal = null;
 		List<ResultatRechercheChemin> resultats = new ArrayList<ResultatRechercheChemin>();
 
-		// recuperation du plan de la mine
-		final Map<Position, Case> casesInMap = mine.getCasesInMap();
+		Collection<Case> diamondsPositions = mine.getDiamondsPositions();
 
-		// construction Graphe de decision
-		final Map<Position, NodeGraphe> graphe = GrapheFactory.constructGraphe(casesInMap);
+		if (diamondsPositions != null && !diamondsPositions.isEmpty()) {
+			FileUtils.writeInFile("Des positions contenant des diamants ont été trouvés: " + diamondsPositions.toString());
+			// recuperation du plan de la mine
+			final Map<Position, Case> casesInMap = mine.getCasesInMap();
 
-		// On part de la position courante du mineur pour déterminer la direction à prendre vers la destination
-		final NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
+			FileUtils.writeInFile("Construction graphe de la mine.");
+			// construction Graphe de decision
+			final Map<Position, NodeGraphe> graphe = GrapheFactory.constructGraphe(casesInMap);
 
-		if (nodeCurrentPosition != null) {
+			// On part de la position courante du mineur pour déterminer la direction à prendre vers la destination
+			final NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
+
 			// La position des diamants est récupéré dans le champ de vision immédiat et on calcul le plus court chemin
-			for (Case caseWithDiamonds : mine.getDiamondsPositions()) {
+			for (Case caseWithDiamonds : diamondsPositions) {
 				final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
 				NodeGraphe nodeGrapheDestination = graphe.get(caseWithDiamonds.getPosition());
-				System.out.println(nodeGrapheDestination);
+				// System.out.println(nodeGrapheDestination);
 				if (nodeGrapheDestination != null) {
 					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new StringBuilder());
 					if (resultatRecherche.isCompleted()) {
-						System.out.println(resultatRecherche);
+						// System.out.println(resultatRecherche);
 						resultats.add(resultatRecherche);
 					}
 				}
 			}
-		}
 
-		ResultatRechercheChemin resultatRecherche = null;
-		if (!resultats.isEmpty()) {
-			// on trie les resultats en fonction de la distance à parcourir (voir méthode compareTo de la classe ResultatRechercheChemin)
-			Collections.sort(resultats);
-			ResultatRechercheChemin resultatRechercheCheminSelected = resultats.get(0);
-			resultatRecherche = resultatRechercheCheminSelected;
-			System.out.println("ResultatRechercheCheminSelected: " + resultatRechercheCheminSelected);
+			if (!resultats.isEmpty()) {
+				// on trie les resultats en fonction de la distance à parcourir (voir méthode compareTo de la classe ResultatRechercheChemin)
+				Collections.sort(resultats);
+				ResultatRechercheChemin resultatRechercheCheminSelected = resultats.get(0);
+				resultatRechercheFinal = resultatRechercheCheminSelected;
+				// System.out.println("ResultatRechercheCheminSelected: " + resultatRechercheCheminSelected);
+				FileUtils.writeInFile("Resultat de la recherche de diamants : " + resultatRechercheFinal);
+			}
+		} else {
+			FileUtils.writeInFile("Aucun diamants n'a été trouvé dans la mine. Aucune action ne sera effectuée.");
 		}
-		return resultatRecherche;
+		FileUtils.writeInFile("== Sortie Pathfinder ==");
+		return resultatRechercheFinal;
 	}
 }

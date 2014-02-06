@@ -66,7 +66,7 @@ public class ProtoPathfinderTest {
 		mine.updateCases(ligneSight);
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
-		MinerAction minerAction = protoPathfinder.gotoDiamonds(new Position(2, 2)).getMinerAction();
+		MinerAction minerAction = protoPathfinder.searchDiamonds(new Position(2, 2)).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.EAST);
 	}
 
@@ -86,7 +86,7 @@ public class ProtoPathfinderTest {
 		mine.updateCases(ligneSight);
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
-		MinerAction minerAction = protoPathfinder.gotoDiamonds(new Position(10, 10)).getMinerAction();
+		MinerAction minerAction = protoPathfinder.searchDiamonds(new Position(10, 10)).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.NORTH);
 	}
 
@@ -126,7 +126,7 @@ public class ProtoPathfinderTest {
 
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
-		MinerAction minerAction = protoPathfinder.gotoDiamonds(startPosition).getMinerAction();
+		MinerAction minerAction = protoPathfinder.searchDiamonds(startPosition).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.EAST);
 	}
 
@@ -166,7 +166,7 @@ public class ProtoPathfinderTest {
 		Miner.trolleyPosition = startPosition;
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
-		MinerAction minerAction = protoPathfinder.gotoDiamonds(startPosition).getMinerAction();
+		MinerAction minerAction = protoPathfinder.searchDiamonds(startPosition).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.EAST);
 	}
 

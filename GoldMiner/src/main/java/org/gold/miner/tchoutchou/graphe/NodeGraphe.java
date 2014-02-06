@@ -30,20 +30,20 @@ public class NodeGraphe {
 
 		int positionXCourante = caseNode.getPosition().getPositionX();
 		int positionYCourante = caseNode.getPosition().getPositionY();
-		System.out.println("Exploration node: " + positionXCourante + "," + positionYCourante);
+//		System.out.println("Exploration node: " + positionXCourante + "," + positionYCourante);
 		final String strCurrentNode = SLASHCHAR + positionXCourante + DELIMITERPOSITION + positionYCourante;
 
 		if (previousNode == null) {
-			System.out.println("Nous sommes à la racine du graphe: " + positionXCourante + "," + positionYCourante);
+//			System.out.println("Nous sommes à la racine du graphe: " + positionXCourante + "," + positionYCourante);
 		} else {
-			System.out.println("nodesExplored: " + nodesExplored);
+//			System.out.println("nodesExplored: " + nodesExplored);
 			int positionXPreviousNode = previousNode.getCase().getPosition().getPositionX();
 			int positionYPreviousNode = previousNode.getCase().getPosition().getPositionY();
 			final String strPreviousNode = SLASHCHAR + positionXPreviousNode + DELIMITERPOSITION + positionYPreviousNode;
 			final String nodeAlreadyExplored = strPreviousNode + strCurrentNode;
-			System.out.println("Chaine recherchée: " + nodeAlreadyExplored);
+//			System.out.println("Chaine recherchée: " + nodeAlreadyExplored);
 			if (nodesExplored.toString().contains(nodeAlreadyExplored)) {
-				System.out.println("La chaine recherchée a été trouvée, on a déjà exploré ces deux noeuds: " + nodeAlreadyExplored);
+//				System.out.println("La chaine recherchée a été trouvée, on a déjà exploré ces deux noeuds: " + nodeAlreadyExplored);
 				return null;
 			}
 		}
@@ -53,7 +53,7 @@ public class NodeGraphe {
 
 		// si la case actuelle est la destination on retourne 1 pour dire qu'on l'a trouvé.
 		if (destination.equals(caseNode)) {
-			System.out.println("Destination trouvée: " + caseNode.getPosition());
+			// System.out.println("Destination trouvée: " + caseNode.getPosition());
 			resultat.setDestinationCase(caseNode);
 			return 1;
 		} else if (!caseNode.canPass()) {

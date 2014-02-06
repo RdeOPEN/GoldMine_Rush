@@ -1,5 +1,10 @@
 package org.gold.miner.tchoutchou.tree;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.fest.assertions.api.Assertions;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Position;
@@ -11,8 +16,22 @@ public class ResultatRechercheCheminTest {
 	@Test
 	public void compareTo_must_return_sort_ResultatRechercheChemin_list_correctly() throws Exception {
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin(new Case(new Position(1, 1), "M"), MinerAction.NORTH, 5);
+		ResultatRechercheChemin resultat1 = new ResultatRechercheChemin(new Case(new Position(1, 1), "M"), MinerAction.NORTH, 3);
+		ResultatRechercheChemin resultat2 = new ResultatRechercheChemin(new Case(new Position(1, 1), "M"), MinerAction.NORTH, 2);
+		ResultatRechercheChemin resultat3 = new ResultatRechercheChemin(new Case(new Position(1, 1), "M"), MinerAction.NORTH, 4);
 
-		Assertions.assertThat(resultat.isCompleted()).isTrue();
+		List<ResultatRechercheChemin> listeExpected = new ArrayList<ResultatRechercheChemin>();
+		listeExpected.add(resultat2);
+		listeExpected.add(resultat1);
+		listeExpected.add(resultat3);
+		listeExpected.add(resultat);
+
+		List<ResultatRechercheChemin> liste = Arrays.asList(resultat, resultat1, resultat2, resultat3);
+		Collections.sort(liste);
+
+		for (int i = 0; i < listeExpected.size(); i++) {
+			Assertions.assertThat(liste.get(i)).isEqualTo(listeExpected.get(i));
+		}
 	}
 
 	@Test
