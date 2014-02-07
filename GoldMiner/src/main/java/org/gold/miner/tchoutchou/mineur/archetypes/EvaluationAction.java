@@ -45,4 +45,9 @@ public class EvaluationAction {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "EvaluationAction [poidsAction=" + poidsAction + ", minerAction=" + minerAction + "]";
+	}
+
 }

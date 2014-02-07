@@ -13,9 +13,12 @@ import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 
 public class ProtoMiner extends Miner {
 
+	public static final int POIDS_ACTION_NOT_SELECTED = 0;
 	public static final int POIDS_DROP_ACTION = 1000;
 	public static final int POIDS_PICK_ACTION = 900;
 	public static final int POIDS_RETURN_TROLLEY_ACTION = 800;
+	public static final int POIDS_GO_TO_DIAMONDS_ACTION = 700;
+	public static final int POIDS_EXPLORE_MINE_ACTION = 100;
 
 	public ProtoMiner(Pathfinder pathfinder, Position trolleyPosition, Position currentPosition, MinerAction directionOfMiner, LineSight lineSight,
 			List<Position> positionOpponents, int nbDiamonds) {
@@ -56,34 +59,61 @@ public class ProtoMiner extends Miner {
 		evaluateDropAction();
 		evaluatePickAction();
 		evaluateReturnToTheTrolleyAction();
-		
+		evaluateGoToDiamondsAction();
+		evaluateExploreMineAction();
+
 		return action;
 	}
 
-	public EvaluationAction evaluateReturnToTheTrolleyAction() {
-		int poids = 0;
-		MinerAction action = null;
+	/**
+	 * @return
+	 */
+	public EvaluationAction evaluateDropAction() {
+		int poids = POIDS_ACTION_NOT_SELECTED;
+		if (hasDiamonds() && trolleyPosition.equals(currentPosition)) {
+			poids = POIDS_DROP_ACTION;
+		}
+		return new EvaluationAction(poids, MinerAction.DROP);
+	}
+
+	/**
+	 * @return
+	 */
+	public EvaluationAction evaluatePickAction() {
+		int poids = POIDS_ACTION_NOT_SELECTED;
 		if (!isFullDiamonds() && minerIsOnDiamonds()) {
+			poids = POIDS_PICK_ACTION;
+		}
+		return new EvaluationAction(poids, MinerAction.PICK);
+	}
+
+	/**
+	 * @return
+	 */
+	public EvaluationAction evaluateReturnToTheTrolleyAction() {
+		int poids = POIDS_ACTION_NOT_SELECTED;
+		MinerAction action = null;
+		if (isFullDiamonds()) {
 			poids = POIDS_RETURN_TROLLEY_ACTION;
 			action = returnToTheTrolley();
 		}
 		return new EvaluationAction(poids, action);
 	}
 
-	public EvaluationAction evaluatePickAction() {
-		int poids = 0;
-		if (!isFullDiamonds() && minerIsOnDiamonds()) {
-			poids = POIDS_PICK_ACTION;
-		}
-		return new EvaluationAction(poids, MinerAction.PICK);		
+	/**
+	 * 
+	 */
+	public EvaluationAction evaluateExploreMineAction() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public EvaluationAction evaluateDropAction() {
-		int poids = 0;
-		if (hasDiamonds() && trolleyPosition.equals(currentPosition)) {
-			poids = POIDS_DROP_ACTION;
-		}
-		return new EvaluationAction(poids, MinerAction.DROP);
+	/**
+	 * 
+	 */
+	public EvaluationAction evaluateGoToDiamondsAction() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**

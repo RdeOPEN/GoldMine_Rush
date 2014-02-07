@@ -48,7 +48,7 @@ public class ProtoMinerTest {
 	@Test
 	public void when_miner_is_in_same_position_as_a_diamond_then_pick_action_must_be_selected() throws Exception {
 		MinerAction actionExpected = MinerAction.PICK;
-		Miner miner = new ProtoMiner(null, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
+		Miner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
 
 		MinerAction action = miner.doAction();
 		Assertions.assertThat(action).isEqualTo(actionExpected);
@@ -84,7 +84,7 @@ public class ProtoMinerTest {
 	@Test
 	public void when_miner_is_on_trolley_and_it_has_diamonds_then_drop_action_must_be_selected_and_poids_is_equal_to_1000() throws Exception {
 		MinerAction actionExpected = MinerAction.DROP;
-		ProtoMiner miner = new ProtoMiner(null, new Position(10, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
 
 		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_DROP_ACTION, actionExpected);
 
@@ -94,7 +94,7 @@ public class ProtoMinerTest {
 	}
 
 	@Test
-	public void when_miner_is_on_trolley_and_it_has_diamonds_then_pick_action_must_be_selected_and_poids_is_equal_to_900() throws Exception {
+	public void when_miner_is_on_trolley_and_it_has_diamonds_then_pick_action_must_be_selected_and_poids_is_equal_to_800() throws Exception {
 		MinerAction actionExpected = MinerAction.PICK;
 		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
 
@@ -104,17 +104,22 @@ public class ProtoMinerTest {
 		Assertions.assertThat(action).isEqualTo(evaluationExpected);
 		Assertions.assertThat(action.getMinerAction()).isEqualTo(actionExpected);
 	}
-	
+
 	@Test
-	public void when_miner_must_return_to_the_trolley_then_east_action_be_selected_and_poids_is_equal_to_800() throws Exception {
+	public void when_miner_must_return_to_the_trolley_then_east_action_be_selected_and_poids_is_equal_to_900() throws Exception {
 		MinerAction actionExpected = MinerAction.EAST;
-		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
+		Position positionChariot = new Position(11, 10);
+		Position mineurPosition = new Position(10, 10);
+		ProtoMiner miner = new ProtoMiner(pathfinder, positionChariot, mineurPosition, null, lineSight, null, MAX_DIAMONDS);
+
+		Mockito.when(pathfinder.exploreTo(Matchers.eq(mineurPosition), Matchers.eq(positionChariot))).thenReturn(
+				new ResultatRechercheChemin(null, MinerAction.EAST, 1));
 
 		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_RETURN_TROLLEY_ACTION, actionExpected);
 
-		EvaluationAction action = miner.evaluatePickAction();
-		Assertions.assertThat(action).isEqualTo(evaluationExpected);
-		Assertions.assertThat(action.getMinerAction()).isEqualTo(actionExpected);
+		EvaluationAction evalAction = miner.evaluateReturnToTheTrolleyAction();
+		Assertions.assertThat(evalAction).isEqualTo(evaluationExpected);
+		Assertions.assertThat(evalAction.getMinerAction()).isEqualTo(actionExpected);
 	}
 
 	@Test
