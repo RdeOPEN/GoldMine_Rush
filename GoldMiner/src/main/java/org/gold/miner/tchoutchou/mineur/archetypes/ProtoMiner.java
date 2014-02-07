@@ -13,6 +13,10 @@ import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 
 public class ProtoMiner extends Miner {
 
+	public static final int POIDS_DROP_ACTION = 1000;
+	public static final int POIDS_PICK_ACTION = 900;
+	public static final int POIDS_RETURN_TROLLEY_ACTION = 800;
+
 	public ProtoMiner(Pathfinder pathfinder, Position trolleyPosition, Position currentPosition, MinerAction directionOfMiner, LineSight lineSight,
 			List<Position> positionOpponents, int nbDiamonds) {
 		super(pathfinder, trolleyPosition, currentPosition, directionOfMiner, lineSight, positionOpponents, nbDiamonds);
@@ -40,7 +44,7 @@ public class ProtoMiner extends Miner {
 			action = this.move();
 		}
 
-		// il faut retourner une action quoi qu'il arrive donc au hasard
+		// il faut retourner une action quoi qu'il arrive donc au hasard (pour l'instant)
 		if (action == null) {
 			action = returnToTheTrolley();
 			FileUtils.writeInTracesFile("Action par défaut choisi! Action: " + action);
@@ -48,7 +52,38 @@ public class ProtoMiner extends Miner {
 
 		FileUtils.writeInTracesFile("Action mineur: " + action);
 
+		// evaluation des différentes actions
+		evaluateDropAction();
+		evaluatePickAction();
+		evaluateReturnToTheTrolleyAction();
+		
 		return action;
+	}
+
+	public EvaluationAction evaluateReturnToTheTrolleyAction() {
+		int poids = 0;
+		MinerAction action = null;
+		if (!isFullDiamonds() && minerIsOnDiamonds()) {
+			poids = POIDS_RETURN_TROLLEY_ACTION;
+			action = returnToTheTrolley();
+		}
+		return new EvaluationAction(poids, action);
+	}
+
+	public EvaluationAction evaluatePickAction() {
+		int poids = 0;
+		if (!isFullDiamonds() && minerIsOnDiamonds()) {
+			poids = POIDS_PICK_ACTION;
+		}
+		return new EvaluationAction(poids, MinerAction.PICK);		
+	}
+
+	public EvaluationAction evaluateDropAction() {
+		int poids = 0;
+		if (hasDiamonds() && trolleyPosition.equals(currentPosition)) {
+			poids = POIDS_DROP_ACTION;
+		}
+		return new EvaluationAction(poids, MinerAction.DROP);
 	}
 
 	/**

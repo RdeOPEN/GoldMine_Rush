@@ -18,6 +18,7 @@ import org.gold.miner.tchoutchou.pathfinder.Pathfinder;
 import org.gold.miner.tchoutchou.pathfinder.ProtoPathfinder;
 import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
@@ -74,16 +75,52 @@ public class ProtoMinerTest {
 	@Test
 	public void when_miner_is_on_trolley_and_it_has_diamonds_then_drop_action_must_be_selected() throws Exception {
 		MinerAction actionExpected = MinerAction.DROP;
-		ProtoMiner miner = new ProtoMiner(null, new Position(10, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
 
 		MinerAction action = miner.doAction();
 		Assertions.assertThat(action).isEqualTo(actionExpected);
 	}
 
 	@Test
+	public void when_miner_is_on_trolley_and_it_has_diamonds_then_drop_action_must_be_selected_and_poids_is_equal_to_1000() throws Exception {
+		MinerAction actionExpected = MinerAction.DROP;
+		ProtoMiner miner = new ProtoMiner(null, new Position(10, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
+
+		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_DROP_ACTION, actionExpected);
+
+		EvaluationAction action = miner.evaluateDropAction();
+		Assertions.assertThat(action).isEqualTo(evaluationExpected);
+		Assertions.assertThat(action.getMinerAction()).isEqualTo(actionExpected);
+	}
+
+	@Test
+	public void when_miner_is_on_trolley_and_it_has_diamonds_then_pick_action_must_be_selected_and_poids_is_equal_to_900() throws Exception {
+		MinerAction actionExpected = MinerAction.PICK;
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
+
+		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_PICK_ACTION, actionExpected);
+
+		EvaluationAction action = miner.evaluatePickAction();
+		Assertions.assertThat(action).isEqualTo(evaluationExpected);
+		Assertions.assertThat(action.getMinerAction()).isEqualTo(actionExpected);
+	}
+	
+	@Test
+	public void when_miner_must_return_to_the_trolley_then_east_action_be_selected_and_poids_is_equal_to_800() throws Exception {
+		MinerAction actionExpected = MinerAction.EAST;
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
+
+		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_RETURN_TROLLEY_ACTION, actionExpected);
+
+		EvaluationAction action = miner.evaluatePickAction();
+		Assertions.assertThat(action).isEqualTo(evaluationExpected);
+		Assertions.assertThat(action.getMinerAction()).isEqualTo(actionExpected);
+	}
+
+	@Test
 	public void move_action_must_be_selected_by_default() throws Exception {
 		List<MinerAction> actionsExpected = Arrays.asList(MinerAction.EAST, MinerAction.WEST, MinerAction.NORTH, MinerAction.SOUTH);
-		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(9, 10), null, lineSight, null, 0);
 
 		Mockito.when(lineSight.getDiamondsPositions()).thenReturn(new ArrayList<Case>());
 
@@ -110,7 +147,6 @@ public class ProtoMinerTest {
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
 		Position minerPosition = new Position(22, 10);
-		System.out.println("MinerPosition: " + minerPosition);
 		String[] env = new String[] { "M S M M M", "S M M S S", "4 M X S S", "S M S M S", "M S S M M" };
 		LineSight ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -130,7 +166,6 @@ public class ProtoMinerTest {
 		// 12 M--M--S--S--M
 
 		minerPosition = new Position(minerPosition.getPositionX() - 1, minerPosition.getPositionY());
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "S M S M M", "M S M M S", "S 4 M X S", "M S M S M", "M M S S M" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -150,7 +185,6 @@ public class ProtoMinerTest {
 		// 12 S--M--M--S--S
 
 		minerPosition = new Position(minerPosition.getPositionX() - 1, minerPosition.getPositionY());
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "S S M S M", "M M S M M", "M S 4 M X", "M M S M S", "S M M S S" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -170,7 +204,6 @@ public class ProtoMinerTest {
 		// 12 S--M--M--S--S
 
 		minerPosition = new Position(minerPosition.getPositionX(), minerPosition.getPositionY());
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "S S M S M", "M M S M M", "M S 1 M X", "M M S M S", "S M M S S" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -190,7 +223,6 @@ public class ProtoMinerTest {
 		// 12 M--M--S--S--M
 
 		minerPosition = new Position(minerPosition.getPositionX() + 1, minerPosition.getPositionY());
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "S M S M M", "M S M M S", "S 1 M X S", "M S M S M", "M M S S M" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -210,7 +242,6 @@ public class ProtoMinerTest {
 		// 12 M--S--S--M--M
 
 		minerPosition = new Position(22, 10);
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "M S M M M", "S M M S S", "1 M X S S", "S M S M S", "M S S M M" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -230,7 +261,6 @@ public class ProtoMinerTest {
 		// 12 M--M--S--S--M
 
 		minerPosition = new Position(minerPosition.getPositionX() - 1, minerPosition.getPositionY());
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "S M S M M", "M S M M S", "S 1 M X S", "M S M S M", "M M S S M" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -250,7 +280,6 @@ public class ProtoMinerTest {
 		// 12 S--M--M--S--S
 
 		minerPosition = new Position(minerPosition.getPositionX() - 1, minerPosition.getPositionY());
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "S S M S M", "M M S M M", "M S 1 M X", "M M S M S", "S M M S S" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -270,7 +299,6 @@ public class ProtoMinerTest {
 		// 12 S--M--M--S--S
 
 		minerPosition = new Position(minerPosition.getPositionX(), minerPosition.getPositionY());
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "S S M S M", "M M S M M", "M S E M X", "M M S M S", "S M M S S" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -282,6 +310,7 @@ public class ProtoMinerTest {
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.EAST);
 	}
 
+	@Ignore
 	@Test
 	public void doAction_must_return_action_to_explore_the_mine_when_there_are_no_diamonds() throws Exception {
 		// on efface le fichier des traces
@@ -301,7 +330,6 @@ public class ProtoMinerTest {
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
 
 		Position minerPosition = new Position(7, 5);
-		System.out.println("MinerPosition: " + minerPosition);
 		String[] env = new String[] { "S M M M M", "S M S M M", "M M X M S", "M S M M S", "M S M M M" };
 		LineSight ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
@@ -321,7 +349,6 @@ public class ProtoMinerTest {
 		// 07 M--S--M--M--M
 
 		minerPosition = new Position(minerPosition.getPositionX(), minerPosition.getPositionY());
-		System.out.println("MinerPosition: " + minerPosition);
 		env = new String[] { "S M S M M", "M S M M S", "S 4 M X S", "M S M S M", "M M S S M" };
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
