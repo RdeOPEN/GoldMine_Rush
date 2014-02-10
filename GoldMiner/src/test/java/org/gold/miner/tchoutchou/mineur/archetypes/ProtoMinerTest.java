@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.fest.assertions.api.Assertions;
-import org.gold.miner.tchoutchou.FileUtils;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.LineSight;
 import org.gold.miner.tchoutchou.mine.Mine;
@@ -13,7 +12,6 @@ import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.Miner;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.mineur.MinerFactory;
-import org.gold.miner.tchoutchou.mineur.archetypes.ProtoMiner;
 import org.gold.miner.tchoutchou.pathfinder.Pathfinder;
 import org.gold.miner.tchoutchou.pathfinder.ProtoPathfinder;
 import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
@@ -48,16 +46,17 @@ public class ProtoMinerTest {
 	@Test
 	public void when_miner_is_in_same_position_as_a_diamond_then_pick_action_must_be_selected() throws Exception {
 		MinerAction actionExpected = MinerAction.PICK;
-		Miner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
+		Miner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), MinerAction.EAST, lineSight, null, 0);
 
 		MinerAction action = miner.doAction();
 		Assertions.assertThat(action).isEqualTo(actionExpected);
+		Assertions.assertThat(miner.getDirection()).isEqualTo(MinerAction.EAST);
 	}
 
 	@Test
 	public void when_miner_has_the_maximal_number_of_diamonds_then_pick_action_must_not_be_selected() throws Exception {
 		MinerAction actionExpected = MinerAction.PICK;
-		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), MinerAction.EAST, lineSight, null, MAX_DIAMONDS);
 
 		MinerAction action = miner.doAction();
 		Assertions.assertThat(action).isNotEqualTo(actionExpected);
@@ -66,37 +65,40 @@ public class ProtoMinerTest {
 	@Test
 	public void when_miner_is_on_trolley_and_it_has_no_diamond_then_drop_action_must_not_be_selected() throws Exception {
 		MinerAction actionExpected = MinerAction.DROP;
-		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), null, lineSight, null, 0);
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), MinerAction.EAST, lineSight, null, 0);
 
 		MinerAction action = miner.doAction();
 		Assertions.assertThat(action).isNotEqualTo(actionExpected);
+		Assertions.assertThat(miner.getDirection()).isEqualTo(MinerAction.EAST);
 	}
 
 	@Test
 	public void when_miner_is_on_trolley_and_it_has_diamonds_then_drop_action_must_be_selected() throws Exception {
 		MinerAction actionExpected = MinerAction.DROP;
-		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), MinerAction.EAST, lineSight, null, MAX_DIAMONDS);
 
 		MinerAction action = miner.doAction();
 		Assertions.assertThat(action).isEqualTo(actionExpected);
+		Assertions.assertThat(miner.getDirection()).isEqualTo(MinerAction.EAST);
 	}
 
 	@Test
 	public void when_miner_is_on_trolley_and_it_has_diamonds_then_drop_action_must_be_selected_and_poids_is_equal_to_1000() throws Exception {
 		MinerAction actionExpected = MinerAction.DROP;
-		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), null, lineSight, null, MAX_DIAMONDS);
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(10, 10), MinerAction.EAST, lineSight, null, MAX_DIAMONDS);
 
 		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_DROP_ACTION, actionExpected);
 
 		EvaluationAction action = miner.evaluateDropAction();
 		Assertions.assertThat(action).isEqualTo(evaluationExpected);
 		Assertions.assertThat(action.getMinerAction()).isEqualTo(actionExpected);
+		Assertions.assertThat(miner.getDirection()).isEqualTo(MinerAction.EAST);
 	}
 
 	@Test
 	public void when_miner_is_on_trolley_and_it_has_diamonds_then_pick_action_must_be_selected_and_poids_is_equal_to_800() throws Exception {
 		MinerAction actionExpected = MinerAction.PICK;
-		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), MinerAction.EAST, lineSight, null, 0);
 
 		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_PICK_ACTION, actionExpected);
 
@@ -110,7 +112,7 @@ public class ProtoMinerTest {
 		MinerAction actionExpected = MinerAction.EAST;
 		Position positionChariot = new Position(11, 10);
 		Position mineurPosition = new Position(10, 10);
-		ProtoMiner miner = new ProtoMiner(pathfinder, positionChariot, mineurPosition, null, lineSight, null, MAX_DIAMONDS);
+		ProtoMiner miner = new ProtoMiner(pathfinder, positionChariot, mineurPosition, MinerAction.NORTH, lineSight, null, MAX_DIAMONDS);
 
 		Mockito.when(pathfinder.exploreTo(Matchers.eq(mineurPosition), Matchers.eq(positionChariot))).thenReturn(
 				new ResultatRechercheChemin(null, MinerAction.EAST, 1));
@@ -127,11 +129,11 @@ public class ProtoMinerTest {
 		MinerAction actionExpected = MinerAction.SOUTH;
 		Position positionChariot = new Position(11, 10);
 		Position mineurPosition = new Position(10, 10);
-		ProtoMiner miner = new ProtoMiner(pathfinder, positionChariot, mineurPosition, null, lineSight, null, 0);
+		ProtoMiner miner = new ProtoMiner(pathfinder, positionChariot, mineurPosition, MinerAction.EAST, lineSight, null, 0);
 
 		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_EXPLORE_MINE_ACTION, actionExpected);
 
-		Mockito.when(pathfinder.exploreMine(Matchers.eq(mineurPosition))).thenReturn(new ResultatRechercheChemin(null, MinerAction.SOUTH, 1));
+		Mockito.when(pathfinder.exploreMine(Matchers.eq(mineurPosition), Matchers.eq(MinerAction.EAST))).thenReturn(new ResultatRechercheChemin(null, MinerAction.SOUTH, 1));
 
 		EvaluationAction evlAction = miner.evaluateExploreMineAction();
 		Assertions.assertThat(evlAction).isEqualTo(evaluationExpected);
@@ -180,9 +182,6 @@ public class ProtoMinerTest {
 
 	@Test
 	public void gotoDiamonds_must_return_actions_to_go_to_diamonds_and_trolley() throws Exception {
-		// on efface le fichier des traces
-		FileUtils.deleteTracesFile();
-
 		// premier tour, le mineur se trouve sur son chariot et se déplace vers l'Ouest
 		// ++ 20 21 22 23 24
 		// 08 M--S--M--M--M
@@ -206,6 +205,7 @@ public class ProtoMinerTest {
 
 		MinerAction doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.WEST);
 
 		// deuxième tour, le mineur se déplace vers l'Ouest
 		// ++ 19 20 21 22 23
@@ -225,6 +225,7 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.WEST);
 
 		// troisième tour, le mineur ramasse des diamants (max 3)
 		// ++ 19 20 21 22 23
@@ -244,6 +245,7 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.PICK);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.WEST);
 
 		// Quatrieme tour, le mineur se déplace vers l'Est
 		// ++ 19 20 21 22 23
@@ -263,6 +265,7 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.EAST);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.EAST);
 
 		// cinquième tour, le mineur se déplace vers l'Est
 		// ++ 19 20 21 22 23
@@ -282,6 +285,7 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.EAST);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.EAST);
 
 		// sixieme tour, le mineur se déplace est sur le chariot et drop les diamants
 		// ++ 20 21 22 23 24
@@ -301,6 +305,7 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.DROP);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.EAST);
 
 		// septieme tour, le mineur se déplace vers l'Ouest
 		// ++ 19 20 21 22 23
@@ -320,6 +325,7 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.WEST);
 
 		// huitieme tour, le mineur ramasse des diamants (max 3)
 		// ++ 19 20 21 22 23
@@ -339,6 +345,7 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.PICK);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.WEST);
 
 		// Quatrieme tour, le mineur se déplace vers l'Est
 		// ++ 19 20 21 22 23
@@ -353,19 +360,17 @@ public class ProtoMinerTest {
 		ligneSight = new LineSight(env, minerPosition, DELIMITER);
 		mine.updateCases(ligneSight);
 
-		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.EAST, ligneSight,
+		protoMiner = MinerFactory.createMiner(MinerArchetype.PROTOMINER, protoPathfinder, chariotPosition, minerPosition, MinerAction.WEST, ligneSight,
 				new ArrayList<Position>(), 1);
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.EAST);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.EAST);
 	}
 
 	@Ignore
 	@Test
 	public void doAction_must_return_action_to_explore_the_mine_when_there_are_no_diamonds() throws Exception {
-		// on efface le fichier des traces
-		FileUtils.deleteTracesFile();
-
 		// premier tour, le mineur se trouve sur son chariot et se déplace pour explorer la mine
 		// ++ 05 06 07 08 09
 		// 03 S--M--M--M--M
@@ -389,6 +394,7 @@ public class ProtoMinerTest {
 
 		MinerAction doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.WEST);
 
 		// deuxième tour, le mineur se déplace pour explorer encore plus en avant la mine
 		// ++ 05 06 07 08 09
@@ -408,5 +414,6 @@ public class ProtoMinerTest {
 
 		doAction = protoMiner.doAction();
 		Assertions.assertThat(doAction).isEqualTo(MinerAction.WEST);
+		Assertions.assertThat(protoMiner.getDirection()).isEqualTo(MinerAction.WEST);
 	}
 }

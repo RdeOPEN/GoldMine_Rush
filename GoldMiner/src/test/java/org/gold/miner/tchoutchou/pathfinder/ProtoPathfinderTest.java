@@ -196,4 +196,83 @@ public class ProtoPathfinderTest {
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.EAST);
 	}
 
+	@Test
+	public void exploreMine_must_return_action_NORTH_to_go_to_diamonds_when_current_direction_is_not_NORTH() throws Exception {
+		// ++ 08 09 10 11 12
+		// 08 S--S--2--S--S
+		// 09 S--M--M--S--S
+		// 10 M--S--E--M--S
+		// 11 M--S--S--M--S
+		// 12 3--M--M--M--S
+
+		Position startPosition = new Position(10, 10);
+		String[] env = new String[] { "S S 2 S S", "S M M S S", "M S E M S", "M S S M S", "3 M M M S" };
+		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
+		Mine mine = new Mine("40 40 50", DELIMITER);
+		mine.updateCases(ligneSight);
+		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+
+		MinerAction minerAction = protoPathfinder.exploreMine(new Position(10, 10), MinerAction.SOUTH).getMinerAction();
+		Assertions.assertThat(minerAction).isEqualTo(MinerAction.NORTH);
+	}
+
+	@Test
+	public void exploreMine_must_return_action_EAST_to_go_to_diamonds_when_current_direction_is_NORTH() throws Exception {
+		// ++ 08 09 10 11 12
+		// 08 S--S--2--S--S
+		// 09 S--M--M--S--S
+		// 10 M--S--E--M--S
+		// 11 M--S--S--M--S
+		// 12 3--M--M--M--S
+
+		Position startPosition = new Position(10, 10);
+		String[] env = new String[] { "S S 2 S S", "S M M S S", "M S E M S", "M S S M S", "3 M M M S" };
+		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
+		Mine mine = new Mine("40 40 50", DELIMITER);
+		mine.updateCases(ligneSight);
+		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+
+		MinerAction minerAction = protoPathfinder.exploreMine(new Position(10, 10), MinerAction.NORTH).getMinerAction();
+		Assertions.assertThat(minerAction).isEqualTo(MinerAction.EAST);
+	}
+
+	@Test
+	public void exploreMine_must_return_action_SOUTH_to_go_to_diamonds_when_current_direction_is_EAST_and_NORTH_case_cannot_pass() throws Exception {
+		// ++ 08 09 10 11 12
+		// 08 S--S--2--S--S
+		// 09 S--M--S--S--S
+		// 10 M--M--E--M--S
+		// 11 M--S--M--M--S
+		// 12 3--M--M--M--S
+
+		Position startPosition = new Position(10, 10);
+		String[] env = new String[] { "S S 2 S S", "S M S S S", "M M E M S", "M S M M S", "3 M M M S" };
+		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
+		Mine mine = new Mine("40 40 50", DELIMITER);
+		mine.updateCases(ligneSight);
+		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+
+		MinerAction minerAction = protoPathfinder.exploreMine(new Position(10, 10), MinerAction.EAST).getMinerAction();
+		Assertions.assertThat(minerAction).isEqualTo(MinerAction.SOUTH);
+	}
+
+	@Test
+	public void exploreMine_must_return_action_WEST_to_go_to_diamonds_when_current_direction_is_EAST_and_NORTH_case_and_EAST_case_cannot_pass() throws Exception {
+		// ++ 08 09 10 11 12
+		// 08 S--S--2--S--S
+		// 09 S--M--S--S--S
+		// 10 M--M--E--S--S
+		// 11 M--S--M--M--S
+		// 12 3--M--M--M--S
+
+		Position startPosition = new Position(10, 10);
+		String[] env = new String[] { "S S 2 S S", "S M S S S", "M M E S S", "M S M M S", "3 M M M S" };
+		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
+		Mine mine = new Mine("40 40 50", DELIMITER);
+		mine.updateCases(ligneSight);
+		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+
+		MinerAction minerAction = protoPathfinder.exploreMine(new Position(10, 10), MinerAction.SOUTH).getMinerAction();
+		Assertions.assertThat(minerAction).isEqualTo(MinerAction.WEST);
+	}
 }

@@ -45,7 +45,7 @@ public class RandomPathfinder implements Pathfinder {
 	}
 
 	@Override
-	public ResultatRechercheChemin exploreMine(Position currentPosition) {
+	public ResultatRechercheChemin exploreMine(Position currentPosition, MinerAction minerDirection) {
 		return this.exploreTo(currentPosition, null);
 	}
 

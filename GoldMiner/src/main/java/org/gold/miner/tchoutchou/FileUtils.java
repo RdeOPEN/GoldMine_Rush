@@ -10,7 +10,6 @@ public class FileUtils {
 	// private static String cheminFichierTraces = "C:\\Users\\RDE11587\\Documents\\GitHub\\GoldMine_Rush\\GoldMiner\\target\\tracesMineur.txt";
 
 	private static final String repCourant = System.getProperty("java.io.tmpdir");
-	private static final char pathseparator = File.separatorChar;
 	private static final String nomFichierDeSortie = "tracesMineur.txt";
 	private static final String cheminFichierTraces = repCourant + nomFichierDeSortie;
 

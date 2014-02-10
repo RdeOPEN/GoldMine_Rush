@@ -86,7 +86,7 @@ public class ProtoPathfinder implements Pathfinder {
 	}
 
 	@Override
-	public ResultatRechercheChemin exploreMine(Position currentPosition) {
+	public ResultatRechercheChemin exploreMine(Position currentPosition, MinerAction minerDirection) {
 		FileUtils.writeInTracesFile("== Entree Pathfinder. methode exploreMine ==");
 		ResultatRechercheChemin resultatRechercheFinal = null;
 
@@ -98,17 +98,17 @@ public class ProtoPathfinder implements Pathfinder {
 		int posY = currentCase.getPosition().getPositionY();
 
 		Case caseNord = casesInMap.get(new Position(posX, posY - 1));
-		if (caseNord != null && caseNord.canPass()) {
+		if (caseNord != null && caseNord.canPass() && !MinerAction.NORTH.equals(minerDirection)) {
 			// on explore la case au Nord
 			resultatRechercheFinal = new ResultatRechercheChemin(caseNord, MinerAction.NORTH, 1);
 		} else {
 			Case caseEst = casesInMap.get(new Position(posX + 1, posY));
-			if (caseEst != null && caseEst.canPass()) {
+			if (caseEst != null && caseEst.canPass() && !MinerAction.EAST.equals(minerDirection)) {
 				// on explore la case a l'Est
 				resultatRechercheFinal = new ResultatRechercheChemin(caseEst, MinerAction.EAST, 1);
 			} else {
 				Case caseSud = casesInMap.get(new Position(posX, posY + 1));
-				if (caseSud != null && caseSud.canPass()) {
+				if (caseSud != null && caseSud.canPass() && !MinerAction.SOUTH.equals(minerDirection)) {
 					// on explore la case au Sud
 					resultatRechercheFinal = new ResultatRechercheChemin(caseSud, MinerAction.SOUTH, 1);
 				} else {

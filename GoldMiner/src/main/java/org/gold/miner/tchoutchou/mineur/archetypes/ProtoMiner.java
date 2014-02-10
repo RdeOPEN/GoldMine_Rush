@@ -38,12 +38,16 @@ public class ProtoMiner extends Miner {
 		evaluationActions.add(evaluateDropAction);
 		EvaluationAction evaluatePickAction = evaluatePickAction();
 		evaluationActions.add(evaluatePickAction);
-		EvaluationAction evaluateReturnToTheTrolleyAction = evaluateReturnToTheTrolleyAction();
-		evaluationActions.add(evaluateReturnToTheTrolleyAction);
-		EvaluationAction evaluateGoToDiamondsAction = evaluateGoToDiamondsAction();
-		evaluationActions.add(evaluateGoToDiamondsAction);
-		EvaluationAction evaluateExploreMineAction = evaluateExploreMineAction();
-		evaluationActions.add(evaluateExploreMineAction);
+
+		if (evaluateDropAction.getPoidsAction() == POIDS_ACTION_NOT_SELECTED || evaluatePickAction.getPoidsAction() == POIDS_ACTION_NOT_SELECTED) {
+			// on évite de rechercher le meileur chemin au sein de la mine si on sait deja que l'on va faire DROP ou PICK
+			EvaluationAction evaluateReturnToTheTrolleyAction = evaluateReturnToTheTrolleyAction();
+			evaluationActions.add(evaluateReturnToTheTrolleyAction);
+			EvaluationAction evaluateGoToDiamondsAction = evaluateGoToDiamondsAction();
+			evaluationActions.add(evaluateGoToDiamondsAction);
+			EvaluationAction evaluateExploreMineAction = evaluateExploreMineAction();
+			evaluationActions.add(evaluateExploreMineAction);
+		}
 
 		Collections.sort(evaluationActions);
 		Collections.reverse(evaluationActions);
@@ -59,10 +63,11 @@ public class ProtoMiner extends Miner {
 			nbDiamonds = pickDiamonds();
 		} else if (MinerAction.DROP.equals(action)) {
 			dropDiamonds();
-		} else if (action == null) {
-			// il faut retourner une action quoi qu'il arrive donc au hasard (pour l'instant)
-			action = returnToTheTrolley();
-			FileUtils.writeInTracesFile("Action du mineur par défaut choisie (retourner au chariot). Action: " + action);
+		}
+
+		// si on bouge dans une direction alors la direction du mineur est modifiée
+		if (MinerAction.EAST.equals(action) || MinerAction.WEST.equals(action) || MinerAction.NORTH.equals(action) || MinerAction.SOUTH.equals(action)) {
+			direction = action;
 		}
 
 		FileUtils.writeInTracesFile("Action du mineur choisie après évaluation: " + evaluateActionChoisie);
@@ -70,7 +75,7 @@ public class ProtoMiner extends Miner {
 	}
 
 	/**
-	 * @return
+	 * @return evaluationAction
 	 */
 	public EvaluationAction evaluateDropAction() {
 		FileUtils.writeInTracesFile("Evaluation action DROP en cours...");
@@ -84,7 +89,7 @@ public class ProtoMiner extends Miner {
 	}
 
 	/**
-	 * @return
+	 * @return evaluationAction
 	 */
 	public EvaluationAction evaluatePickAction() {
 		FileUtils.writeInTracesFile("Evaluation action PICK en cours...");
@@ -98,7 +103,7 @@ public class ProtoMiner extends Miner {
 	}
 
 	/**
-	 * @return
+	 * @return evaluationAction
 	 */
 	public EvaluationAction evaluateReturnToTheTrolleyAction() {
 		FileUtils.writeInTracesFile("Evaluation action RETURN TO TROLLEY en cours...");
@@ -115,7 +120,7 @@ public class ProtoMiner extends Miner {
 	}
 
 	/**
-	 * @return
+	 * @return evaluationAction
 	 */
 	public EvaluationAction evaluateExploreMineAction() {
 		FileUtils.writeInTracesFile("Evaluation action EXPLORE MINE en cours...");
@@ -123,7 +128,7 @@ public class ProtoMiner extends Miner {
 		int poids = POIDS_ACTION_NOT_SELECTED;
 		MinerAction action = null;
 
-		ResultatRechercheChemin exploreMine = pathfinder.exploreMine(currentPosition);
+		ResultatRechercheChemin exploreMine = pathfinder.exploreMine(currentPosition, this.direction);
 
 		if (exploreMine != null) {
 			poids = POIDS_EXPLORE_MINE_ACTION;
@@ -136,7 +141,7 @@ public class ProtoMiner extends Miner {
 	}
 
 	/**
-	 * @return
+	 * @return evaluationAction
 	 */
 	public EvaluationAction evaluateGoToDiamondsAction() {
 		FileUtils.writeInTracesFile("Evaluation action GO TO DIAMONDS en cours...");
