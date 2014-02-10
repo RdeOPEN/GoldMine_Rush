@@ -9,4 +9,5 @@ public interface Pathfinder {
 
 	ResultatRechercheChemin searchDiamonds(Position currentPosition);
 
+	ResultatRechercheChemin exploreMine(Position currentPosition);
 }

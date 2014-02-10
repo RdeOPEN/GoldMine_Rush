@@ -2,7 +2,7 @@ package org.gold.miner.tchoutchou.mineur.archetypes;
 
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 
-public class EvaluationAction {
+public class EvaluationAction implements Comparable<EvaluationAction> {
 
 	private int poidsAction;
 	private MinerAction minerAction;
@@ -48,6 +48,11 @@ public class EvaluationAction {
 	@Override
 	public String toString() {
 		return "EvaluationAction [poidsAction=" + poidsAction + ", minerAction=" + minerAction + "]";
+	}
+
+	@Override
+	public int compareTo(EvaluationAction o) {
+		return new Integer(poidsAction).compareTo(new Integer(o.getPoidsAction()));
 	}
 
 }

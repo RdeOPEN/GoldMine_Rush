@@ -123,6 +123,51 @@ public class ProtoMinerTest {
 	}
 
 	@Test
+	public void when_miner_has_no_diamonds_in_linesight_then_move_action_must_be_selected_to_explore_mine() throws Exception {
+		MinerAction actionExpected = MinerAction.SOUTH;
+		Position positionChariot = new Position(11, 10);
+		Position mineurPosition = new Position(10, 10);
+		ProtoMiner miner = new ProtoMiner(pathfinder, positionChariot, mineurPosition, null, lineSight, null, 0);
+
+		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_EXPLORE_MINE_ACTION, actionExpected);
+
+		Mockito.when(pathfinder.exploreMine(Matchers.eq(mineurPosition))).thenReturn(new ResultatRechercheChemin(null, MinerAction.SOUTH, 1));
+
+		EvaluationAction evlAction = miner.evaluateExploreMineAction();
+		Assertions.assertThat(evlAction).isEqualTo(evaluationExpected);
+		Assertions.assertThat(evlAction.getMinerAction()).isEqualTo(actionExpected);
+	}
+
+	@Test
+	public void when_miner_has_no_diamonds_then_move_action_must_be_selected_to_go_to_diamonds() throws Exception {
+		MinerAction actionExpected = MinerAction.NORTH;
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
+
+		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_GO_TO_DIAMONDS_ACTION, actionExpected);
+
+		Mockito.when(lineSight.getDiamondsPositions()).thenReturn(Arrays.asList(new Case(new Position(10, 9), "5")));
+
+		EvaluationAction action = miner.evaluateGoToDiamondsAction();
+		Assertions.assertThat(action).isEqualTo(evaluationExpected);
+		Assertions.assertThat(action.getMinerAction()).isEqualTo(actionExpected);
+	}
+
+	@Test
+	public void when_miner_has_no_diamonds_then_null_action_must_be_return_to_go_to_diamonds_when_there_are_no_diamonds() throws Exception {
+		MinerAction actionExpected = null;
+		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(20, 10), new Position(10, 10), null, lineSight, null, 0);
+
+		EvaluationAction evaluationExpected = new EvaluationAction(ProtoMiner.POIDS_ACTION_NOT_SELECTED, actionExpected);
+
+		Mockito.when(pathfinder.searchDiamonds(Matchers.any(Position.class))).thenReturn(null);
+		Mockito.when(lineSight.getDiamondsPositions()).thenReturn(new ArrayList<Case>());
+
+		EvaluationAction action = miner.evaluateGoToDiamondsAction();
+		Assertions.assertThat(action).isEqualTo(evaluationExpected);
+		Assertions.assertThat(action.getMinerAction()).isEqualTo(actionExpected);
+	}
+
+	@Test
 	public void move_action_must_be_selected_by_default() throws Exception {
 		List<MinerAction> actionsExpected = Arrays.asList(MinerAction.EAST, MinerAction.WEST, MinerAction.NORTH, MinerAction.SOUTH);
 		ProtoMiner miner = new ProtoMiner(pathfinder, new Position(10, 10), new Position(9, 10), null, lineSight, null, 0);

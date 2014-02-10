@@ -1,5 +1,7 @@
 package org.gold.miner.tchoutchou.mineur.archetypes;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.gold.miner.tchoutchou.FileUtils;
@@ -29,39 +31,41 @@ public class ProtoMiner extends Miner {
 	public MinerAction doAction() {
 		FileUtils.writeInTracesFile("=== Debut decision action prochain tour. ===");
 		MinerAction action = null;
-		if (hasDiamonds() && trolleyPosition.equals(currentPosition)) {
-			FileUtils.writeInTracesFile("Le mineur est sur le chariot et il possede des diamants sur lui : " + this.nbDiamonds);
-			action = MinerAction.DROP;
-			dropDiamonds();
-		} else if (isFullDiamonds()) {
-			FileUtils.writeInTracesFile("Le mineur a le maximum de diamants sur lui, il retourne donc au chariot les déposer à la position "
-					+ Miner.trolleyPosition);
-			action = returnToTheTrolley();
-		} else if (!isFullDiamonds() && minerIsOnDiamonds()) {
-			FileUtils.writeInTracesFile("Le mineur est sur des diamants et il peut encore en porter donc il va les ramasser à la position "
-					+ this.currentPosition);
-			action = MinerAction.PICK;
-			nbDiamonds = pickDiamonds();
-		} else {
-			FileUtils.writeInTracesFile("Le mineur doit bouger (recherche diamants ou déplacement exploratoire).");
-			action = this.move();
-		}
-
-		// il faut retourner une action quoi qu'il arrive donc au hasard (pour l'instant)
-		if (action == null) {
-			action = returnToTheTrolley();
-			FileUtils.writeInTracesFile("Action par défaut choisi! Action: " + action);
-		}
-
-		FileUtils.writeInTracesFile("Action mineur: " + action);
 
 		// evaluation des différentes actions
-		evaluateDropAction();
-		evaluatePickAction();
-		evaluateReturnToTheTrolleyAction();
-		evaluateGoToDiamondsAction();
-		evaluateExploreMineAction();
+		List<EvaluationAction> evaluationActions = new ArrayList<EvaluationAction>();
+		EvaluationAction evaluateDropAction = evaluateDropAction();
+		evaluationActions.add(evaluateDropAction);
+		EvaluationAction evaluatePickAction = evaluatePickAction();
+		evaluationActions.add(evaluatePickAction);
+		EvaluationAction evaluateReturnToTheTrolleyAction = evaluateReturnToTheTrolleyAction();
+		evaluationActions.add(evaluateReturnToTheTrolleyAction);
+		EvaluationAction evaluateGoToDiamondsAction = evaluateGoToDiamondsAction();
+		evaluationActions.add(evaluateGoToDiamondsAction);
+		EvaluationAction evaluateExploreMineAction = evaluateExploreMineAction();
+		evaluationActions.add(evaluateExploreMineAction);
 
+		Collections.sort(evaluationActions);
+		Collections.reverse(evaluationActions);
+
+		// for (EvaluationAction evaluationAction : evaluationActions) {
+		// System.out.println(evaluationAction);
+		// }
+
+		EvaluationAction evaluateActionChoisie = evaluationActions.get(0);
+		action = evaluateActionChoisie.getMinerAction();
+
+		if (MinerAction.PICK.equals(action)) {
+			nbDiamonds = pickDiamonds();
+		} else if (MinerAction.DROP.equals(action)) {
+			dropDiamonds();
+		} else if (action == null) {
+			// il faut retourner une action quoi qu'il arrive donc au hasard (pour l'instant)
+			action = returnToTheTrolley();
+			FileUtils.writeInTracesFile("Action du mineur par défaut choisie (retourner au chariot). Action: " + action);
+		}
+
+		FileUtils.writeInTracesFile("Action du mineur choisie après évaluation: " + evaluateActionChoisie);
 		return action;
 	}
 
@@ -69,51 +73,85 @@ public class ProtoMiner extends Miner {
 	 * @return
 	 */
 	public EvaluationAction evaluateDropAction() {
+		FileUtils.writeInTracesFile("Evaluation action DROP en cours...");
 		int poids = POIDS_ACTION_NOT_SELECTED;
 		if (hasDiamonds() && trolleyPosition.equals(currentPosition)) {
 			poids = POIDS_DROP_ACTION;
 		}
-		return new EvaluationAction(poids, MinerAction.DROP);
+		EvaluationAction evaluationAction = new EvaluationAction(poids, MinerAction.DROP);
+		FileUtils.writeInTracesFile("Evaluation action DROP resultat: " + evaluationAction);
+		return evaluationAction;
 	}
 
 	/**
 	 * @return
 	 */
 	public EvaluationAction evaluatePickAction() {
+		FileUtils.writeInTracesFile("Evaluation action PICK en cours...");
 		int poids = POIDS_ACTION_NOT_SELECTED;
 		if (!isFullDiamonds() && minerIsOnDiamonds()) {
 			poids = POIDS_PICK_ACTION;
 		}
-		return new EvaluationAction(poids, MinerAction.PICK);
+		EvaluationAction evaluationAction = new EvaluationAction(poids, MinerAction.PICK);
+		FileUtils.writeInTracesFile("Evaluation action PICK resultat: " + evaluationAction);
+		return evaluationAction;
 	}
 
 	/**
 	 * @return
 	 */
 	public EvaluationAction evaluateReturnToTheTrolleyAction() {
+		FileUtils.writeInTracesFile("Evaluation action RETURN TO TROLLEY en cours...");
+		FileUtils.writeInTracesFile("Position chariot mineur: " + trolleyPosition);
 		int poids = POIDS_ACTION_NOT_SELECTED;
 		MinerAction action = null;
 		if (isFullDiamonds()) {
 			poids = POIDS_RETURN_TROLLEY_ACTION;
 			action = returnToTheTrolley();
 		}
-		return new EvaluationAction(poids, action);
+		EvaluationAction evaluationAction = new EvaluationAction(poids, action);
+		FileUtils.writeInTracesFile("Evaluation action RETURN TO TROLLEY resultat: " + evaluationAction);
+		return evaluationAction;
 	}
 
 	/**
-	 * 
+	 * @return
 	 */
 	public EvaluationAction evaluateExploreMineAction() {
-		// TODO Auto-generated method stub
-		return null;
+		FileUtils.writeInTracesFile("Evaluation action EXPLORE MINE en cours...");
+
+		int poids = POIDS_ACTION_NOT_SELECTED;
+		MinerAction action = null;
+
+		ResultatRechercheChemin exploreMine = pathfinder.exploreMine(currentPosition);
+
+		if (exploreMine != null) {
+			poids = POIDS_EXPLORE_MINE_ACTION;
+			action = exploreMine.getMinerAction();
+		}
+
+		EvaluationAction evaluationAction = new EvaluationAction(poids, action);
+		FileUtils.writeInTracesFile("Evaluation action EXPLORE MINE resultat: " + evaluationAction);
+		return evaluationAction;
 	}
 
 	/**
-	 * 
+	 * @return
 	 */
 	public EvaluationAction evaluateGoToDiamondsAction() {
-		// TODO Auto-generated method stub
-		return null;
+		FileUtils.writeInTracesFile("Evaluation action GO TO DIAMONDS en cours...");
+		ResultatRechercheChemin searchDiamondsResultat = pathfinder.searchDiamonds(currentPosition);
+
+		int poids = POIDS_ACTION_NOT_SELECTED;
+		MinerAction action = null;
+		if (searchDiamondsResultat != null) {
+			poids = POIDS_GO_TO_DIAMONDS_ACTION;
+			action = searchDiamondsResultat.getMinerAction();
+		}
+
+		EvaluationAction evaluationAction = new EvaluationAction(poids, action);
+		FileUtils.writeInTracesFile("Evaluation action GO TO DIAMONDS resultat: " + evaluationAction);
+		return evaluationAction;
 	}
 
 	/**
@@ -131,7 +169,7 @@ public class ProtoMiner extends Miner {
 	 * @return MinerAction
 	 */
 	protected MinerAction returnToTheTrolley() {
-		return pathfinder.exploreTo(currentPosition, trolleyPosition).getMinerAction();
+		return pathfinder.exploreTo(currentPosition, Miner.trolleyPosition).getMinerAction();
 	}
 
 	/**

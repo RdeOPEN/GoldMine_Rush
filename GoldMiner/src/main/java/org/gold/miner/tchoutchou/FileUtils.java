@@ -6,13 +6,13 @@ import java.io.IOException;
 
 public class FileUtils {
 
-	// private static String nomFichierDeSortie = "E:\\Raf\\Workspaces\\GitHub\\GoldMine_Rush\\GoldMiner\\target\\tracesMineur.txt";
-	// private static String nomFichierDeSortie = "C:\\Users\\RDE11587\\Documents\\GitHub\\GoldMine_Rush\\GoldMiner\\target\\tracesMineur.txt";
+	// private static String cheminFichierTraces = "E:\\Raf\\Workspaces\\GitHub\\GoldMine_Rush\\GoldMiner\\target\\tracesMineur.txt";
+	// private static String cheminFichierTraces = "C:\\Users\\RDE11587\\Documents\\GitHub\\GoldMine_Rush\\GoldMiner\\target\\tracesMineur.txt";
 
-	private static final String repCourant = new java.io.File("").getAbsolutePath();
+	private static final String repCourant = System.getProperty("java.io.tmpdir");
 	private static final char pathseparator = File.separatorChar;
 	private static final String nomFichierDeSortie = "tracesMineur.txt";
-	private static final String cheminFichierTraces = repCourant + pathseparator + nomFichierDeSortie;
+	private static final String cheminFichierTraces = repCourant + nomFichierDeSortie;
 
 	public static void writeInTracesFile(String content) {
 		FileWriter fichier = null;
@@ -35,7 +35,7 @@ public class FileUtils {
 	}
 
 	public static boolean deleteTracesFile() {
-		File file = new File(nomFichierDeSortie);
+		File file = new File(cheminFichierTraces);
 		if (file.exists()) {
 			return file.delete();
 		}

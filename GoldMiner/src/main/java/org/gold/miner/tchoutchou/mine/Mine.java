@@ -66,7 +66,23 @@ public class Mine {
 	public void printMine() {
 		FileUtils.writeInTracesFile("+++++++++ Début impression plan de la mine +++++++++");
 		StringBuilder stringbuilder = new StringBuilder();
+
+		stringbuilder.append(" +");
+		for (int x = 0; x < largeur; x++) {
+			if (x < 10) {
+				stringbuilder.append("0");
+			}
+			stringbuilder.append(x);
+			stringbuilder.append(" ");
+		}
+		stringbuilder.append("\n");
+
 		for (int y = 0; y < hauteur; y++) {
+			if (y < 10) {
+				stringbuilder.append("0");
+			}
+			stringbuilder.append(y);
+			stringbuilder.append(" ");
 			for (int x = 0; x < largeur; x++) {
 				Case currCase = mapCases.get(new Position(x, y));
 				String type = null;
@@ -79,7 +95,7 @@ public class Mine {
 						type = currCase.getType().name();
 					}
 				}
-				stringbuilder.append(type).append(" ");
+				stringbuilder.append(type).append("  ");
 			}
 			stringbuilder.append("\n");
 		}

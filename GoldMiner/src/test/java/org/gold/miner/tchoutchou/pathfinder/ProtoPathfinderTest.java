@@ -6,6 +6,7 @@ import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.Miner;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
+import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,9 +66,34 @@ public class ProtoPathfinderTest {
 		Mine mine = new Mine("40 40 50", DELIMITER);
 		mine.updateCases(ligneSight);
 		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+		Miner.trolleyPosition = startPosition;
 
-		MinerAction minerAction = protoPathfinder.searchDiamonds(new Position(2, 2)).getMinerAction();
+		MinerAction minerAction = protoPathfinder.searchDiamonds(startPosition).getMinerAction();
 		Assertions.assertThat(minerAction).isEqualTo(MinerAction.EAST);
+	}
+
+	@Test
+	public void gotoDiamonds_must_return_action_west_to_go_to_diamonds_2() throws Exception {
+		// ++ 00 01 02 03 04
+		// 00 S--8--8--S--M
+		// 01 S--M--S--S--M
+		// 02 S--M--X--M--M
+		// 03 S--S--M--M--M
+		// 04 3--M--M--S--M
+
+		Position startPosition = new Position(2, 2);
+		String[] env = new String[] { "S 8 8 S M", "S M S S M", "S M X M M", "S S M M M", "S M M S M" };
+		LineSight ligneSight = new LineSight(env, startPosition, DELIMITER);
+		Mine mine = new Mine("40 40 50", DELIMITER);
+		mine.updateCases(ligneSight);
+		ProtoPathfinder protoPathfinder = new ProtoPathfinder(mine);
+
+		Position trolleyPosition = new Position(2, 2);
+		Miner.trolleyPosition = trolleyPosition;
+
+		ResultatRechercheChemin searchDiamonds = protoPathfinder.searchDiamonds(trolleyPosition);
+		MinerAction minerAction = searchDiamonds.getMinerAction();
+		Assertions.assertThat(minerAction).isEqualTo(MinerAction.WEST);
 	}
 
 	@Test

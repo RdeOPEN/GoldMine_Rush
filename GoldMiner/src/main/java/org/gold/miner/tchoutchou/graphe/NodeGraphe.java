@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.gold.miner.tchoutchou.FileUtils;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
@@ -26,30 +27,33 @@ public class NodeGraphe {
 		caseNode = caseTmp;
 	}
 
-	public Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, NodeGraphe previousNode, Case destination, StringBuilder nodesExplored) {
+	public Integer calculateShortWayToDestination(ResultatRechercheChemin resultat, NodeGraphe previousNode, Case destination, String nodesExplored) {
 
 		int positionXCourante = caseNode.getPosition().getPositionX();
 		int positionYCourante = caseNode.getPosition().getPositionY();
-//		System.out.println("Exploration node: " + positionXCourante + "," + positionYCourante);
+		// System.out.println("Exploration node: " + positionXCourante + "," + positionYCourante);
 		final String strCurrentNode = SLASHCHAR + positionXCourante + DELIMITERPOSITION + positionYCourante;
 
 		if (previousNode == null) {
-//			System.out.println("Nous sommes à la racine du graphe: " + positionXCourante + "," + positionYCourante);
+			// System.out.println("Nous sommes à la racine du graphe: " + positionXCourante + "," + positionYCourante);
+			FileUtils.writeInTracesFile("Nous sommes à la racine du graphe: " + positionXCourante + "," + positionYCourante);
 		} else {
-//			System.out.println("nodesExplored: " + nodesExplored);
+			// System.out.println("nodesExplored: " + nodesExplored);
+			// FileUtils.writeInTracesFile("nodesExplored: " + nodesExplored);
 			int positionXPreviousNode = previousNode.getCase().getPosition().getPositionX();
 			int positionYPreviousNode = previousNode.getCase().getPosition().getPositionY();
 			final String strPreviousNode = SLASHCHAR + positionXPreviousNode + DELIMITERPOSITION + positionYPreviousNode;
 			final String nodeAlreadyExplored = strPreviousNode + strCurrentNode;
-//			System.out.println("Chaine recherchée: " + nodeAlreadyExplored);
-			if (nodesExplored.toString().contains(nodeAlreadyExplored)) {
-//				System.out.println("La chaine recherchée a été trouvée, on a déjà exploré ces deux noeuds: " + nodeAlreadyExplored);
+			//			 System.out.println("Chaine recherchée: " + nodeAlreadyExplored);
+			if (nodesExplored.contains(nodeAlreadyExplored)) {
+				// System.out.println("La chaine recherchée a été trouvée, on a déjà exploré ces deux noeuds: " + nodeAlreadyExplored);
+				// FileUtils.writeInTracesFile("La chaine recherchée a été trouvée, on a déjà exploré ces deux noeuds: " + nodeAlreadyExplored);
 				return null;
 			}
 		}
 
 		// on ajoute la case courante et on avance
-		final StringBuilder nodesExploredAugmented = nodesExplored.append(strCurrentNode);
+		final String nodesExploredAugmented = nodesExplored.concat(strCurrentNode);
 
 		// si la case actuelle est la destination on retourne 1 pour dire qu'on l'a trouvé.
 		if (destination.equals(caseNode)) {
@@ -63,7 +67,7 @@ public class NodeGraphe {
 		List<ResultatRechercheChemin> resultats = new ArrayList<ResultatRechercheChemin>();
 
 		if (this.nodeEast != null && !nodeEast.equals(previousNode)) {
-			Integer result = nodeEast.calculateShortWayToDestination(resultat, this, destination, nodesExploredAugmented);
+			Integer result = nodeEast.calculateShortWayToDestination(resultat, this, destination, new String(nodesExploredAugmented));
 			if (result != null) {
 				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeEast.getCase(), MinerAction.EAST, result);
 				resultats.add(resultatEst);
@@ -71,7 +75,7 @@ public class NodeGraphe {
 		}
 
 		if (this.nodeSouth != null && !nodeSouth.equals(previousNode)) {
-			Integer result = nodeSouth.calculateShortWayToDestination(resultat, this, destination, nodesExploredAugmented);
+			Integer result = nodeSouth.calculateShortWayToDestination(resultat, this, destination, new String(nodesExploredAugmented));
 			if (result != null) {
 				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeSouth.getCase(), MinerAction.SOUTH, result);
 				resultats.add(resultatEst);
@@ -79,7 +83,7 @@ public class NodeGraphe {
 		}
 
 		if (this.nodeWest != null && !nodeWest.equals(previousNode)) {
-			Integer result = nodeWest.calculateShortWayToDestination(resultat, this, destination, nodesExploredAugmented);
+			Integer result = nodeWest.calculateShortWayToDestination(resultat, this, destination, new String(nodesExploredAugmented));
 			if (result != null) {
 				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeWest.getCase(), MinerAction.WEST, result);
 				resultats.add(resultatEst);
@@ -87,7 +91,7 @@ public class NodeGraphe {
 		}
 
 		if (this.nodeNorth != null && !nodeNorth.equals(previousNode)) {
-			Integer result = nodeNorth.calculateShortWayToDestination(resultat, this, destination, nodesExploredAugmented);
+			Integer result = nodeNorth.calculateShortWayToDestination(resultat, this, destination, new String(nodesExploredAugmented));
 			if (result != null) {
 				ResultatRechercheChemin resultatEst = new ResultatRechercheChemin(nodeNorth.getCase(), MinerAction.NORTH, result);
 				resultats.add(resultatEst);

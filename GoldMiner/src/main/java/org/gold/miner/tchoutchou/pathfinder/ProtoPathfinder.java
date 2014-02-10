@@ -12,6 +12,7 @@ import org.gold.miner.tchoutchou.graphe.NodeGraphe;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Mine;
 import org.gold.miner.tchoutchou.mine.Position;
+import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
 
 public class ProtoPathfinder implements Pathfinder {
@@ -33,7 +34,7 @@ public class ProtoPathfinder implements Pathfinder {
 		// On part de la position courante du mineur pour déterminer la direction à prendre vers la destination
 		final NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
 		final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
-		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase(), new StringBuilder());
+		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase(), new String());
 
 		return resultatRecherche;
 	}
@@ -52,7 +53,6 @@ public class ProtoPathfinder implements Pathfinder {
 			// recuperation du plan de la mine
 			final Map<Position, Case> casesInMap = mine.getCasesInMap();
 
-			FileUtils.writeInTracesFile("Construction graphe de la mine.");
 			// construction Graphe de decision
 			final Map<Position, NodeGraphe> graphe = GrapheFactory.constructGraphe(casesInMap);
 
@@ -63,11 +63,9 @@ public class ProtoPathfinder implements Pathfinder {
 			for (Case caseWithDiamonds : diamondsPositions) {
 				final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
 				NodeGraphe nodeGrapheDestination = graphe.get(caseWithDiamonds.getPosition());
-				// System.out.println(nodeGrapheDestination);
 				if (nodeGrapheDestination != null) {
-					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new StringBuilder());
+					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new String());
 					if (resultatRecherche.isCompleted()) {
-						// System.out.println(resultatRecherche);
 						resultats.add(resultatRecherche);
 					}
 				}
@@ -78,13 +76,51 @@ public class ProtoPathfinder implements Pathfinder {
 				Collections.sort(resultats);
 				ResultatRechercheChemin resultatRechercheCheminSelected = resultats.get(0);
 				resultatRechercheFinal = resultatRechercheCheminSelected;
-				// System.out.println("ResultatRechercheCheminSelected: " + resultatRechercheCheminSelected);
 				FileUtils.writeInTracesFile("Resultat de la recherche de diamants : " + resultatRechercheFinal);
 			}
 		} else {
-			FileUtils.writeInTracesFile("Aucun diamants n'a ete trouve dans la mine. Aucune action ne sera effectuee.");
+			FileUtils.writeInTracesFile("Aucun diamant n'a ete trouve dans la mine. Recherche annulee.");
 		}
-		FileUtils.writeInTracesFile("== Sortie Pathfinder ==");
+		FileUtils.writeInTracesFile("== Sortie Pathfinder. methode searchDiamonds ==");
 		return resultatRechercheFinal;
 	}
+
+	@Override
+	public ResultatRechercheChemin exploreMine(Position currentPosition) {
+		FileUtils.writeInTracesFile("== Entree Pathfinder. methode exploreMine ==");
+		ResultatRechercheChemin resultatRechercheFinal = null;
+
+		// recuperation du plan de la mine
+		final Map<Position, Case> casesInMap = mine.getCasesInMap();
+		Case currentCase = casesInMap.get(currentPosition);
+
+		int posX = currentCase.getPosition().getPositionX();
+		int posY = currentCase.getPosition().getPositionY();
+
+		Case caseNord = casesInMap.get(new Position(posX, posY - 1));
+		if (caseNord != null && caseNord.canPass()) {
+			// on explore la case au Nord
+			resultatRechercheFinal = new ResultatRechercheChemin(caseNord, MinerAction.NORTH, 1);
+		} else {
+			Case caseEst = casesInMap.get(new Position(posX + 1, posY));
+			if (caseEst != null && caseEst.canPass()) {
+				// on explore la case a l'Est
+				resultatRechercheFinal = new ResultatRechercheChemin(caseEst, MinerAction.EAST, 1);
+			} else {
+				Case caseSud = casesInMap.get(new Position(posX, posY + 1));
+				if (caseSud != null && caseSud.canPass()) {
+					// on explore la case au Sud
+					resultatRechercheFinal = new ResultatRechercheChemin(caseSud, MinerAction.SOUTH, 1);
+				} else {
+					// on explore la case a l'Ouest
+					Case caseOuest = casesInMap.get(new Position(posX - 1, posY));
+					resultatRechercheFinal = new ResultatRechercheChemin(caseOuest, MinerAction.WEST, 1);
+				}
+			}
+		}
+
+		FileUtils.writeInTracesFile("== Sortie Pathfinder. methode exploreMine: " + resultatRechercheFinal + "  ==");
+		return resultatRechercheFinal;
+	}
+
 }
