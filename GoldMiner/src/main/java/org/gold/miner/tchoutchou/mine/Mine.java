@@ -30,10 +30,18 @@ public class Mine {
 
 		System.out.println("largeur: " + largeur + " | hauteur: " + hauteur);
 
-		for (int x = 0; x < largeur; x++) {
-			for (int y = 0; y < hauteur; y++) {
-				// creation des parties de la mine
-				System.out.println("Traitement de la MineParts: " + x + " " + y);
+		// creation des parties de la mine
+		for (int x = 0; x < largeur; x = x + 5) {
+
+			int xMin = x;
+			int xMax = x + 4;
+
+			for (int y = 0; y < hauteur; y = y + 5) {
+				System.out.println("x: " + x + " | y: " + y);
+
+				int yMin = y;
+				int yMax = y + 4;
+				System.out.println("xMin: " + xMin + " | xMax: " + xMax + " | yMin: " + yMin + " | yMax: " + yMax);
 			}
 		}
 	}
