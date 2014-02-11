@@ -15,6 +15,7 @@ public class Mine {
 	private int nbDiamants;
 
 	private Map<Position, Case> mapCases = new HashMap<Position, Case>();
+	private Map<Position, MinePart> mapMineParts = new HashMap<Position, MinePart>();
 
 	/**
 	 * @param mineProperties
@@ -26,6 +27,15 @@ public class Mine {
 		this.hauteur = Integer.parseInt(envValues[1]);
 		this.nbDiamants = Integer.parseInt(envValues[2]);
 		FileUtils.writeInTracesFile("Initialisation de la mine : " + this.toString());
+
+		System.out.println("largeur: " + largeur + " | hauteur: " + hauteur);
+
+		for (int x = 0; x < largeur; x++) {
+			for (int y = 0; y < hauteur; y++) {
+				// creation des parties de la mine
+				System.out.println("Traitement de la MineParts: " + x + " " + y);
+			}
+		}
 	}
 
 	/**
@@ -42,7 +52,6 @@ public class Mine {
 	 */
 	public void updateCases(Collection<Case> casesToUpdateMap) {
 		// FileUtils.writeInTracesFile("Etat de la mine avant mise à jour :");
-		// printMine();
 		for (Case caseUpdate : casesToUpdateMap) {
 			mapCases.put(caseUpdate.getPosition(), caseUpdate);
 		}

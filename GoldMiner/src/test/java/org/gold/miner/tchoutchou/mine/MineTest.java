@@ -110,6 +110,11 @@ public class MineTest {
 		Assertions.assertThat(diamondsPositions).containsOnly(casesExpected.toArray(new Case[casesExpected.size()]));
 	}
 
+	@Test
+	public void testName() throws Exception {
+		
+	}
+	
 	private static Case genCase(int x, int y, String typeTerrain) {
 		return new Case(new Position(x, y), typeTerrain);
 	}

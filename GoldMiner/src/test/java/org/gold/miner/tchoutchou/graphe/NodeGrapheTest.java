@@ -32,7 +32,7 @@ public class NodeGrapheTest {
 		noeudRacine.addNodeNorth(case4);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer distance = noeudRacine.calculateShortWayToDestination(resultat, null, destination, new String(), null);
 
 		Assertions.assertThat(distance).isEqualTo(1);
 		Assertions.assertThat(resultat.getSelectedCase()).isEqualTo(case3.getCase());
@@ -47,7 +47,7 @@ public class NodeGrapheTest {
 		noeud.addNodeNorth(noeud2);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String(), null);
 
 		Assertions.assertThat(result).isNull();
 	}
@@ -58,7 +58,7 @@ public class NodeGrapheTest {
 		NodeGraphe noeud = new NodeGraphe(new Case(new Position(5, 5), TypeTerrain.M.name()));
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String(), null);
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(null);
@@ -75,7 +75,7 @@ public class NodeGrapheTest {
 		noeud.addNodeEast(noeudEast);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String(), null);
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.NORTH);
@@ -89,7 +89,7 @@ public class NodeGrapheTest {
 		noeud.addNodeEast(noeudDest);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String(), null);
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.EAST);
@@ -108,7 +108,7 @@ public class NodeGrapheTest {
 		noeud.addNodeWest(noeudWest);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String(), null);
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.SOUTH);
@@ -123,7 +123,7 @@ public class NodeGrapheTest {
 		noeud.addNodeWest(noeudDest);
 
 		ResultatRechercheChemin resultat = new ResultatRechercheChemin();
-		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String());
+		Integer result = noeud.calculateShortWayToDestination(resultat, null, destination, new String(), null);
 
 		Assertions.assertThat(result).isEqualTo(1);
 		Assertions.assertThat(resultat.getMinerAction()).isEqualTo(MinerAction.WEST);

@@ -43,10 +43,14 @@ public class ProtoMiner extends Miner {
 			// on évite de rechercher le meileur chemin au sein de la mine si on sait deja que l'on va faire DROP ou PICK
 			EvaluationAction evaluateReturnToTheTrolleyAction = evaluateReturnToTheTrolleyAction();
 			evaluationActions.add(evaluateReturnToTheTrolleyAction);
-			EvaluationAction evaluateGoToDiamondsAction = evaluateGoToDiamondsAction();
-			evaluationActions.add(evaluateGoToDiamondsAction);
-			EvaluationAction evaluateExploreMineAction = evaluateExploreMineAction();
-			evaluationActions.add(evaluateExploreMineAction);
+			if (evaluateReturnToTheTrolleyAction.getPoidsAction() == POIDS_ACTION_NOT_SELECTED) {
+				EvaluationAction evaluateGoToDiamondsAction = evaluateGoToDiamondsAction();
+				evaluationActions.add(evaluateGoToDiamondsAction);
+				if (evaluateGoToDiamondsAction.getPoidsAction() == POIDS_ACTION_NOT_SELECTED) {
+					EvaluationAction evaluateExploreMineAction = evaluateExploreMineAction();
+					evaluationActions.add(evaluateExploreMineAction);
+				}
+			}
 		}
 
 		Collections.sort(evaluationActions);
@@ -122,27 +126,6 @@ public class ProtoMiner extends Miner {
 	/**
 	 * @return evaluationAction
 	 */
-	public EvaluationAction evaluateExploreMineAction() {
-		FileUtils.writeInTracesFile("Evaluation action EXPLORE MINE en cours...");
-
-		int poids = POIDS_ACTION_NOT_SELECTED;
-		MinerAction action = null;
-
-		ResultatRechercheChemin exploreMine = pathfinder.exploreMine(currentPosition, this.direction);
-
-		if (exploreMine != null) {
-			poids = POIDS_EXPLORE_MINE_ACTION;
-			action = exploreMine.getMinerAction();
-		}
-
-		EvaluationAction evaluationAction = new EvaluationAction(poids, action);
-		FileUtils.writeInTracesFile("Evaluation action EXPLORE MINE resultat: " + evaluationAction);
-		return evaluationAction;
-	}
-
-	/**
-	 * @return evaluationAction
-	 */
 	public EvaluationAction evaluateGoToDiamondsAction() {
 		FileUtils.writeInTracesFile("Evaluation action GO TO DIAMONDS en cours...");
 		ResultatRechercheChemin searchDiamondsResultat = pathfinder.searchDiamonds(currentPosition);
@@ -160,12 +143,24 @@ public class ProtoMiner extends Miner {
 	}
 
 	/**
-	 * @return MinerAction
+	 * @return evaluationAction
 	 */
-	public MinerAction move() {
-		// recupere l'action a faire
-		ResultatRechercheChemin resultatRecherche = pathfinder.searchDiamonds(currentPosition);
-		return resultatRecherche != null ? resultatRecherche.getMinerAction() : null;
+	public EvaluationAction evaluateExploreMineAction() {
+		FileUtils.writeInTracesFile("Evaluation action EXPLORE MINE en cours...");
+
+		int poids = POIDS_ACTION_NOT_SELECTED;
+		MinerAction action = null;
+
+		ResultatRechercheChemin exploreMine = pathfinder.exploreMine(currentPosition, this.direction);
+
+		if (exploreMine != null) {
+			poids = POIDS_EXPLORE_MINE_ACTION;
+			action = exploreMine.getMinerAction();
+		}
+
+		EvaluationAction evaluationAction = new EvaluationAction(poids, action);
+		FileUtils.writeInTracesFile("Evaluation action EXPLORE MINE resultat: " + evaluationAction);
+		return evaluationAction;
 	}
 
 	/**

@@ -24,6 +24,8 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		FileUtils.tracesActivated = true;
+
 		FileUtils.deleteTracesFile();
 		FileUtils.writeInTracesFile("Start Main mineur: " + new Date());
 

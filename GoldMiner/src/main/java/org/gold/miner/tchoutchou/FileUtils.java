@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public class FileUtils {
 
+	public static boolean tracesActivated = true;
+
 	// private static String cheminFichierTraces = "E:\\Raf\\Workspaces\\GitHub\\GoldMine_Rush\\GoldMiner\\target\\tracesMineur.txt";
 	// private static String cheminFichierTraces = "C:\\Users\\RDE11587\\Documents\\GitHub\\GoldMine_Rush\\GoldMiner\\target\\tracesMineur.txt";
 
@@ -14,20 +16,22 @@ public class FileUtils {
 	private static final String cheminFichierTraces = repCourant + nomFichierDeSortie;
 
 	public static void writeInTracesFile(String content) {
-		FileWriter fichier = null;
-		try {
-			File file = new File(cheminFichierTraces);
-			fichier = new FileWriter(file, true);
-			fichier.write(content + "\n");
-			fichier.flush();
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		} finally {
-			if (fichier != null) {
-				try {
-					fichier.close();
-				} catch (IOException e) {
-					// do nothing
+		if (tracesActivated) {
+			FileWriter fichier = null;
+			try {
+				File file = new File(cheminFichierTraces);
+				fichier = new FileWriter(file, true);
+				fichier.write(content + "\n");
+				fichier.flush();
+			} catch (IOException ie) {
+				ie.printStackTrace();
+			} finally {
+				if (fichier != null) {
+					try {
+						fichier.close();
+					} catch (IOException e) {
+						// do nothing
+					}
 				}
 			}
 		}

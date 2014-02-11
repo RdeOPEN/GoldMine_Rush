@@ -34,7 +34,7 @@ public class ProtoPathfinder implements Pathfinder {
 		// On part de la position courante du mineur pour déterminer la direction à prendre vers la destination
 		final NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
 		final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
-		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase(), new String());
+		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase(), new String(), null);
 
 		return resultatRecherche;
 	}
@@ -64,7 +64,7 @@ public class ProtoPathfinder implements Pathfinder {
 				final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
 				NodeGraphe nodeGrapheDestination = graphe.get(caseWithDiamonds.getPosition());
 				if (nodeGrapheDestination != null) {
-					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new String());
+					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new String(), null);
 					if (resultatRecherche.isCompleted()) {
 						resultats.add(resultatRecherche);
 					}
