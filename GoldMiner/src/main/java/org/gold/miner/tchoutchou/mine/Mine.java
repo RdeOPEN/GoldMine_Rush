@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.gold.miner.tchoutchou.FileUtils;
 
@@ -15,7 +16,9 @@ public class Mine {
 	private int nbDiamants;
 
 	private Map<Position, Case> mapCases = new HashMap<Position, Case>();
-	private Map<Position, MinePart> mapMineParts = new HashMap<Position, MinePart>();
+	private Set<MinePart> mineParts = new HashSet<MinePart>();
+	private int maxYPosition;
+	private int maxXPosition;
 
 	/**
 	 * @param mineProperties
@@ -24,24 +27,37 @@ public class Mine {
 	public Mine(String mineProperties, String delimiter) {
 		String[] envValues = mineProperties.split(delimiter);
 		this.largeur = Integer.parseInt(envValues[0]);
+		maxXPosition = largeur - 1;
 		this.hauteur = Integer.parseInt(envValues[1]);
+		maxYPosition = hauteur - 1;
+
 		this.nbDiamants = Integer.parseInt(envValues[2]);
 		FileUtils.writeInTracesFile("Initialisation de la mine : " + this.toString());
 
-		System.out.println("largeur: " + largeur + " | hauteur: " + hauteur);
-
 		// creation des parties de la mine
 		for (int x = 0; x < largeur; x = x + 5) {
-
 			int xMin = x;
 			int xMax = x + 4;
 
 			for (int y = 0; y < hauteur; y = y + 5) {
-				System.out.println("x: " + x + " | y: " + y);
-
 				int yMin = y;
 				int yMax = y + 4;
-				System.out.println("xMin: " + xMin + " | xMax: " + xMax + " | yMin: " + yMin + " | yMax: " + yMax);
+				// System.out.println("xMin: " + xMin + " | xMax: " + xMax + " | yMin: " + yMin + " | yMax: " + yMax);
+
+				// si le xMax ou le yMax depasse des limites de la mine on recadre les positions
+				if (xMax > maxXPosition) {
+					// System.out.println("On a dépassé la largeur limite de la mine! xMax: " + xMax + " | largeur: " + largeur + " | maxXPosition: " + maxXPosition +
+					// ". On ramene a " + maxXPosition);
+					xMax = maxXPosition;
+				}
+
+				if (yMax > maxYPosition) {
+					// System.out.println("On a dépassé la hauteur limite de la mine! yMax: " + yMax + " | hauteur: " + hauteur + " | maxYPosition: " + maxYPosition +
+					// ". On ramene a " + maxYPosition);
+					yMax = maxYPosition;
+				}
+
+				mineParts.add(new MinePart(xMin, xMax, yMin, yMax));
 			}
 		}
 	}
@@ -65,8 +81,16 @@ public class Mine {
 		}
 		FileUtils.writeInTracesFile("Etat de la mine apres mise a jour :");
 		printMine();
+
+		// mise a jour des parties de la mine
+		for (MinePart minePart : mineParts) {
+			minePart.updateCases(casesToUpdateMap);
+		}
 	}
 
+	/**
+	 * @return cases
+	 */
 	public Collection<Case> getDiamondsPositions() {
 		FileUtils.writeInTracesFile("Récuperation des positions des diamants...");
 		Collection<Case> cases = new HashSet<Case>();
@@ -80,6 +104,9 @@ public class Mine {
 		return cases;
 	}
 
+	/**
+	 * 
+	 */
 	public void printMine() {
 		FileUtils.writeInTracesFile("+++++++++ Début impression plan de la mine +++++++++");
 		StringBuilder stringbuilder = new StringBuilder();
@@ -153,6 +180,27 @@ public class Mine {
 	 */
 	public Map<Position, Case> getCasesInMap() {
 		return mapCases;
+	}
+
+	/**
+	 * @return maxYPosition
+	 */
+	public int getMaxYPosition() {
+		return maxYPosition;
+	}
+
+	/**
+	 * @return maxXPosition
+	 */
+	public int getMaxXPosition() {
+		return maxXPosition;
+	}
+
+	/**
+	 * @return mineParts
+	 */
+	public Set<MinePart> getMineParts() {
+		return mineParts;
 	}
 
 	@Override

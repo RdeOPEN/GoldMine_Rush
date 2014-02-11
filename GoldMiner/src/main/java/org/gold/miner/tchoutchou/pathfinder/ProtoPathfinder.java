@@ -3,6 +3,7 @@ package org.gold.miner.tchoutchou.pathfinder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class ProtoPathfinder implements Pathfinder {
 		// On part de la position courante du mineur pour déterminer la direction à prendre vers la destination
 		final NodeGraphe nodeCurrentPosition = graphe.get(currentPosition);
 		final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
-		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase(), new String(), null);
+		nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, graphe.get(destination).getCase(), new String(), new HashSet<NodeGraphe>());
 
 		return resultatRecherche;
 	}
@@ -64,7 +65,7 @@ public class ProtoPathfinder implements Pathfinder {
 				final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
 				NodeGraphe nodeGrapheDestination = graphe.get(caseWithDiamonds.getPosition());
 				if (nodeGrapheDestination != null) {
-					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new String(), null);
+					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new String(), new HashSet<NodeGraphe>());
 					if (resultatRecherche.isCompleted()) {
 						resultats.add(resultatRecherche);
 					}

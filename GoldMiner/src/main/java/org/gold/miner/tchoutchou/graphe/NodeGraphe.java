@@ -40,7 +40,7 @@ public class NodeGraphe {
 		if (previousNode == null) {
 			// System.out.println("Nous sommes à la racine du graphe: " + positionXCourante + "," + positionYCourante);
 			FileUtils.writeInTracesFile("Nous sommes à la racine du graphe: " + positionXCourante + "," + positionYCourante);
-			nodesExploredSet = new HashSet<NodeGraphe>();
+			// nodesExploredSet = new HashSet<NodeGraphe>();
 		} else {
 			// System.out.println("nodesExplored: " + nodesExplored);
 			// FileUtils.writeInTracesFile("nodesExplored: " + nodesExplored);

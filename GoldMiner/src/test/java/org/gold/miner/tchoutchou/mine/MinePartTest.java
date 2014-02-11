@@ -66,6 +66,82 @@ public class MinePartTest {
 		Assertions.assertThat(values).containsExactly(casesExpected.toArray(new Case[] {}));
 	}
 
+	@Test
+	public void isExplored_must_return_false() throws Exception {
+		MinePart minePart = new MinePart(10, 14, 0, 4);
+
+		Assertions.assertThat(minePart.isExplored()).isFalse();
+	}
+
+	@Test
+	public void isExplored_must_return_true() throws Exception {
+		MinePart minePart = new MinePart(0, 4, 0, 4);
+
+		List<Case> casesToUpdate = new ArrayList<Case>();
+		casesToUpdate.add(genCase(0, 0, "S"));
+		casesToUpdate.add(genCase(0, 1, "5"));
+		casesToUpdate.add(genCase(0, 2, "E"));
+		casesToUpdate.add(genCase(0, 3, "M"));
+		casesToUpdate.add(genCase(0, 4, "M"));
+		casesToUpdate.add(genCase(1, 0, "M"));
+		casesToUpdate.add(genCase(1, 1, "S"));
+		casesToUpdate.add(genCase(1, 2, "S"));
+		casesToUpdate.add(genCase(1, 3, "S"));
+		casesToUpdate.add(genCase(1, 4, "S"));
+		casesToUpdate.add(genCase(2, 0, "E"));
+		casesToUpdate.add(genCase(2, 1, "E"));
+		casesToUpdate.add(genCase(2, 2, "M"));
+		casesToUpdate.add(genCase(2, 3, "M"));
+		casesToUpdate.add(genCase(2, 4, "M"));
+		casesToUpdate.add(genCase(3, 0, "S"));
+		casesToUpdate.add(genCase(3, 1, "S"));
+		casesToUpdate.add(genCase(3, 2, "4"));
+		casesToUpdate.add(genCase(3, 3, "M"));
+		casesToUpdate.add(genCase(3, 4, "M"));
+		casesToUpdate.add(genCase(4, 0, "S"));
+		casesToUpdate.add(genCase(4, 1, "M"));
+		casesToUpdate.add(genCase(4, 2, "M"));
+		casesToUpdate.add(genCase(4, 3, "S"));
+		casesToUpdate.add(genCase(4, 4, "M"));
+
+		minePart.updateCases(casesToUpdate);
+
+		Assertions.assertThat(minePart.isExplored()).isTrue();
+	}
+
+	@Test
+	public void isExplored_must_return_false_when_all_cases_are_not_explored() throws Exception {
+		MinePart minePart = new MinePart(0, 4, 0, 4);
+
+		List<Case> casesToUpdate = new ArrayList<Case>();
+		casesToUpdate.add(genCase(0, 0, "S"));
+		casesToUpdate.add(genCase(0, 1, "5"));
+		casesToUpdate.add(genCase(0, 2, "E"));
+		casesToUpdate.add(genCase(0, 3, "M"));
+		casesToUpdate.add(genCase(0, 4, "M"));
+		casesToUpdate.add(genCase(1, 0, "M"));
+		casesToUpdate.add(genCase(1, 2, "S"));
+		casesToUpdate.add(genCase(1, 3, "S"));
+		casesToUpdate.add(genCase(1, 4, "S"));
+		casesToUpdate.add(genCase(2, 0, "E"));
+		casesToUpdate.add(genCase(2, 1, "E"));
+		casesToUpdate.add(genCase(2, 2, "M"));
+		casesToUpdate.add(genCase(2, 3, "M"));
+		casesToUpdate.add(genCase(2, 4, "M"));
+		casesToUpdate.add(genCase(3, 0, "S"));
+		casesToUpdate.add(genCase(3, 1, "S"));
+		casesToUpdate.add(genCase(3, 3, "M"));
+		casesToUpdate.add(genCase(3, 4, "M"));
+		casesToUpdate.add(genCase(4, 0, "S"));
+		casesToUpdate.add(genCase(4, 1, "M"));
+		casesToUpdate.add(genCase(4, 2, "M"));
+		casesToUpdate.add(genCase(4, 4, "M"));
+
+		minePart.updateCases(casesToUpdate);
+
+		Assertions.assertThat(minePart.isExplored()).isFalse();
+	}
+
 	private static Case genCase(int x, int y, String typeTerrain) {
 		return new Case(new Position(x, y), typeTerrain);
 	}
