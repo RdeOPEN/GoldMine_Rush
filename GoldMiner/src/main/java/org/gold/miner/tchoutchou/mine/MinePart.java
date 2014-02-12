@@ -49,6 +49,26 @@ public class MinePart {
 		return explored;
 	}
 
+	/**
+	 * @return
+	 */
+	public Position getPositionToGo() {
+		Position position = null;
+
+		// on essaie de recuperer la position centrale
+		int posX = (xMin + xMax) / 2;
+		int posY = (yMin + yMax) / 2;
+
+		System.out.println("xMin: " + xMin + " | xMax: " + xMax);
+		System.out.println("yMin: " + yMin + " | yMax: " + yMax);
+		System.out.println("Position centrale: x: " + posX + " | y: " + posY);
+
+		Position positionDest = new Position(posX, posY);
+		position = positionDest;
+
+		return position;
+	}
+
 	public Map<Position, Case> getMapCases() {
 		return mapCases;
 	}

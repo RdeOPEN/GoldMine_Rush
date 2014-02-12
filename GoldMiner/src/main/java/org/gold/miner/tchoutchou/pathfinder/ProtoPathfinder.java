@@ -6,12 +6,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.gold.miner.tchoutchou.FileUtils;
 import org.gold.miner.tchoutchou.graphe.GrapheFactory;
 import org.gold.miner.tchoutchou.graphe.NodeGraphe;
 import org.gold.miner.tchoutchou.mine.Case;
 import org.gold.miner.tchoutchou.mine.Mine;
+import org.gold.miner.tchoutchou.mine.MinePart;
 import org.gold.miner.tchoutchou.mine.Position;
 import org.gold.miner.tchoutchou.mineur.MinerAction;
 import org.gold.miner.tchoutchou.tree.ResultatRechercheChemin;
@@ -65,7 +67,8 @@ public class ProtoPathfinder implements Pathfinder {
 				final ResultatRechercheChemin resultatRecherche = new ResultatRechercheChemin();
 				NodeGraphe nodeGrapheDestination = graphe.get(caseWithDiamonds.getPosition());
 				if (nodeGrapheDestination != null) {
-					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new String(), new HashSet<NodeGraphe>());
+					nodeCurrentPosition.calculateShortWayToDestination(resultatRecherche, null, nodeGrapheDestination.getCase(), new String(),
+							new HashSet<NodeGraphe>());
 					if (resultatRecherche.isCompleted()) {
 						resultats.add(resultatRecherche);
 					}
@@ -120,8 +123,27 @@ public class ProtoPathfinder implements Pathfinder {
 			}
 		}
 
+		// on recupere les carres de 5*5 constituant la map
+		Map<Integer, MinePart> mapMineParts = mine.getMapMineParts();
+
+		List<Integer> numeroParts = new ArrayList<Integer>();
+		for (Entry<Integer, MinePart> entry : mapMineParts.entrySet()) {
+			if (entry.getValue().isExplored()) {
+				System.out.println("MinePart deja exploré: " + entry.getValue());
+			} else {
+				numeroParts.add(entry.getKey());
+			}
+		}
+
+		Collections.sort(numeroParts);
+		// recuperation du premier élément de la liste
+		Integer keyMinePart = numeroParts.get(0);
+		MinePart minePartToExplore = mapMineParts.get(keyMinePart);
+		Position destination = minePartToExplore.getPositionToGo();
+
+		resultatRechercheFinal = this.exploreTo(currentPosition, destination);
+
 		FileUtils.writeInTracesFile("== Sortie Pathfinder. methode exploreMine: " + resultatRechercheFinal + "  ==");
 		return resultatRechercheFinal;
 	}
-
 }

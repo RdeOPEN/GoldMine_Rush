@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.gold.miner.tchoutchou.FileUtils;
 
@@ -16,7 +15,7 @@ public class Mine {
 	private int nbDiamants;
 
 	private Map<Position, Case> mapCases = new HashMap<Position, Case>();
-	private Set<MinePart> mineParts = new HashSet<MinePart>();
+	private Map<Integer, MinePart> mapMineParts = new HashMap<Integer, MinePart>();
 	private int maxYPosition;
 	private int maxXPosition;
 
@@ -34,6 +33,8 @@ public class Mine {
 		this.nbDiamants = Integer.parseInt(envValues[2]);
 		FileUtils.writeInTracesFile("Initialisation de la mine : " + this.toString());
 
+		int numeroParts = 0;
+
 		// creation des parties de la mine
 		for (int x = 0; x < largeur; x = x + 5) {
 			int xMin = x;
@@ -46,18 +47,20 @@ public class Mine {
 
 				// si le xMax ou le yMax depasse des limites de la mine on recadre les positions
 				if (xMax > maxXPosition) {
-					// System.out.println("On a dépassé la largeur limite de la mine! xMax: " + xMax + " | largeur: " + largeur + " | maxXPosition: " + maxXPosition +
+					// System.out.println("On a dépassé la largeur limite de la mine! xMax: " + xMax + " | largeur: " + largeur + " | maxXPosition: " +
+					// maxXPosition +
 					// ". On ramene a " + maxXPosition);
 					xMax = maxXPosition;
 				}
 
 				if (yMax > maxYPosition) {
-					// System.out.println("On a dépassé la hauteur limite de la mine! yMax: " + yMax + " | hauteur: " + hauteur + " | maxYPosition: " + maxYPosition +
+					// System.out.println("On a dépassé la hauteur limite de la mine! yMax: " + yMax + " | hauteur: " + hauteur + " | maxYPosition: " +
+					// maxYPosition +
 					// ". On ramene a " + maxYPosition);
 					yMax = maxYPosition;
 				}
 
-				mineParts.add(new MinePart(xMin, xMax, yMin, yMax));
+				mapMineParts.put(++numeroParts, new MinePart(xMin, xMax, yMin, yMax));
 			}
 		}
 	}
@@ -83,7 +86,7 @@ public class Mine {
 		printMine();
 
 		// mise a jour des parties de la mine
-		for (MinePart minePart : mineParts) {
+		for (MinePart minePart : mapMineParts.values()) {
 			minePart.updateCases(casesToUpdateMap);
 		}
 	}
@@ -199,8 +202,12 @@ public class Mine {
 	/**
 	 * @return mineParts
 	 */
-	public Set<MinePart> getMineParts() {
-		return mineParts;
+	public Collection<MinePart> getMineParts() {
+		return mapMineParts.values();
+	}
+
+	public Map<Integer, MinePart> getMapMineParts() {
+		return mapMineParts;
 	}
 
 	@Override

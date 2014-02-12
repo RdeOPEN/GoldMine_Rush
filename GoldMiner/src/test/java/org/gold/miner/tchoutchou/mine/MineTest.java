@@ -52,10 +52,10 @@ public class MineTest {
 		Assertions.assertThat(mine.getMaxYPosition()).isEqualTo(4);
 		Assertions.assertThat(mine.getNbDiamants()).isEqualTo(10);
 
-		Set<MinePart> mineParts = mine.getMineParts();
+		Collection<MinePart> mineParts = mine.getMineParts();
 		Assertions.assertThat(mineParts.size()).isEqualTo(2);
 
-		Set<MinePart> minePartsExpected = new HashSet<MinePart>();
+		Collection<MinePart> minePartsExpected = new HashSet<MinePart>();
 		MinePart minePart1 = new MinePart(0, 4, 0, 4);
 		MinePart minePart2 = new MinePart(5, 8, 0, 4);
 
@@ -76,7 +76,7 @@ public class MineTest {
 		Assertions.assertThat(mine.getMaxYPosition()).isEqualTo(24);
 		Assertions.assertThat(mine.getNbDiamants()).isEqualTo(10);
 
-		Set<MinePart> mineParts = mine.getMineParts();
+		Collection<MinePart> mineParts = mine.getMineParts();
 		Assertions.assertThat(mineParts.size()).isEqualTo(45);
 	}
 
@@ -91,7 +91,7 @@ public class MineTest {
 		Assertions.assertThat(mine.getMaxYPosition()).isEqualTo(8);
 		Assertions.assertThat(mine.getNbDiamants()).isEqualTo(10);
 
-		Set<MinePart> mineParts = mine.getMineParts();
+		Collection<MinePart> mineParts = mine.getMineParts();
 		Assertions.assertThat(mineParts.size()).isEqualTo(2);
 
 		Set<MinePart> minePartsExpected = new HashSet<MinePart>();
@@ -115,7 +115,7 @@ public class MineTest {
 		Assertions.assertThat(mine.getMaxYPosition()).isEqualTo(55);
 		Assertions.assertThat(mine.getNbDiamants()).isEqualTo(10);
 
-		Set<MinePart> mineParts = mine.getMineParts();
+		Collection<MinePart> mineParts = mine.getMineParts();
 		Assertions.assertThat(mineParts.size()).isEqualTo(60);
 	}
 
